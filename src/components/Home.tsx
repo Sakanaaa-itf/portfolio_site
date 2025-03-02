@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
 const Background = styled.div`
   width: 100vw;
   height: 100vh;
-  background-image: url("https://pub-824fe0d919c34f7cb64cd8ff97e0833e.r2.dev/DSCF0546.JPG");
+  background-image: url("https://pub-824fe0d919c34f7cb64cd8ff97e0833e.r2.dev/DSCF0546.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

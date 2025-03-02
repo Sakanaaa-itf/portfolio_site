@@ -5,7 +5,8 @@ export const metadata: Metadata = {
   title: "ふわふわ.みんな",
   description: "Portfolio site",
   icons: {
-    icon: "../../public/DSCF0546.JPG",
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   }
 };
 
