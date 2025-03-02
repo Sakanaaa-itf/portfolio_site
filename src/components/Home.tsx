@@ -10,8 +10,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const Background = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   background-image: url("/DSCF0546.webp");
   background-size: cover;
   background-position: center;
