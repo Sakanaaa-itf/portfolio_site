@@ -3,7 +3,10 @@ import { GlobalStyle } from "../styles/globalStyles";
 
 export const metadata: Metadata = {
   title: "ふわふわ.みんな",
-  description: "Portfolio site for Kaima Oka",
+  description: "Portfolio site",
+  icons: {
+    icon: "../../public/DSCF0546.JPG",
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
