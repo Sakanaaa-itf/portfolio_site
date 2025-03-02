@@ -1,6 +1,13 @@
 "use client";
 
 import styled from "styled-components";
+import { JetBrains_Mono } from "next/font/google";
+import theme from "../styles/theme";
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const Background = styled.div`
   width: 100vw;
@@ -11,22 +18,46 @@ const Background = styled.div`
   background-repeat: no-repeat;
 `;
 
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+  }
+`;
+
 const Title = styled.h1`
   color: white;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3rem;
+  font-size: 80px;
+  font-weight: 700;
   padding: 1rem;
   border-radius: 10px;
+  font-family: ${jetbrainsMono.style.fontFamily};
+  white-space: nowrap;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 48px;
+    line-height: 1.2;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 36px;
+    line-height: 1.3;
+  }
 `;
 
 const Home = () => {
   return (
     <Background>
-      <Title>Portfolio_site_</Title>
+      <TitleWrapper>
+        <Title>Portfolio_</Title>
+        <Title>Site_</Title>
+      </TitleWrapper>
     </Background>
   );
 };
