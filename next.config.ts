@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
 	compiler: {
 		styledComponents: true,
 	},
+	trailingSlash: true,
+	distDir: "out",
 };
 
 export default nextConfig;
