@@ -8,11 +8,6 @@ const rotateCircle = keyframes`
 	100% { transform: rotate(0deg); }
 `;
 
-const fadeOut = keyframes`
-	0% { opacity: 1; }
-	100% { opacity: 0; }
-`;
-
 const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
 	position: fixed;
 	top: 0;
