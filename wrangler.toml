@@ -1,1 +1,8 @@
+name = "my-nextjs-app"
+type = "javascript"
+account_id = "your-account-id"
+workers_dev = true
+
+compatibility_date = "2025-03-02"
+
 compatibility_flags = [ "nodejs_compat" ]
