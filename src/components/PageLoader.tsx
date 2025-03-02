@@ -2,14 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
+import Spinner from "./Spinner";
 
-const spin = keyframes`
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
-`;
-
-const LoaderWrapper = styled.div`
+const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -18,36 +14,33 @@ const LoaderWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: #000000;
 	z-index: 9999;
-	transition: opacity 0.3s ease-in-out;
-`;
-
-const Spinner = styled.div`
-	width: 50px;
-	height: 50px;
-	border: 5px solid #ccc;
-	border-top-color: #0070f3;
-	border-radius: 50%;
-	animation: ${spin} 1s linear infinite;
+	transition: opacity 0.5s ease-in;
+	opacity: ${(props) => (props.$isFadingOut ? 0 : 1)};
 `;
 
 const PageLoader = () => {
 	const pathname = usePathname();
 	const [loading, setLoading] = useState(false);
+	const [isFadingOut, setIsFadingOut] = useState(false);
 
 	useEffect(() => {
 		setLoading(true);
+		setIsFadingOut(false);
+
 		const timer = setTimeout(() => {
-			setLoading(false);
-		}, 1000); // 1秒後に非表示
+			setIsFadingOut(true);
+			setTimeout(() => setLoading(false), 500);
+		}, 1000);
+
 		return () => clearTimeout(timer);
 	}, [pathname]);
 
 	if (!loading) return null;
 
 	return (
-		<LoaderWrapper>
+		<LoaderWrapper $isFadingOut={isFadingOut}>
 			<Spinner />
 		</LoaderWrapper>
 	);
