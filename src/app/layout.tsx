@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { GlobalStyle } from "../styles/globalStyles";
 
 export const metadata: Metadata = {
-  title: "My Portfolio",
-  description: "A simple portfolio website",
+  title: "ふわふわ.みんな",
+  description: "Portfolio site for Kaima Oka",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
