@@ -88,14 +88,60 @@ const AboutMeTitle = styled.h2`
 	text-align: center;
 `;
 
-const ProfileIcon = styled.img`
-	width: 150px; /* アイコンのサイズを調整 */
+const ProfileCard = styled.div<{ $isFlipped: boolean }>`
+	width: 150px;
 	height: 150px;
+	position: relative;
+	perspective: 1000px;
+	cursor: pointer;
+	margin-bottom: 1rem;
+
+	& > div {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		backface-visibility: hidden;
+		transition: transform 0.6s ease-in-out;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.front {
+		transform: ${(props) => (props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)")};
+	}
+
+	.back {
+		transform: ${(props) => (props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)")};
+		background: white;
+		color: black;
+		font-size: 14px;
+		font-weight: bold;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	}
+`;
+
+const ProfileIcon = styled.img`
+	width: 100%;
+	height: 100%;
 	border-radius: 50%;
 	object-fit: cover;
-	margin-bottom: 1rem;
 	border: 3px solid white;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+`;
+
+const ProfileLink = styled.a`
+	color: black;
+	text-decoration: underline;
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+	transition: color 0.3s ease-in-out;
+
+	&:hover {
+		color: #0070f3;
+	}
 `;
 
 const AboutMeText = styled.p`
@@ -120,6 +166,7 @@ const Name = styled.h3`
 
 const Home = () => {
 	const [scrollAmount, setScrollAmount] = useState(0);
+	const [isFlipped, setIsFlipped] = useState(false);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -144,7 +191,16 @@ const Home = () => {
 				<AboutMeWrapper>
 					<AboutMeTitle>About Me</AboutMeTitle>
 					<ProfileWrapper>
-						<ProfileIcon src="/profile.webp" alt="プロフィール画像" />
+						<ProfileCard $isFlipped={isFlipped} onClick={() => setIsFlipped(!isFlipped)}>
+							<div className="front">
+								<ProfileIcon src="/profile.webp" alt="プロフィール画像" />
+							</div>
+							<div className="back">
+								<ProfileLink href="https://iorin.io" target="_blank" rel="noopener noreferrer">
+									photo by iorin.io
+								</ProfileLink>
+							</div>
+						</ProfileCard>
 						<Name>岡 海摩</Name>
 						<Name>Kaima Oka</Name>
 					</ProfileWrapper>
