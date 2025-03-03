@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 
 const MenuButton = styled.button<{ $isOpen: boolean }>`
 	position: fixed;
@@ -76,7 +77,7 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	}
 `;
 
-const MenuItem = styled.a`
+const MenuItem = styled(Link)`
 	color: white;
 	font-size: 20px;
 	text-decoration: none;
@@ -111,9 +112,9 @@ const HamburgerMenu = () => {
 				<span></span>
 			</MenuButton>
 			<Menu $isOpen={isOpen}>
-				<MenuItem href="#home">🏠 Home</MenuItem>
-				<MenuItem href="#about">📖 About Me</MenuItem>
-				<MenuItem href="#photoworks">📸 Photoworks</MenuItem>
+				<MenuItem href="/#home">🏠 Home</MenuItem>
+				<MenuItem href="/#about">📖 About Me</MenuItem>
+				<MenuItem href="/photoworks">📸 Photoworks</MenuItem>
 				<MenuItem href="#contact">📩 Contact</MenuItem>
 			</Menu>
 		</>
