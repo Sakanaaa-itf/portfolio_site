@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 
 const MenuButton = styled.button<{ $isOpen: boolean }>`
 	position: fixed;
@@ -41,7 +42,6 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)")};
 	}
 
-	/* 画面幅480px以下の時、ボタンを縮小 */
 	@media (max-width: 480px) {
 		width: 30px;
 		height: 30px;
@@ -76,7 +76,7 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	}
 `;
 
-const MenuItem = styled.a`
+const MenuItem = styled(Link)`
 	color: white;
 	font-size: 20px;
 	text-decoration: none;
@@ -111,10 +111,10 @@ const HamburgerMenu = () => {
 				<span></span>
 			</MenuButton>
 			<Menu $isOpen={isOpen}>
-				<MenuItem href="#home">🏠 Home</MenuItem>
-				<MenuItem href="#about">📖 About Me</MenuItem>
-				<MenuItem href="#photoworks">📸 Photoworks</MenuItem>
-				<MenuItem href="#contact">📩 Contact</MenuItem>
+				<MenuItem href="/#home">🏠 Home</MenuItem>
+				<MenuItem href="/#about">📖 About Me</MenuItem>
+				<MenuItem href="/photoworks">📸 Photoworks</MenuItem>
+				<MenuItem href="/links">📩 Links</MenuItem>
 			</Menu>
 		</>
 	);
