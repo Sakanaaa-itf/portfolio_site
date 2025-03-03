@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { GlobalStyle } from "../styles/globalStyles";
+import { jetbrainsMono } from "../styles/fonts"; // fonts.ts をインポート
 import AppLoader from "@/components/AppLoader";
 
 export const metadata: Metadata = {
 	title: "ふわふわ.みんな",
 	description: "Portfolio site",
-	icons: {
-		icon: "/favicon.ico",
-		apple: "/apple-touch-icon.png",
-	},
+	icons: [
+		{ rel: "icon", url: "/favicon.ico" },
+		{ rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
+	],
 };
 
 export default function RootLayout({
@@ -17,11 +18,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
-			<head />
+		<html lang="ja" className={jetbrainsMono.className}>
 			<body>
-				<AppLoader />
 				<GlobalStyle />
+				<AppLoader />
 				{children}
 			</body>
 		</html>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
 const rotateCircle = keyframes`
-	0% { transform: rotate(360deg); } /* 逆回転 */
+	0% { transform: rotate(360deg); }
 	100% { transform: rotate(0deg); }
 `;
 
@@ -26,7 +26,7 @@ const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
 const CircleContainer = styled.svg`
 	width: 150px;
 	height: 150px;
-	animation: ${rotateCircle} 3s linear infinite; /* 逆回転 */
+	animation: ${rotateCircle} 3s linear infinite;
 	opacity: 0;
 	transition: opacity 0.2s ease-in-out;
 `;
@@ -86,7 +86,7 @@ const AppLoader = () => {
 							/>
 						</defs>
 						<text fill="#ffffff" fontSize="10" fontWeight="bold" letterSpacing="2" textAnchor="middle">
-							<textPath xlinkHref="#circlePath" startOffset="33%">
+							<textPath xlinkHref="#circlePath" startOffset="60%">
 								Loading... Loading... Loading...
 							</textPath>
 						</text>
