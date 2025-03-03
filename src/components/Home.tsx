@@ -89,13 +89,13 @@ const AboutMeTitle = styled.h2`
 `;
 
 const ProfileIcon = styled.img`
-	width: 100px; /* アイコンのサイズを調整 */
-	height: 100px;
-	border-radius: 50%; /* 丸いアイコンにする */
-	object-fit: cover; /* 画像が枠内に収まるようにする */
+	width: 150px; /* アイコンのサイズを調整 */
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
 	margin-bottom: 1rem;
-	border: 3px solid white; /* 白い枠をつける */
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* 軽い影を追加 */
+	border: 3px solid white;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 `;
 
 const AboutMeText = styled.p`
@@ -106,23 +106,16 @@ const AboutMeText = styled.p`
 	opacity: 0.9;
 `;
 
-const AboutMeList = styled.ul`
-	list-style: none;
-	padding: 0;
-	margin-top: 1.5rem;
+const ProfileWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	align-items: center;
+	margin-bottom: 2rem;
 `;
 
-const AboutMeItem = styled.li`
-	font-size: 18px;
-	background: rgba(255, 255, 255, 0.1);
-	padding: 1rem 1.5rem;
-	border-radius: 8px;
-	text-align: center;
-	max-width: 400px;
-	width: 100%;
+const Name = styled.h3`
+	font-size: 24px;
+	font-weight: 700;
 `;
 
 const Home = () => {
@@ -150,17 +143,16 @@ const Home = () => {
 				</TitleWrapper>
 				<AboutMeWrapper>
 					<AboutMeTitle>About Me</AboutMeTitle>
-					<ProfileIcon src="../../public/profile.webp" alt="プロフィール画像" />
+					<ProfileWrapper>
+						<ProfileIcon src="/profile.webp" alt="プロフィール画像" />
+						<Name>岡 海摩</Name>
+						<Name>Kaima Oka</Name>
+					</ProfileWrapper>
 					<AboutMeText>
 						ふわふわ.みんなへようこそ！<br />
 						フロントエンドエンジニアをやっていたり、雰囲気で写真をやっていたりします。<br />
 						現在は、筑波大学で情報科学を学ぶ大学生もやっています。
 					</AboutMeText>
-					<AboutMeList>
-						<AboutMeItem>💻 フロントエンド: React / Next.js / TypeScript</AboutMeItem>
-						<AboutMeItem>🛠 バックエンド: Node.js / MySQL / Hono</AboutMeItem>
-						<AboutMeItem>📡 デプロイ: Cloudflare Pages / Vercel</AboutMeItem>
-					</AboutMeList>
 				</AboutMeWrapper>
 			</ContentWrapper>
 		</>
