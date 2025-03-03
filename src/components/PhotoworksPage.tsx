@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { photos, PhotoMeta } from "@/data/photos";
 import HamburgerMenu from "./HamburgerMenu";
+import AppLoader from "./AppLoader";
 
 const Container = styled.div`
 	max-width: 1200px;
@@ -65,6 +66,7 @@ const Gallery = styled.div`
 
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		if (selectedPhoto) {
@@ -77,6 +79,11 @@ export default function PhotoworksPage() {
 		};
 	}, [selectedPhoto]);
 
+	useEffect(() => {
+		const timer = setTimeout(() => setIsLoading(false), 2000);
+		return () => clearTimeout(timer);
+	}, []);
+
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
 	);
@@ -85,37 +92,43 @@ export default function PhotoworksPage() {
 	const otherPhotos = sorted.slice(5);
 
 	return (
-		<Container>
-			<HamburgerMenu />
-			<Gallery>
-				<SectionTitle>最近の5枚</SectionTitle>
-				<PhotoGrid>
-					{recentPhotos.map((photo) => (
-						<PhotoItem
-							key={photo.id}
-							url={photo.lowResUrl}
-							$isSquare={false}
-							onClick={() => setSelectedPhoto(photo)}
-						>
-							<figcaption>{photo.comment}</figcaption>
-						</PhotoItem>
-					))}
-				</PhotoGrid>
+		<>
+			{isLoading ? (
+				<AppLoader /> // 🔹 ロード中は AppLoader を表示
+			) : (
+				<Container>
+					<HamburgerMenu />
+					<Gallery>
+						<SectionTitle>最近の5枚</SectionTitle>
+						<PhotoGrid>
+							{recentPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={false}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
 
-				<SectionTitle>その他の写真一覧</SectionTitle>
-				<PhotoGrid $isSmall={true}>
-					{otherPhotos.map((photo) => (
-						<PhotoItem
-							key={photo.id}
-							url={photo.lowResUrl}
-							$isSquare={true}
-							onClick={() => setSelectedPhoto(photo)}
-						>
-							<figcaption>{photo.comment}</figcaption>
-						</PhotoItem>
-					))}
-				</PhotoGrid>
-			</Gallery>
-		</Container>
+						<SectionTitle>その他の写真一覧</SectionTitle>
+						<PhotoGrid $isSmall={true}>
+							{otherPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={true}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
+					</Gallery>
+				</Container>
+			)}
+		</>
 	);
 }
