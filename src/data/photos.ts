@@ -3,7 +3,7 @@ export interface PhotoMeta {
 	lowResUrl: string;
 	highResUrl: string;
 	comment: string;
-	uploadedAt: string; // or Date
+	uploadedAt: string;
 }
 
 export const photos: PhotoMeta[] = [
