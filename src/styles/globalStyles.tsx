@@ -1,22 +1,26 @@
 "use client";
 
 import { createGlobalStyle } from "styled-components";
-import { jetbrainsMono } from "./fonts";
+import { jetbrainsMono, udevGothic } from "../styles/fonts";
 
 export const GlobalStyle = createGlobalStyle`
 	:root {
-		${jetbrainsMono.variable}; /* JetBrains Mono の CSS 変数を適用 */
+		${jetbrainsMono.variable};
+		${udevGothic.variable};
 	}
-
 	* {
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
-		font-family: var(--font-jetbrains-mono), sans-serif;
+	}
+
+	html {
+		font-family: var(--font-udev-gothic), var(--font-jetbrains-mono), sans-serif;
 	}
 
 	body {
 		background-color: #000;
 		color: white;
+		font-family: var(--font-udev-gothic), var(--font-jetbrains-mono), sans-serif;
 	}
 `;

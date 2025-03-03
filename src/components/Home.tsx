@@ -69,14 +69,60 @@ const AboutMeWrapper = styled.section`
 	width: 100%;
 	height: 100vh;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(34, 34, 34, 1) 100%);
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(34, 34, 34, 0.8) 100%);
 	color: white;
 	font-size: 24px;
 	transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
 	transform: translateY(0);
 	opacity: 1;
+	padding: 2rem;
+`;
+
+const AboutMeTitle = styled.h2`
+	font-size: 36px;
+	font-weight: 700;
+	margin-bottom: 1rem;
+	text-align: center;
+`;
+
+const ProfileIcon = styled.img`
+	width: 100px; /* アイコンのサイズを調整 */
+	height: 100px;
+	border-radius: 50%; /* 丸いアイコンにする */
+	object-fit: cover; /* 画像が枠内に収まるようにする */
+	margin-bottom: 1rem;
+	border: 3px solid white; /* 白い枠をつける */
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* 軽い影を追加 */
+`;
+
+const AboutMeText = styled.p`
+	font-size: 18px;
+	max-width: 800px;
+	text-align: center;
+	line-height: 1.6;
+	opacity: 0.9;
+`;
+
+const AboutMeList = styled.ul`
+	list-style: none;
+	padding: 0;
+	margin-top: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`;
+
+const AboutMeItem = styled.li`
+	font-size: 18px;
+	background: rgba(255, 255, 255, 0.1);
+	padding: 1rem 1.5rem;
+	border-radius: 8px;
+	text-align: center;
+	max-width: 400px;
+	width: 100%;
 `;
 
 const Home = () => {
@@ -102,7 +148,20 @@ const Home = () => {
 					<Title>Portfolio_</Title>
 					<Title>Site_</Title>
 				</TitleWrapper>
-				<AboutMeWrapper>About Me</AboutMeWrapper>
+				<AboutMeWrapper>
+					<AboutMeTitle>About Me</AboutMeTitle>
+					<ProfileIcon src="../../public/profile.webp" alt="プロフィール画像" />
+					<AboutMeText>
+						ふわふわ.みんなへようこそ！<br />
+						フロントエンドエンジニアをやっていたり、雰囲気で写真をやっていたりします。<br />
+						現在は、筑波大学で情報科学を学ぶ大学生もやっています。
+					</AboutMeText>
+					<AboutMeList>
+						<AboutMeItem>💻 フロントエンド: React / Next.js / TypeScript</AboutMeItem>
+						<AboutMeItem>🛠 バックエンド: Node.js / MySQL / Hono</AboutMeItem>
+						<AboutMeItem>📡 デプロイ: Cloudflare Pages / Vercel</AboutMeItem>
+					</AboutMeList>
+				</AboutMeWrapper>
 			</ContentWrapper>
 		</>
 	);
