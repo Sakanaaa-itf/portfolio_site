@@ -42,7 +42,6 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)")};
 	}
 
-	/* 画面幅480px以下の時、ボタンを縮小 */
 	@media (max-width: 480px) {
 		width: 30px;
 		height: 30px;
@@ -115,7 +114,7 @@ const HamburgerMenu = () => {
 				<MenuItem href="/#home">🏠 Home</MenuItem>
 				<MenuItem href="/#about">📖 About Me</MenuItem>
 				<MenuItem href="/photoworks">📸 Photoworks</MenuItem>
-				<MenuItem href="#contact">📩 Contact</MenuItem>
+				<MenuItem href="/links">📩 Links</MenuItem>
 			</Menu>
 		</>
 	);
