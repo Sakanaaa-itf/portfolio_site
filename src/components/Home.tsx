@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../styles/theme";
+import HamburgerMenu from "./HamburgerMenu";
 
 const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	position: fixed;
@@ -72,7 +73,11 @@ const AboutMeWrapper = styled.section`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(34, 34, 34, 0.8) 100%);
+	background: linear-gradient(
+		to bottom,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(34, 34, 34, 0.8) 100%
+	);
 	color: white;
 	font-size: 24px;
 	transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
@@ -109,11 +114,11 @@ const ProfileCard = styled.div<{ $isFlipped: boolean }>`
 	}
 
 	.front {
-		transform: ${(props) => (props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)")};
+		transform: ${(props) => props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
 	}
 
 	.back {
-		transform: ${(props) => (props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)")};
+		transform: ${(props) => props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"};
 		background: white;
 		color: black;
 		font-size: 14px;
@@ -157,6 +162,15 @@ const ProfileWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 2rem;
+
+	@media (max-width: 480px) {
+		transform: translateX(0);
+		transition: transform 0.3s ease-in-out;
+
+		body.menu-open & {
+			transform: translateX(-50px);
+		}
+	}
 `;
 
 const Name = styled.h3`
@@ -182,21 +196,29 @@ const Home = () => {
 
 	return (
 		<>
+			<HamburgerMenu />
 			<BackgroundWrapper $blurAmount={blurAmount} />
-			<ContentWrapper>
+			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>
 					<Title>Site_</Title>
 				</TitleWrapper>
-				<AboutMeWrapper>
-					<AboutMeTitle>About Me</AboutMeTitle>
+				<AboutMeWrapper id="about">
 					<ProfileWrapper>
-						<ProfileCard $isFlipped={isFlipped} onClick={() => setIsFlipped(!isFlipped)}>
+						<AboutMeTitle>About Me</AboutMeTitle>
+						<ProfileCard
+							$isFlipped={isFlipped}
+							onClick={() => setIsFlipped(!isFlipped)}
+						>
 							<div className="front">
 								<ProfileIcon src="/profile.webp" alt="プロフィール画像" />
 							</div>
 							<div className="back">
-								<ProfileLink href="https://iorin.io" target="_blank" rel="noopener noreferrer">
+								<ProfileLink
+									href="https://iorin.io"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									photo by iorin.io
 								</ProfileLink>
 							</div>
@@ -205,8 +227,10 @@ const Home = () => {
 						<Name>Kaima Oka</Name>
 					</ProfileWrapper>
 					<AboutMeText>
-						ふわふわ.みんなへようこそ！<br />
-						フロントエンドエンジニアをやっていたり、雰囲気で写真をやっていたりします。<br />
+						ふわふわ.みんなへようこそ！
+						<br />
+						フロントエンドエンジニアをやっていたり、雰囲気で写真をやっていたりします。
+						<br />
 						現在は、筑波大学で情報科学を学ぶ大学生もやっています。
 					</AboutMeText>
 				</AboutMeWrapper>
