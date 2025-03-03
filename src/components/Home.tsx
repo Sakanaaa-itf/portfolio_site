@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../styles/theme";
+import HamburgerMenu from "./HamburgerMenu";
 
 const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	position: fixed;
@@ -182,13 +183,14 @@ const Home = () => {
 
 	return (
 		<>
+			<HamburgerMenu />
 			<BackgroundWrapper $blurAmount={blurAmount} />
-			<ContentWrapper>
+			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>
 					<Title>Site_</Title>
 				</TitleWrapper>
-				<AboutMeWrapper>
+				<AboutMeWrapper id="about">
 					<AboutMeTitle>About Me</AboutMeTitle>
 					<ProfileWrapper>
 						<ProfileCard $isFlipped={isFlipped} onClick={() => setIsFlipped(!isFlipped)}>
