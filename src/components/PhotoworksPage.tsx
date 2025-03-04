@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { photos, PhotoMeta } from "@/data/photos";
 import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
+import { useDevice } from "@/hooks/useDevice";
 import * as exifr from "exifr";
 
 const Container = styled.div`
@@ -145,6 +146,7 @@ export default function PhotoworksPage() {
 		{}
 	);
 	const [isLoading, setIsLoading] = useState(true);
+	const { isLaptop } = useDevice();
 
 	useEffect(() => {
 		const fetchExifData = async () => {
@@ -187,8 +189,6 @@ export default function PhotoworksPage() {
 			document.body.style.overflow = "auto";
 		};
 	}, [selectedPhoto]);
-
-	const isPC = window.innerWidth > 768;
 
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
@@ -248,7 +248,7 @@ export default function PhotoworksPage() {
 						<>
 							<FullImage src={selectedPhoto.highResUrl} alt="Selected" />
 							<InfoContainer>
-								{isPC && (
+								{isLaptop && (
 									<CommentBox>
 										<p>{selectedPhoto.comment}</p>
 									</CommentBox>

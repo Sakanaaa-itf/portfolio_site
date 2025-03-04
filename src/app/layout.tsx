@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GlobalStyle } from "../styles/globalStyles";
 import AppLoader from "@/components/AppLoader";
+import ThemeProvider from "@/components/ThemeProvider";
 import { jetbrainsMono, udevGothic } from "@/styles/fonts";
 
 export const metadata: Metadata = {
@@ -20,9 +21,11 @@ export default function RootLayout({
 	return (
 		<html lang="ja" className={`${jetbrainsMono.variable} ${udevGothic.variable}`}>
 			<body>
-				<GlobalStyle />
-				<AppLoader />
-				{children}
+				<ThemeProvider>
+					<GlobalStyle />
+					<AppLoader />
+					{children}
+				</ThemeProvider>
 			</body>
 		</html>
 	);
