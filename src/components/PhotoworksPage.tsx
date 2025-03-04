@@ -39,7 +39,6 @@ const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
 		content: "";
 		display: block;
 		width: 100%;
-		/* 正方形にしたい場合は 100% に */
 		padding-top: ${({ $isSquare }) => ($isSquare ? "100%" : "70%")};
 		background-image: url(${(p) => p.url});
 		background-size: cover;
@@ -55,7 +54,7 @@ const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
 	}
 `;
 
-const ModalOverlay = styled.div<{ isOpen: boolean }>`
+const ModalOverlay = styled.div<{ $isOpen: boolean }>`
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -67,13 +66,13 @@ const ModalOverlay = styled.div<{ isOpen: boolean }>`
 	align-items: center;
 	z-index: 1000;
 
-	opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-	visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
-	pointer-events: ${({ isOpen }) => (isOpen ? "auto" : "none")};
+	opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+	visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
+	pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
 	transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 `;
 
-const ModalContent = styled.div<{ isOpen: boolean }>`
+const ModalContent = styled.div<{ $isOpen: boolean }>`
 	position: relative;
 	background: #fff;
 	padding: 1rem;
@@ -82,9 +81,8 @@ const ModalContent = styled.div<{ isOpen: boolean }>`
 	max-height: 90%;
 	overflow: auto;
 
-	/* モーダル表示の際に少し上からフェードインする例 */
-	opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-	transform: translateY(${({ isOpen }) => (isOpen ? "0" : "-10px")});
+	opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+	transform: translateY(${({ $isOpen }) => ($isOpen ? "0" : "-10px")});
 	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 `;
 
@@ -119,7 +117,8 @@ const formatDate = (date: Date | string | undefined): string => {
 	if (!date) return "不明";
 	if (typeof date === "string") return date;
 	if (date instanceof Date) {
-		return date.toISOString().replace("T", " ").split(".")[0];
+		const jstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+		return jstTime.toISOString().replace("T", " ").split(".")[0];
 	}
 	return "不明";
 };
@@ -220,10 +219,13 @@ export default function PhotoworksPage() {
 			)}
 
 			<ModalOverlay
-				isOpen={!!selectedPhoto}
+				$isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
 			>
-				<ModalContent isOpen={!!selectedPhoto} onClick={(e) => e.stopPropagation()}>
+				<ModalContent
+					$isOpen={!!selectedPhoto}
+					onClick={(e) => e.stopPropagation()}
+				>
 					{selectedPhoto && (
 						<>
 							<FullImage src={selectedPhoto.highResUrl} alt="Selected" />
