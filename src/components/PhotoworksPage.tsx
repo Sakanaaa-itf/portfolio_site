@@ -55,11 +55,6 @@ const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
 	}
 `;
 
-/**
- * モーダル背景部分。
- * isOpen によって opacity, pointer-events, visibility を切り替える。
- * これによりアンマウント前にフェードアウトできる。
- */
 const ModalOverlay = styled.div<{ isOpen: boolean }>`
 	position: fixed;
 	top: 0;
@@ -78,10 +73,6 @@ const ModalOverlay = styled.div<{ isOpen: boolean }>`
 	transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 `;
 
-/**
- * モーダルの中身コンテナ部分。
- * isOpen によって opacity や transform を変更。
- */
 const ModalContent = styled.div<{ isOpen: boolean }>`
 	position: relative;
 	background: #fff;
@@ -107,6 +98,12 @@ const FullImage = styled.img`
 const ExifDataContainer = styled.div`
 	font-size: 12px;
 	color: #333;
+`;
+
+const Content = styled.div`
+	body.menu-open & {
+		filter: blur(5px);
+	}
 `;
 
 type ExifData = {
@@ -165,7 +162,6 @@ export default function PhotoworksPage() {
 		fetchExifData();
 	}, []);
 
-	// モーダル表示中はスクロールを固定する
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
@@ -191,37 +187,38 @@ export default function PhotoworksPage() {
 			) : (
 				<Container>
 					<HamburgerMenu />
-					<SectionTitle>最近の5枚</SectionTitle>
-					<PhotoGrid>
-						{recentPhotos.map((photo) => (
-							<PhotoItem
-								key={photo.id}
-								url={photo.lowResUrl}
-								$isSquare={false}
-								onClick={() => setSelectedPhoto(photo)}
-							>
-								<figcaption>{photo.comment}</figcaption>
-							</PhotoItem>
-						))}
-					</PhotoGrid>
+					<Content>
+						<SectionTitle>最近の5枚</SectionTitle>
+						<PhotoGrid>
+							{recentPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={false}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
 
-					<SectionTitle>その他の写真一覧</SectionTitle>
-					<PhotoGrid $isSmall={true}>
-						{otherPhotos.map((photo) => (
-							<PhotoItem
-								key={photo.id}
-								url={photo.lowResUrl}
-								$isSquare={true}
-								onClick={() => setSelectedPhoto(photo)}
-							>
-								<figcaption>{photo.comment}</figcaption>
-							</PhotoItem>
-						))}
-					</PhotoGrid>
+						<SectionTitle>その他の写真一覧</SectionTitle>
+						<PhotoGrid $isSmall={true}>
+							{otherPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={true}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
+					</Content>
 				</Container>
 			)}
 
-			{/* ここでモーダルは常時マウントし、selectedPhoto が null かどうかでアニメーションさせる */}
 			<ModalOverlay
 				isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
