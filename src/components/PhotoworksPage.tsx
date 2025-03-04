@@ -109,6 +109,12 @@ const ExifDataContainer = styled.div`
 	color: #333;
 `;
 
+const Content = styled.div`
+	body.menu-open & {
+		filter: blur(5px);
+	}
+`;
+
 type ExifData = {
 	dateTime?: string;
 	cameraModel?: string;
@@ -191,33 +197,35 @@ export default function PhotoworksPage() {
 			) : (
 				<Container>
 					<HamburgerMenu />
-					<SectionTitle>最近の5枚</SectionTitle>
-					<PhotoGrid>
-						{recentPhotos.map((photo) => (
-							<PhotoItem
-								key={photo.id}
-								url={photo.lowResUrl}
-								$isSquare={false}
-								onClick={() => setSelectedPhoto(photo)}
-							>
-								<figcaption>{photo.comment}</figcaption>
-							</PhotoItem>
-						))}
-					</PhotoGrid>
+					<Content>
+						<SectionTitle>最近の5枚</SectionTitle>
+						<PhotoGrid>
+							{recentPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={false}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
 
-					<SectionTitle>その他の写真一覧</SectionTitle>
-					<PhotoGrid $isSmall={true}>
-						{otherPhotos.map((photo) => (
-							<PhotoItem
-								key={photo.id}
-								url={photo.lowResUrl}
-								$isSquare={true}
-								onClick={() => setSelectedPhoto(photo)}
-							>
-								<figcaption>{photo.comment}</figcaption>
-							</PhotoItem>
-						))}
-					</PhotoGrid>
+						<SectionTitle>その他の写真一覧</SectionTitle>
+						<PhotoGrid $isSmall={true}>
+							{otherPhotos.map((photo) => (
+								<PhotoItem
+									key={photo.id}
+									url={photo.lowResUrl}
+									$isSquare={true}
+									onClick={() => setSelectedPhoto(photo)}
+								>
+									<figcaption>{photo.comment}</figcaption>
+								</PhotoItem>
+							))}
+						</PhotoGrid>
+					</Content>
 				</Container>
 			)}
 
