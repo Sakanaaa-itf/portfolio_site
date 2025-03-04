@@ -93,9 +93,25 @@ const FullImage = styled.img`
 	margin-bottom: 10px;
 `;
 
+const InfoContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-top: 1rem;
+	gap: 1rem;
+`;
+
+const CommentBox = styled.div`
+	flex: 1;
+	margin-right: 2rem;
+	font-size: 14px;
+	color: #333;
+`;
+
 const ExifDataContainer = styled.div`
 	font-size: 12px;
 	color: #333;
+	max-width: 200px;
 `;
 
 const Content = styled.div`
@@ -172,6 +188,8 @@ export default function PhotoworksPage() {
 		};
 	}, [selectedPhoto]);
 
+	const isPC = window.innerWidth > 768;
+
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
 	);
@@ -229,16 +247,23 @@ export default function PhotoworksPage() {
 					{selectedPhoto && (
 						<>
 							<FullImage src={selectedPhoto.highResUrl} alt="Selected" />
-							<ExifDataContainer>
-								<p>撮影日時: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
-								<p>カメラ: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
-								<p>レンズ: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
-								<p>F値: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
-								<p>
-									シャッター速度: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}
-								</p>
-								<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
-							</ExifDataContainer>
+							<InfoContainer>
+								{isPC && (
+									<CommentBox>
+										<p>{selectedPhoto.comment}</p>
+									</CommentBox>
+								)}
+								<ExifDataContainer>
+									<p>Date: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
+									<p>Camera: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
+									<p>Lens: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
+									<p>Aperture: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
+									<p>
+										SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}
+									</p>
+									<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
+								</ExifDataContainer>
+							</InfoContainer>
 						</>
 					)}
 				</ModalContent>
