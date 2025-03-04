@@ -55,11 +55,6 @@ const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
 	}
 `;
 
-/**
- * モーダル背景部分。
- * isOpen によって opacity, pointer-events, visibility を切り替える。
- * これによりアンマウント前にフェードアウトできる。
- */
 const ModalOverlay = styled.div<{ isOpen: boolean }>`
 	position: fixed;
 	top: 0;
@@ -78,10 +73,6 @@ const ModalOverlay = styled.div<{ isOpen: boolean }>`
 	transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 `;
 
-/**
- * モーダルの中身コンテナ部分。
- * isOpen によって opacity や transform を変更。
- */
 const ModalContent = styled.div<{ isOpen: boolean }>`
 	position: relative;
 	background: #fff;
@@ -171,7 +162,6 @@ export default function PhotoworksPage() {
 		fetchExifData();
 	}, []);
 
-	// モーダル表示中はスクロールを固定する
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
@@ -229,7 +219,6 @@ export default function PhotoworksPage() {
 				</Container>
 			)}
 
-			{/* ここでモーダルは常時マウントし、selectedPhoto が null かどうかでアニメーションさせる */}
 			<ModalOverlay
 				isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
