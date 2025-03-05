@@ -1,5 +1,5 @@
-import Gallery from "@/components/PhotoworksPage";
+import PhotoWorks from "@/components/PhotoworksPage";
 
 export default function PhotoworksPage() {
-	return <Gallery />;
+	return <PhotoWorks />;
 }
