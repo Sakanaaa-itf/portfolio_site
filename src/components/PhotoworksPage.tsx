@@ -91,7 +91,7 @@ const FullImage = styled.img`
 	max-width: 100%;
 	max-height: 70vh;
 	display: block;
-	margin-bottom: 10px;
+	margin: 0 auto;
 `;
 
 const InfoContainer = styled.div`
