@@ -71,7 +71,6 @@ const LinksContainer = styled.div`
 	margin: 0 auto;
 `;
 
-/* CardLink：カード自体をリンク化 */
 const CardLink = styled.a`
 	text-decoration: none;
 	color: inherit;
@@ -79,7 +78,6 @@ const CardLink = styled.a`
 	max-width: 180px;
 `;
 
-/* LinkCard の背景などはなくし、内部の内容のみで影を作る */
 const LinkCard = styled.div`
 	width: 100%;
 	border-radius: 8px;
@@ -114,7 +112,6 @@ const LinkName = styled.h3<{ $fontSize: string }>`
 	white-space: nowrap;
 `;
 
-/* リンク一覧データ：customIcon があればそれを優先、無ければ Google favicon、エラー時は fallbackFavicon（あれば）またはデフォルト */
 const LINKS = [
 	{
 		name: "Iorin.io",
