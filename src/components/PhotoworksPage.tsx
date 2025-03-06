@@ -205,7 +205,7 @@ export default function PhotoworksPage() {
 				<Container>
 					<HamburgerMenu />
 					<Content>
-						<SectionTitle>最近の5枚</SectionTitle>
+						<SectionTitle>Recent photos_</SectionTitle>
 						<PhotoGrid>
 							{recentPhotos.map((photo) => (
 								<PhotoItem
@@ -219,7 +219,7 @@ export default function PhotoworksPage() {
 							))}
 						</PhotoGrid>
 
-						<SectionTitle>その他の写真一覧</SectionTitle>
+						<SectionTitle>Others_</SectionTitle>
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
 								<PhotoItem
