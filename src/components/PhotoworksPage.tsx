@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { photos, PhotoMeta } from "@/data/photos";
 import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
 import { useDevice } from "@/hooks/useDevice";
-import * as exifr from "exifr";
+import { getExifDataForPhotos } from "@/utils/photoUtils";
+import type { ExifData } from "@/utils/photoUtils";
 
 const Container = styled.div`
 	max-width: 1200px;
@@ -22,9 +24,13 @@ const SectionTitle = styled.h2`
 
 const PhotoGrid = styled.div<{ $isSmall?: boolean }>`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 1rem;
 	margin-bottom: 2rem;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+	@media (max-width: 768px) {
+		${({ $isSmall }) => $isSmall && "grid-template-columns: repeat(2, 1fr);"}
+	}
 `;
 
 const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
@@ -66,7 +72,6 @@ const ModalOverlay = styled.div<{ $isOpen: boolean }>`
 	justify-content: center;
 	align-items: center;
 	z-index: 1000;
-
 	opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
 	visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
 	pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
@@ -81,7 +86,6 @@ const ModalContent = styled.div<{ $isOpen: boolean }>`
 	max-width: 90%;
 	max-height: 90%;
 	overflow: auto;
-
 	opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
 	transform: translateY(${({ $isOpen }) => ($isOpen ? "0" : "-10px")});
 	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -105,14 +109,42 @@ const InfoContainer = styled.div`
 const CommentBox = styled.div`
 	flex: 1;
 	margin-right: 2rem;
-	font-size: 14px;
+	font-size: 12px;
 	color: #333;
 `;
 
+const Title = styled.h3`
+	font-size: 14px;
+	margin-bottom: 0.5rem;
+`;
+
+const Comment = styled.p`
+	font-size: 12px;
+	color: #333;
+	margin-bottom: 1rem;
+`;
+
 const ExifDataContainer = styled.div`
+	margin-top: 1rem;
 	font-size: 12px;
 	color: #333;
 	max-width: 200px;
+`;
+
+const MobileInfoWrapper = styled.div`
+	margin-top: 1rem;
+	max-height: 40vh;
+	overflow-y: auto;
+	padding: 0 1rem;
+	font-size: 12px;
+	color: #333;
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.3);
+		border-radius: 3px;
+	}
 `;
 
 const Content = styled.div`
@@ -121,70 +153,20 @@ const Content = styled.div`
 	}
 `;
 
-type ExifData = {
-	dateTime?: string;
-	cameraModel?: string;
-	lensModel?: string;
-	aperture?: string;
-	shutterSpeed?: string;
-	iso?: string;
-};
-
-const formatDate = (date: Date | string | undefined): string => {
-	if (!date) return "不明";
-	if (typeof date === "string") return date;
-	if (date instanceof Date) {
-		const jstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-		return jstTime.toISOString().replace("T", " ").split(".")[0];
-	}
-	return "不明";
-};
-
-const formatShutterSpeed = (exposureTime: number | undefined): string => {
-	if (!exposureTime) return "不明";
-	if (exposureTime < 1) {
-		const denominator = Math.round(1 / exposureTime);
-		return `1/${denominator}`;
-	}
-	return `${exposureTime}s`;
-};
-
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
-	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>({});
+	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>(
+		{}
+	);
 	const [isLoading, setIsLoading] = useState(true);
-	const { isLaptop } = useDevice();
+	const { isMobile } = useDevice();
 
 	useEffect(() => {
 		const fetchExifData = async () => {
-			const exifMap: Record<string, ExifData | null> = {};
-			await Promise.all(
-				photos.map(async (photo) => {
-					try {
-						const response = await fetch(photo.highResUrl);
-						const blob = await response.blob();
-						const exif = await exifr.parse(blob);
-
-						exifMap[photo.id] = {
-							dateTime: formatDate(exif?.DateTimeOriginal),
-							cameraModel: exif?.Model || "不明",
-							lensModel: exif?.LensModel || "不明",
-							aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
-							shutterSpeed: exif?.ExposureTime
-								? formatShutterSpeed(exif.ExposureTime)
-								: "不明",
-							iso: exif?.ISO || "不明",
-						};
-					} catch (error) {
-						console.error(`EXIF データ取得失敗: ${photo.id}`, error);
-						exifMap[photo.id] = null;
-					}
-				})
-			);
+			const exifMap = await getExifDataForPhotos(photos);
 			setPhotoData(exifMap);
 			setIsLoading(false);
 		};
-
 		fetchExifData();
 	}, []);
 
@@ -199,10 +181,27 @@ export default function PhotoworksPage() {
 		};
 	}, [selectedPhoto]);
 
+	const transformText = (text: string) => {
+		const lines = text.split("\n");
+		return lines.map((line, lineIndex) => (
+			<React.Fragment key={lineIndex}>
+				{line.split(/(https?:\/\/[^\s]+)/g).map((part, partIndex) =>
+					/(https?:\/\/[^\s]+)/.test(part) ? (
+						<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
+							{part}
+						</a>
+					) : (
+						<span key={partIndex}>{part}</span>
+					)
+				)}
+				{lineIndex !== lines.length - 1 && <br />}
+			</React.Fragment>
+		));
+	};
+
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
 	);
-
 	const recentPhotos = sorted.slice(0, 5);
 	const otherPhotos = sorted.slice(5);
 
@@ -223,28 +222,27 @@ export default function PhotoworksPage() {
 									$isSquare={false}
 									onClick={() => setSelectedPhoto(photo)}
 								>
-									<figcaption>{photo.comment}</figcaption>
+									<figcaption>{photo.title}</figcaption>
 								</PhotoItem>
 							))}
 						</PhotoGrid>
-
 						<SectionTitle>Others_</SectionTitle>
+						{/* $isSmall を true にすることで、モバイルでは2列表示となります */}
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
 								<PhotoItem
 									key={photo.id}
 									url={photo.lowResUrl}
-									$isSquare={true}
+									$isSquare={false}
 									onClick={() => setSelectedPhoto(photo)}
 								>
-									<figcaption>{photo.comment}</figcaption>
+									<figcaption>{photo.title}</figcaption>
 								</PhotoItem>
 							))}
 						</PhotoGrid>
 					</Content>
 				</Container>
 			)}
-
 			<ModalOverlay
 				$isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
@@ -256,23 +254,33 @@ export default function PhotoworksPage() {
 					{selectedPhoto && (
 						<>
 							<FullImage src={selectedPhoto.highResUrl} alt="Selected" />
-							<InfoContainer>
-								{isLaptop && (
-									<CommentBox>
-										<p>{selectedPhoto.comment}</p>
-									</CommentBox>
-								)}
-								<ExifDataContainer>
+							{isMobile ? (
+								<MobileInfoWrapper>
+									<Title>{selectedPhoto.title}</Title>
+									<Comment>{transformText(selectedPhoto.comment)}</Comment>
 									<p>Date: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
 									<p>Camera: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
 									<p>Lens: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
 									<p>Aperture: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
-									<p>
-										SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}
-									</p>
+									<p>SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}</p>
 									<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
-								</ExifDataContainer>
-							</InfoContainer>
+								</MobileInfoWrapper>
+							) : (
+								<InfoContainer>
+									<CommentBox>
+										<Title>{selectedPhoto.title}</Title>
+										<Comment>{transformText(selectedPhoto.comment)}</Comment>
+									</CommentBox>
+									<ExifDataContainer>
+										<p>Date: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
+										<p>Camera: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
+										<p>Lens: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
+										<p>Aperture: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
+										<p>SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}</p>
+										<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
+									</ExifDataContainer>
+								</InfoContainer>
+							)}
 						</>
 					)}
 				</ModalContent>
