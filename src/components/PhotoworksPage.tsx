@@ -140,11 +140,18 @@ const formatDate = (date: Date | string | undefined): string => {
 	return "不明";
 };
 
+const formatShutterSpeed = (exposureTime: number | undefined): string => {
+	if (!exposureTime) return "不明";
+	if (exposureTime < 1) {
+		const denominator = Math.round(1 / exposureTime);
+		return `1/${denominator}`;
+	}
+	return `${exposureTime}s`;
+};
+
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
-	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>(
-		{}
-	);
+	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>({});
 	const [isLoading, setIsLoading] = useState(true);
 	const { isLaptop } = useDevice();
 
@@ -163,7 +170,9 @@ export default function PhotoworksPage() {
 							cameraModel: exif?.Model || "不明",
 							lensModel: exif?.LensModel || "不明",
 							aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
-							shutterSpeed: exif?.ExposureTime ? `${exif.ExposureTime}s` : "不明",
+							shutterSpeed: exif?.ExposureTime
+								? formatShutterSpeed(exif.ExposureTime)
+								: "不明",
 							iso: exif?.ISO || "不明",
 						};
 					} catch (error) {
