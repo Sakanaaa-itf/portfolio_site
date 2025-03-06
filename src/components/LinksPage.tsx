@@ -114,7 +114,7 @@ const LinkName = styled.h3<{ $fontSize: string }>`
 
 const LINKS = [
 	{
-		name: "Iorin.io",
+		name: "iorin.io",
 		url: "https://iorin.io/",
 		customIcon: "",
 		fallbackFavicon: "",
