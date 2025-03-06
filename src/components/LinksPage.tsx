@@ -31,7 +31,6 @@ const ContentWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
-
 	body.menu-open & {
 		filter: blur(5px);
 	}
@@ -93,16 +92,27 @@ const CardContent = styled.div`
 	flex-direction: column;
 	align-items: center;
 	transition: filter 0.3s ease;
-	/* ここで drop-shadow を適用するので、コンテンツの形に沿った影がつく */
 	&:hover {
 		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
 	}
 `;
 
+/* IconWrapper: 円形の白背景 */
+const IconWrapper = styled.div`
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 0.5rem;
+`;
+
 const LinkFavicon = styled.img`
 	width: 64px;
 	height: 64px;
-	margin-bottom: 0.5rem;
+	border-radius: 50%;
 `;
 
 const LinkName = styled.h3<{ $fontSize: string }>`
@@ -126,6 +136,12 @@ const LINKS = [
 			"https://pbs.twimg.com/profile_images/1601292387250499584/09YdhLVp_400x400.jpg",
 		fallbackFavicon:
 			"https://pbs.twimg.com/profile_images/1601292387250499584/09YdhLVp_400x400.jpg",
+	},
+	{
+		name: "itsu.dev",
+		url: "https://itsu.dev/",
+		customIcon: "https://itsu.dev/icon.svg",
+		fallbackFavicon: "",
 	},
 ];
 
@@ -152,9 +168,7 @@ export default function LinksPage() {
 			<ContentWrapper>
 				<BackgroundWrapper $blurAmount={blurAmount} />
 				<LinksSection>
-					<LinksTitle $fontSize={titleFontSize}>
-						相互リンク集
-					</LinksTitle>
+					<LinksTitle $fontSize={titleFontSize}>Links_</LinksTitle>
 					<LinksContainer>
 						{LINKS.map((link, idx) => {
 							const initialSrc =
@@ -170,21 +184,20 @@ export default function LinksPage() {
 								>
 									<LinkCard>
 										<CardContent>
-											<LinkFavicon
-												src={initialSrc}
-												alt={`${link.name} favicon`}
-												onError={(e) => {
-													e.currentTarget.onerror = null;
-													e.currentTarget.src =
-														link.fallbackFavicon &&
-														link.fallbackFavicon.trim() !== ""
-															? link.fallbackFavicon
-															: "/fallback_favicon.png";
-												}}
-											/>
-											<LinkName $fontSize={nameFontSize}>
-												{link.name}
-											</LinkName>
+											<IconWrapper>
+												<LinkFavicon
+													src={initialSrc}
+													alt={`${link.name} favicon`}
+													onError={(e) => {
+														e.currentTarget.onerror = null;
+														e.currentTarget.src =
+															link.fallbackFavicon && link.fallbackFavicon.trim() !== ""
+																? link.fallbackFavicon
+																: "/fallback_favicon.png";
+													}}
+												/>
+											</IconWrapper>
+											<LinkName $fontSize={nameFontSize}>{link.name}</LinkName>
 										</CardContent>
 									</LinkCard>
 								</CardLink>
