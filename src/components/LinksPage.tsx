@@ -143,6 +143,18 @@ const LINKS = [
 		customIcon: "https://itsu.dev/icon.svg",
 		fallbackFavicon: "",
 	},
+	{
+		name: "it4pstudio.com",
+		url: "https://it4pstudio.com/",
+		customIcon: "https://pbs.twimg.com/profile_images/1797530605137416192/zy_0ipa1_400x400.jpg",
+		fallbackFavicon: "",
+	},
+	{
+		name: "uekann.com",
+		url: "https://uekann.com/",
+		customIcon: "",
+		fallbackFavicon: "",
+	}
 ];
 
 export default function LinksPage() {
