@@ -97,12 +97,12 @@ const CardContent = styled.div`
 	}
 `;
 
-/* IconWrapper: 円形の白背景 */
 const IconWrapper = styled.div`
-	width: 70px;
-	height: 70px;
+	width: 64px;
+	height: 64px;
 	border-radius: 50%;
 	background-color: white;
+    border: 1px solid #333333;
 	display: flex;
 	justify-content: center;
 	align-items: center;
