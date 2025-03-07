@@ -233,10 +233,9 @@ export default function PhotoworksPage() {
 								<PhotoItem
 									key={photo.id}
 									url={photo.lowResUrl}
-									$isSquare={false}
+									$isSquare={true}
 									onClick={() => setSelectedPhoto(photo)}
 								>
-									<figcaption>{photo.title}</figcaption>
 								</PhotoItem>
 							))}
 						</PhotoGrid>

@@ -18,6 +18,9 @@ const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	z-index: -1;
 	filter: blur(${(props) => props.$blurAmount}px);
 	transition: filter 0.3s ease-in-out;
+	body.menu-open & {
+		filter: blur(10px);
+	}
 `;
 
 const ContentWrapper = styled.div`
