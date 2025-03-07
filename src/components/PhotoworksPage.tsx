@@ -7,8 +7,7 @@ import { photos, PhotoMeta } from "@/data/photos";
 import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
 import { useDevice } from "@/hooks/useDevice";
-import { getExifDataForPhotos } from "@/utils/photoUtils";
-import type { ExifData } from "@/utils/photoUtils";
+import { getExifDataForPhoto, ExifData } from "@/utils/photoUtils";
 
 const Container = styled.div`
 	max-width: 1200px;
@@ -205,12 +204,31 @@ function PhotoThumbnail({
 	isSquare: boolean;
 	onClick: () => void;
 }) {
-	const lowResSrc = photo.lowResUrl;
+	const [isLowResLoaded, setIsLowResLoaded] = useState(false);
+	const [currentSrc, setCurrentSrc] = useState(photo.lowResUrl);
+
+	const handleLowResLoad = () => {
+		setIsLowResLoaded(true);
+		const highResImg = new Image();
+		highResImg.src = photo.highResUrl;
+		highResImg.onload = () => {
+			setCurrentSrc(photo.highResUrl);
+		};
+	};
 
 	return (
 		<PhotoItemContainer $isSquare={isSquare} onClick={onClick}>
 			<ImageWrapper $isSquare={isSquare}>
-				<StyledImage src={lowResSrc} alt={photo.title} />
+				<StyledImage
+					src={currentSrc}
+					alt={photo.title}
+					onLoad={handleLowResLoad}
+				/>
+				{!isLowResLoaded && (
+					<LoaderOverlay>
+						<AppLoader />
+					</LoaderOverlay>
+				)}
 			</ImageWrapper>
 			{!isSquare && <FigCaption>{photo.title}</FigCaption>}
 		</PhotoItemContainer>
@@ -219,26 +237,38 @@ function PhotoThumbnail({
 
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
-	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>(
-		{}
-	);
+	const [exifData, setExifData] = useState<ExifData | null>(null);
+
 	const [isLoading, setIsLoading] = useState(true);
 	const [modalLoaded, setModalLoaded] = useState(false);
+
+	const [modalSrc, setModalSrc] = useState<string>("");
+
 	const { isMobile } = useDevice();
 
 	useEffect(() => {
-		const fetchExifData = async () => {
-			const exifMap = await getExifDataForPhotos(photos);
-			setPhotoData(exifMap);
+		setTimeout(() => {
 			setIsLoading(false);
-		};
-		fetchExifData();
+		}, 1000);
 	}, []);
 
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
 			setModalLoaded(false);
+			setExifData(null);
+
+			setModalSrc(selectedPhoto.lowResUrl);
+
+			const highResImg = new Image();
+			highResImg.src = selectedPhoto.highResUrl;
+			highResImg.onload = () => {
+				setModalSrc(selectedPhoto.highResUrl);
+			};
+
+			getExifDataForPhoto(selectedPhoto).then((data) => {
+				setExifData(data);
+			});
 		} else {
 			document.body.style.overflow = "auto";
 		}
@@ -260,6 +290,7 @@ export default function PhotoworksPage() {
 			) : (
 				<Container>
 					<HamburgerMenu />
+
 					<Content>
 						<SectionTitle>Recent photos_</SectionTitle>
 						<PhotoGrid>
@@ -272,6 +303,7 @@ export default function PhotoworksPage() {
 								/>
 							))}
 						</PhotoGrid>
+
 						<SectionTitle>Others_</SectionTitle>
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
@@ -286,6 +318,7 @@ export default function PhotoworksPage() {
 					</Content>
 				</Container>
 			)}
+
 			<ModalOverlay
 				$isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
@@ -299,25 +332,28 @@ export default function PhotoworksPage() {
 							<AppLoader />
 						</LoaderOverlay>
 					)}
+
 					{selectedPhoto && (
 						<>
 							<ModalImageWrapper>
 								<FullImage
-									src={selectedPhoto.highResUrl}
+									src={modalSrc}
 									alt="Selected"
 									onLoad={() => setModalLoaded(true)}
 								/>
 							</ModalImageWrapper>
+
 							{isMobile ? (
 								<MobileInfoWrapper>
 									<Title>{selectedPhoto.title}</Title>
 									<Comment>{transformText(selectedPhoto.comment)}</Comment>
-									<p>Date: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
-									<p>Camera: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
-									<p>Lens: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
-									<p>Aperture: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
-									<p>SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}</p>
-									<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
+
+									<p>Date: {exifData?.dateTime || "不明"}</p>
+									<p>Camera: {exifData?.cameraModel || "不明"}</p>
+									<p>Lens: {exifData?.lensModel || "不明"}</p>
+									<p>Aperture: {exifData?.aperture || "不明"}</p>
+									<p>SS: {exifData?.shutterSpeed || "不明"}</p>
+									<p>ISO: {exifData?.iso || "不明"}</p>
 								</MobileInfoWrapper>
 							) : (
 								<InfoContainer>
@@ -326,12 +362,12 @@ export default function PhotoworksPage() {
 										<Comment>{transformText(selectedPhoto.comment)}</Comment>
 									</CommentBox>
 									<ExifDataContainer>
-										<p>Date: {photoData[selectedPhoto.id]?.dateTime || "不明"}</p>
-										<p>Camera: {photoData[selectedPhoto.id]?.cameraModel || "不明"}</p>
-										<p>Lens: {photoData[selectedPhoto.id]?.lensModel || "不明"}</p>
-										<p>Aperture: {photoData[selectedPhoto.id]?.aperture || "不明"}</p>
-										<p>SS: {photoData[selectedPhoto.id]?.shutterSpeed || "不明"}</p>
-										<p>ISO: {photoData[selectedPhoto.id]?.iso || "不明"}</p>
+										<p>Date: {exifData?.dateTime || "不明"}</p>
+										<p>Camera: {exifData?.cameraModel || "不明"}</p>
+										<p>Lens: {exifData?.lensModel || "不明"}</p>
+										<p>Aperture: {exifData?.aperture || "不明"}</p>
+										<p>SS: {exifData?.shutterSpeed || "不明"}</p>
+										<p>ISO: {exifData?.iso || "不明"}</p>
 									</ExifDataContainer>
 								</InfoContainer>
 							)}
