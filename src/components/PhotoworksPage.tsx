@@ -117,6 +117,7 @@ const FullImage = styled.img`
 	max-height: 70vh;
 	display: block;
 	margin: 0 auto;
+	loading: lazy;
 `;
 
 const InfoContainer = styled.div`

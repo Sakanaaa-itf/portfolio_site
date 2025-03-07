@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { GlobalStyle } from "../styles/globalStyles";
-import AppLoader from "@/components/AppLoader";
 import ThemeProvider from "@/components/ThemeProvider";
 import { jetbrainsMono, udevGothic } from "@/styles/fonts";
 
@@ -23,7 +22,6 @@ export default function RootLayout({
 			<body>
 				<ThemeProvider>
 					<GlobalStyle />
-					<AppLoader />
 					{children}
 				</ThemeProvider>
 			</body>

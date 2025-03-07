@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../styles/theme";
 import HamburgerMenu from "./HamburgerMenu";
+import AppLoader from "./AppLoader";
 
 const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	position: fixed;
@@ -18,6 +19,7 @@ const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	z-index: -1;
 	filter: blur(${(props) => props.$blurAmount}px);
 	transition: filter 0.3s ease-in-out;
+
 	body.menu-open & {
 		filter: blur(10px);
 	}
@@ -182,23 +184,46 @@ const Name = styled.h3`
 `;
 
 const Home = () => {
+	// ▼ 追加: スクロール量管理
 	const [scrollAmount, setScrollAmount] = useState(0);
+
+	// ▼ 追加: プロフィール画像の裏表管理
 	const [isFlipped, setIsFlipped] = useState(false);
 
+	// ▼ ローダー制御用ステート
+	const [isLoading, setIsLoading] = useState(true);
+	const [isFadingOut, setIsFadingOut] = useState(false);
+
 	useEffect(() => {
+		// スクロール量監視
 		const handleScroll = () => {
 			setScrollAmount(window.scrollY);
 		};
-
 		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
+
+		// ページ完全読み込み後のフェードアウト処理
+		const handleWindowLoad = () => {
+			setIsFadingOut(true);
+			setTimeout(() => {
+				setIsLoading(false);
+			}, 500); // LoaderWrapper の transition 0.5s に合わせる
+		};
+		window.addEventListener("load", handleWindowLoad);
+
+		// クリーンアップ
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("load", handleWindowLoad);
+		};
 	}, []);
 
+	// 背景のぼかし量 & タイトルの透明度
 	const blurAmount = Math.min(scrollAmount / 50, 10);
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
 	return (
 		<>
+			{isLoading && <AppLoader isFadingOut={isFadingOut} />}
 			<HamburgerMenu />
 			<BackgroundWrapper $blurAmount={blurAmount} />
 			<ContentWrapper id="home">
