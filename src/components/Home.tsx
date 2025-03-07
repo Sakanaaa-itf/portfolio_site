@@ -184,13 +184,13 @@ const Name = styled.h3`
 `;
 
 const Home = () => {
-	// ▼ 追加: スクロール量管理
+	// スクロール量管理
 	const [scrollAmount, setScrollAmount] = useState(0);
 
-	// ▼ 追加: プロフィール画像の裏表管理
+	// プロフィール画像の裏表管理
 	const [isFlipped, setIsFlipped] = useState(false);
 
-	// ▼ ローダー制御用ステート
+	// ローダー制御用ステート
 	const [isLoading, setIsLoading] = useState(true);
 	const [isFadingOut, setIsFadingOut] = useState(false);
 
@@ -201,23 +201,23 @@ const Home = () => {
 		};
 		window.addEventListener("scroll", handleScroll);
 
-		// ページ完全読み込み後のフェードアウト処理
-		const handleWindowLoad = () => {
+		// Next.jsでは window.load イベントが確実に発火しない場合があるため、
+		// setTimeout を利用して一定時間後にローダーを解除
+		const timer = setTimeout(() => {
 			setIsFadingOut(true);
 			setTimeout(() => {
 				setIsLoading(false);
-			}, 500); // LoaderWrapper の transition 0.5s に合わせる
-		};
-		window.addEventListener("load", handleWindowLoad);
+			}, 500); // AppLoader のフェードアウト時間に合わせる
+		}, 1000);
 
 		// クリーンアップ
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("load", handleWindowLoad);
+			clearTimeout(timer);
 		};
 	}, []);
 
-	// 背景のぼかし量 & タイトルの透明度
+	// 背景のぼかし量とタイトルの透明度
 	const blurAmount = Math.min(scrollAmount / 50, 10);
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
