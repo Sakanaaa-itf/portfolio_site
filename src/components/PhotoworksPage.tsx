@@ -33,32 +33,48 @@ const PhotoGrid = styled.div<{ $isSmall?: boolean }>`
 	}
 `;
 
-const PhotoItem = styled.figure<{ url: string; $isSquare: boolean }>`
+const PhotoItemContainer = styled.figure<{ $isSquare: boolean }>`
 	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
 	cursor: pointer;
-	overflow: hidden;
 	position: relative;
+	margin: 0;
+`;
 
-	&::before {
-		content: "";
-		display: block;
-		width: 100%;
-		padding-top: ${({ $isSquare }) => ($isSquare ? "100%" : "70%")};
-		background-image: url(${(p) => p.url});
-		background-size: cover;
-		background-position: center;
-	}
+const ImageWrapper = styled.div<{ $isSquare: boolean }>`
+	width: 100%;
+	position: relative;
+	padding-top: ${({ $isSquare }) => ($isSquare ? "100%" : "70%")};
+	overflow: hidden;
+`;
 
-	figcaption {
-		margin-top: 0.5rem;
-		font-size: 12px;
-		color: #ccc;
-		text-align: center;
-		width: 90%;
-	}
+const StyledImage = styled.img`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+`;
+
+const LoaderOverlay = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.7);
+	z-index: 99;
+`;
+
+const FigCaption = styled.figcaption`
+	margin-top: 0.5rem;
+	font-size: 12px;
+	color: #ccc;
+	text-align: center;
+	width: 90%;
 `;
 
 const ModalOverlay = styled.div<{ $isOpen: boolean }>`
@@ -89,6 +105,11 @@ const ModalContent = styled.div<{ $isOpen: boolean }>`
 	opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
 	transform: translateY(${({ $isOpen }) => ($isOpen ? "0" : "-10px")});
 	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+`;
+
+const ModalImageWrapper = styled.div`
+	position: relative;
+	width: 100%;
 `;
 
 const FullImage = styled.img`
@@ -153,12 +174,55 @@ const Content = styled.div`
 	}
 `;
 
+const transformText = (text: string): React.ReactNode => {
+	const lines = text.split("\n");
+	return lines.map(
+		(line: string, lineIndex: number): React.ReactNode => (
+			<React.Fragment key={lineIndex}>
+				{line.split(/(https?:\/\/[^\s]+)/g).map(
+					(part: string, partIndex: number): React.ReactNode =>
+						/(https?:\/\/[^\s]+)/.test(part) ? (
+							<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
+								{part}
+							</a>
+						) : (
+							<span key={partIndex}>{part}</span>
+						)
+				)}
+				{lineIndex !== lines.length - 1 && <br />}
+			</React.Fragment>
+		)
+	);
+};
+
+function PhotoThumbnail({
+	photo,
+	isSquare,
+	onClick,
+}: {
+	photo: PhotoMeta;
+	isSquare: boolean;
+	onClick: () => void;
+}) {
+	const lowResSrc = photo.lowResUrl;
+
+	return (
+		<PhotoItemContainer $isSquare={isSquare} onClick={onClick}>
+			<ImageWrapper $isSquare={isSquare}>
+				<StyledImage src={lowResSrc} alt={photo.title} />
+			</ImageWrapper>
+			{!isSquare && <FigCaption>{photo.title}</FigCaption>}
+		</PhotoItemContainer>
+	);
+}
+
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
 	const [photoData, setPhotoData] = useState<Record<string, ExifData | null>>(
 		{}
 	);
 	const [isLoading, setIsLoading] = useState(true);
+	const [modalLoaded, setModalLoaded] = useState(false);
 	const { isMobile } = useDevice();
 
 	useEffect(() => {
@@ -173,6 +237,7 @@ export default function PhotoworksPage() {
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
+			setModalLoaded(false);
 		} else {
 			document.body.style.overflow = "auto";
 		}
@@ -180,24 +245,6 @@ export default function PhotoworksPage() {
 			document.body.style.overflow = "auto";
 		};
 	}, [selectedPhoto]);
-
-	const transformText = (text: string) => {
-		const lines = text.split("\n");
-		return lines.map((line, lineIndex) => (
-			<React.Fragment key={lineIndex}>
-				{line.split(/(https?:\/\/[^\s]+)/g).map((part, partIndex) =>
-					/(https?:\/\/[^\s]+)/.test(part) ? (
-						<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
-							{part}
-						</a>
-					) : (
-						<span key={partIndex}>{part}</span>
-					)
-				)}
-				{lineIndex !== lines.length - 1 && <br />}
-			</React.Fragment>
-		));
-	};
 
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
@@ -216,27 +263,23 @@ export default function PhotoworksPage() {
 						<SectionTitle>Recent photos_</SectionTitle>
 						<PhotoGrid>
 							{recentPhotos.map((photo) => (
-								<PhotoItem
+								<PhotoThumbnail
 									key={photo.id}
-									url={photo.lowResUrl}
-									$isSquare={false}
+									photo={photo}
+									isSquare={false}
 									onClick={() => setSelectedPhoto(photo)}
-								>
-									<figcaption>{photo.title}</figcaption>
-								</PhotoItem>
+								/>
 							))}
 						</PhotoGrid>
 						<SectionTitle>Others_</SectionTitle>
-						{/* $isSmall を true にすることで、モバイルでは2列表示となります */}
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
-								<PhotoItem
+								<PhotoThumbnail
 									key={photo.id}
-									url={photo.lowResUrl}
-									$isSquare={true}
+									photo={photo}
+									isSquare={true}
 									onClick={() => setSelectedPhoto(photo)}
-								>
-								</PhotoItem>
+								/>
 							))}
 						</PhotoGrid>
 					</Content>
@@ -250,9 +293,20 @@ export default function PhotoworksPage() {
 					$isOpen={!!selectedPhoto}
 					onClick={(e) => e.stopPropagation()}
 				>
+					{!modalLoaded && (
+						<LoaderOverlay>
+							<AppLoader />
+						</LoaderOverlay>
+					)}
 					{selectedPhoto && (
 						<>
-							<FullImage src={selectedPhoto.highResUrl} alt="Selected" />
+							<ModalImageWrapper>
+								<FullImage
+									src={selectedPhoto.highResUrl}
+									alt="Selected"
+									onLoad={() => setModalLoaded(true)}
+								/>
+							</ModalImageWrapper>
 							{isMobile ? (
 								<MobileInfoWrapper>
 									<Title>{selectedPhoto.title}</Title>

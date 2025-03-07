@@ -9,11 +9,11 @@ const rotateCircle = keyframes`
 `;
 
 const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -29,16 +29,6 @@ const CircleContainer = styled.svg`
 	animation: ${rotateCircle} 3s linear infinite;
 	opacity: 0;
 	transition: opacity 0.2s ease-in-out;
-`;
-
-const BackgroundImage = styled.img`
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	object-fit: cover;
-	visibility: hidden;
 `;
 
 const AppLoader = () => {
@@ -93,7 +83,6 @@ const AppLoader = () => {
 					</CircleContainer>
 				</LoaderWrapper>
 			)}
-			<BackgroundImage src="/DSCF0546.webp" alt="background" />
 		</>
 	);
 };

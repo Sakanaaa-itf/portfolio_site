@@ -29,7 +29,9 @@ export const formatShutterSpeed = (exposureTime: number | undefined): string => 
 	return `${exposureTime}s`;
 };
 
-export const getExifDataForPhotos = async (photos: PhotoMeta[]): Promise<Record<string, ExifData | null>> => {
+export const getExifDataForPhotos = async (
+	photos: PhotoMeta[]
+): Promise<Record<string, ExifData | null>> => {
 	const exifMap: Record<string, ExifData | null> = {};
 	await Promise.all(
 		photos.map(async (photo) => {
