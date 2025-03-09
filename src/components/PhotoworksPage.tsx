@@ -238,13 +238,10 @@ function PhotoThumbnail({
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
 	const [exifData, setExifData] = useState<ExifData | null>(null);
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [modalLoaded, setModalLoaded] = useState(false);
-
-	const [modalSrc, setModalSrc] = useState<string>("");
-
 	const { isMobile } = useDevice();
+	const [modalSrc, setModalSrc] = useState<string | null>(null);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -262,13 +259,9 @@ export default function PhotoworksPage() {
 
 			const highResImg = new Image();
 			highResImg.src = selectedPhoto.highResUrl;
-			highResImg.onload = () => {
-				setModalSrc(selectedPhoto.highResUrl);
-			};
+			highResImg.onload = () => setModalSrc(selectedPhoto.highResUrl);
 
-			getExifDataForPhoto(selectedPhoto).then((data) => {
-				setExifData(data);
-			});
+			getExifDataForPhoto(selectedPhoto).then((data) => setExifData(data));
 		} else {
 			document.body.style.overflow = "auto";
 		}
@@ -290,7 +283,6 @@ export default function PhotoworksPage() {
 			) : (
 				<Container>
 					<HamburgerMenu />
-
 					<Content>
 						<SectionTitle>Recent photos_</SectionTitle>
 						<PhotoGrid>
@@ -303,7 +295,6 @@ export default function PhotoworksPage() {
 								/>
 							))}
 						</PhotoGrid>
-
 						<SectionTitle>Others_</SectionTitle>
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
@@ -318,7 +309,6 @@ export default function PhotoworksPage() {
 					</Content>
 				</Container>
 			)}
-
 			<ModalOverlay
 				$isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
@@ -332,8 +322,7 @@ export default function PhotoworksPage() {
 							<AppLoader />
 						</LoaderOverlay>
 					)}
-
-					{selectedPhoto && (
+					{selectedPhoto && modalSrc && (
 						<>
 							<ModalImageWrapper>
 								<FullImage
@@ -342,12 +331,10 @@ export default function PhotoworksPage() {
 									onLoad={() => setModalLoaded(true)}
 								/>
 							</ModalImageWrapper>
-
 							{isMobile ? (
 								<MobileInfoWrapper>
 									<Title>{selectedPhoto.title}</Title>
 									<Comment>{transformText(selectedPhoto.comment)}</Comment>
-
 									<p>Date: {exifData?.dateTime || "不明"}</p>
 									<p>Camera: {exifData?.cameraModel || "不明"}</p>
 									<p>Lens: {exifData?.lensModel || "不明"}</p>

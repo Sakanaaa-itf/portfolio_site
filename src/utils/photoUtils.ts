@@ -29,21 +29,48 @@ export const formatShutterSpeed = (exposureTime: number | undefined): string => 
 	return `${exposureTime}s`;
 };
 
-export const getExifDataForPhoto = async (photo: PhotoMeta): Promise<ExifData | null> => {
+export const getExifDataForPhoto = async (
+	photo: PhotoMeta
+): Promise<ExifData | null> => {
 	try {
-		const response = await fetch(photo.highResUrl);
+		// キャッシュ無効化のために { cache: "no-store" } を指定
+		const response = await fetch(photo.lowResUrl, { cache: "no-store" });
 		const blob = await response.blob();
 		const exif = await exifr.parse(blob);
+
+		if (!exif) {
+			throw new Error("lowResUrl でEXIFデータが取得できませんでした");
+		}
 		return {
 			dateTime: formatDate(exif?.DateTimeOriginal),
 			cameraModel: exif?.Model || "不明",
 			lensModel: exif?.LensModel || "不明",
 			aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
-			shutterSpeed: exif?.ExposureTime ? formatShutterSpeed(exif.ExposureTime) : "不明",
+			shutterSpeed: exif?.ExposureTime
+				? formatShutterSpeed(exif.ExposureTime)
+				: "不明",
 			iso: exif?.ISO || "不明",
 		};
-	} catch (error) {
-		console.error(`EXIF データ取得失敗: ${photo.id}`, error);
-		return null;
+	} catch (errorLow) {
+		console.error(`EXIF 取得失敗 (lowRes): ${photo.id}`, errorLow);
+		try {
+			// highResUrl でもキャッシュを使わないように指定
+			const response = await fetch(photo.highResUrl, { cache: "no-store" });
+			const blob = await response.blob();
+			const exif = await exifr.parse(blob);
+			return {
+				dateTime: formatDate(exif?.DateTimeOriginal),
+				cameraModel: exif?.Model || "不明",
+				lensModel: exif?.LensModel || "不明",
+				aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
+				shutterSpeed: exif?.ExposureTime
+					? formatShutterSpeed(exif.ExposureTime)
+					: "不明",
+				iso: exif?.ISO || "不明",
+			};
+		} catch (errorHigh) {
+			console.error(`EXIF 取得失敗 (highRes): ${photo.id}`, errorHigh);
+			return null;
+		}
 	}
 };
