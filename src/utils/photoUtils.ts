@@ -11,17 +11,19 @@ export type ExifData = {
 };
 
 export const formatDate = (date: Date | string | undefined): string => {
-	if (!date) return "不明";
+	if (!date) return "-";
 	if (typeof date === "string") return date;
 	if (date instanceof Date) {
 		const jstTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 		return jstTime.toISOString().replace("T", " ").split(".")[0];
 	}
-	return "不明";
+	return "-";
 };
 
-export const formatShutterSpeed = (exposureTime: number | undefined): string => {
-	if (!exposureTime) return "不明";
+export const formatShutterSpeed = (
+	exposureTime: number | undefined
+): string => {
+	if (!exposureTime) return "-";
 	if (exposureTime < 1) {
 		const denominator = Math.round(1 / exposureTime);
 		return `1/${denominator}`;
@@ -43,13 +45,13 @@ export const getExifDataForPhoto = async (
 		}
 		return {
 			dateTime: formatDate(exif?.DateTimeOriginal),
-			cameraModel: exif?.Model || "不明",
-			lensModel: exif?.LensModel || "不明",
-			aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
+			cameraModel: exif?.Model || "-",
+			lensModel: exif?.LensModel || "-",
+			aperture: exif?.FNumber ? `F${exif.FNumber}` : "-",
 			shutterSpeed: exif?.ExposureTime
 				? formatShutterSpeed(exif.ExposureTime)
-				: "不明",
-			iso: exif?.ISO || "不明",
+				: "-",
+			iso: exif?.ISO || "-",
 		};
 	} catch (errorLow) {
 		console.error(`EXIF 取得失敗 (lowRes): ${photo.id}`, errorLow);
@@ -60,13 +62,13 @@ export const getExifDataForPhoto = async (
 			const exif = await exifr.parse(blob);
 			return {
 				dateTime: formatDate(exif?.DateTimeOriginal),
-				cameraModel: exif?.Model || "不明",
-				lensModel: exif?.LensModel || "不明",
-				aperture: exif?.FNumber ? `F${exif.FNumber}` : "不明",
+				cameraModel: exif?.Model || "-",
+				lensModel: exif?.LensModel || "-",
+				aperture: exif?.FNumber ? `F${exif.FNumber}` : "-",
 				shutterSpeed: exif?.ExposureTime
 					? formatShutterSpeed(exif.ExposureTime)
-					: "不明",
-				iso: exif?.ISO || "不明",
+					: "-",
+				iso: exif?.ISO || "-",
 			};
 		} catch (errorHigh) {
 			console.error(`EXIF 取得失敗 (highRes): ${photo.id}`, errorHigh);

@@ -219,11 +219,7 @@ function PhotoThumbnail({
 	return (
 		<PhotoItemContainer $isSquare={isSquare} onClick={onClick}>
 			<ImageWrapper $isSquare={isSquare}>
-				<StyledImage
-					src={currentSrc}
-					alt={photo.title}
-					onLoad={handleLowResLoad}
-				/>
+				<StyledImage src={currentSrc} alt={photo.title} onLoad={handleLowResLoad} />
 				{!isLowResLoaded && (
 					<LoaderOverlay>
 						<AppLoader />
@@ -335,12 +331,12 @@ export default function PhotoworksPage() {
 								<MobileInfoWrapper>
 									<Title>{selectedPhoto.title}</Title>
 									<Comment>{transformText(selectedPhoto.comment)}</Comment>
-									<p>Date: {exifData?.dateTime || "不明"}</p>
-									<p>Camera: {exifData?.cameraModel || "不明"}</p>
-									<p>Lens: {exifData?.lensModel || "不明"}</p>
-									<p>Aperture: {exifData?.aperture || "不明"}</p>
-									<p>SS: {exifData?.shutterSpeed || "不明"}</p>
-									<p>ISO: {exifData?.iso || "不明"}</p>
+									<p>Date: {exifData?.dateTime || "-"}</p>
+									<p>Camera: {exifData?.cameraModel || "-"}</p>
+									<p>Lens: {exifData?.lensModel || "-"}</p>
+									<p>Aperture: {exifData?.aperture || "-"}</p>
+									<p>SS: {exifData?.shutterSpeed || "-"}</p>
+									<p>ISO: {exifData?.iso || "-"}</p>
 								</MobileInfoWrapper>
 							) : (
 								<InfoContainer>
@@ -349,12 +345,12 @@ export default function PhotoworksPage() {
 										<Comment>{transformText(selectedPhoto.comment)}</Comment>
 									</CommentBox>
 									<ExifDataContainer>
-										<p>Date: {exifData?.dateTime || "不明"}</p>
-										<p>Camera: {exifData?.cameraModel || "不明"}</p>
-										<p>Lens: {exifData?.lensModel || "不明"}</p>
-										<p>Aperture: {exifData?.aperture || "不明"}</p>
-										<p>SS: {exifData?.shutterSpeed || "不明"}</p>
-										<p>ISO: {exifData?.iso || "不明"}</p>
+										<p>Date: {exifData?.dateTime || "-"}</p>
+										<p>Camera: {exifData?.cameraModel || "-"}</p>
+										<p>Lens: {exifData?.lensModel || "-"}</p>
+										<p>Aperture: {exifData?.aperture || "-"}</p>
+										<p>SS: {exifData?.shutterSpeed || "-"}</p>
+										<p>ISO: {exifData?.iso || "-"}</p>
 									</ExifDataContainer>
 								</InfoContainer>
 							)}
