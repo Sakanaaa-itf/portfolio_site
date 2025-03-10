@@ -184,40 +184,32 @@ const Name = styled.h3`
 `;
 
 const Home = () => {
-	// スクロール量管理
 	const [scrollAmount, setScrollAmount] = useState(0);
 
-	// プロフィール画像の裏表管理
 	const [isFlipped, setIsFlipped] = useState(false);
 
-	// ローダー制御用ステート
 	const [isLoading, setIsLoading] = useState(true);
 	const [isFadingOut, setIsFadingOut] = useState(false);
 
 	useEffect(() => {
-		// スクロール量監視
 		const handleScroll = () => {
 			setScrollAmount(window.scrollY);
 		};
 		window.addEventListener("scroll", handleScroll);
 
-		// Next.jsでは window.load イベントが確実に発火しない場合があるため、
-		// setTimeout を利用して一定時間後にローダーを解除
 		const timer = setTimeout(() => {
 			setIsFadingOut(true);
 			setTimeout(() => {
 				setIsLoading(false);
-			}, 500); // AppLoader のフェードアウト時間に合わせる
+			}, 500);
 		}, 1000);
 
-		// クリーンアップ
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 			clearTimeout(timer);
 		};
 	}, []);
 
-	// 背景のぼかし量とタイトルの透明度
 	const blurAmount = Math.min(scrollAmount / 50, 10);
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
