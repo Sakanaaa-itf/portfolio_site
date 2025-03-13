@@ -311,7 +311,6 @@ export default function PhotoworksPage() {
 			>
 				<ModalContent
 					$isOpen={!!selectedPhoto}
-					onClick={(e) => e.stopPropagation()}
 				>
 					{!modalLoaded && (
 						<LoaderOverlay>
