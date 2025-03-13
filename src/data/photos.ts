@@ -138,7 +138,7 @@ export const photos: PhotoMeta[] = [
 		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF2790_low.webp",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF2790.webp",
 		title: "鉄塔と星",
-		comment: "星空の下、鉄塔を撮影。長秒露光して星だけを動かした。",
+		comment: "星空の下、鉄塔を撮影。長秒露光して星だけを動かした。車のハザードを焚きながら待っていたら、故障車だと思われて警察に声をかけられてしまった。",
 		uploadedAt: "2023-10-22"
 	},
 	{
