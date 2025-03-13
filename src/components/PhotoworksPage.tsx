@@ -337,6 +337,7 @@ export default function PhotoworksPage() {
 									<p>Aperture: {exifData?.aperture || "-"}</p>
 									<p>SS: {exifData?.shutterSpeed || "-"}</p>
 									<p>ISO: {exifData?.iso || "-"}</p>
+									<p>Focal Length: {exifData?.focalLength || "-"}</p>
 								</MobileInfoWrapper>
 							) : (
 								<InfoContainer>
@@ -351,6 +352,7 @@ export default function PhotoworksPage() {
 										<p>Aperture: {exifData?.aperture || "-"}</p>
 										<p>SS: {exifData?.shutterSpeed || "-"}</p>
 										<p>ISO: {exifData?.iso || "-"}</p>
+										<p>Focal Length: {exifData?.focalLength || "-"}</p>
 									</ExifDataContainer>
 								</InfoContainer>
 							)}

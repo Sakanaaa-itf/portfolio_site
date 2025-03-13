@@ -8,6 +8,7 @@ export type ExifData = {
 	aperture?: string;
 	shutterSpeed?: string;
 	iso?: string;
+	focalLength?: string;
 };
 
 export const formatDate = (date: Date | string | undefined): string => {
@@ -43,6 +44,7 @@ export const getExifDataForPhoto = async (
 		if (!exif) {
 			throw new Error("lowResUrl でEXIFデータが取得できませんでした");
 		}
+
 		return {
 			dateTime: formatDate(exif?.DateTimeOriginal),
 			cameraModel: exif?.Model || "-",
@@ -52,6 +54,7 @@ export const getExifDataForPhoto = async (
 				? formatShutterSpeed(exif.ExposureTime)
 				: "-",
 			iso: exif?.ISO || "-",
+			focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-", // 焦点距離を追加
 		};
 	} catch (errorLow) {
 		console.error(`EXIF 取得失敗 (lowRes): ${photo.id}`, errorLow);
@@ -60,6 +63,7 @@ export const getExifDataForPhoto = async (
 			const response = await fetch(photo.highResUrl, { cache: "no-store" });
 			const blob = await response.blob();
 			const exif = await exifr.parse(blob);
+
 			return {
 				dateTime: formatDate(exif?.DateTimeOriginal),
 				cameraModel: exif?.Model || "-",
@@ -69,6 +73,7 @@ export const getExifDataForPhoto = async (
 					? formatShutterSpeed(exif.ExposureTime)
 					: "-",
 				iso: exif?.ISO || "-",
+				focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-", // 焦点距離を追加
 			};
 		} catch (errorHigh) {
 			console.error(`EXIF 取得失敗 (highRes): ${photo.id}`, errorHigh);
