@@ -162,7 +162,7 @@ export const photos: PhotoMeta[] = [
 		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF9639_low.webp",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF9639.webp",
 		title: "now on stage",
-		comment: "成人式のため帰省した時の、初のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
+		comment: "成人式のため帰省した時のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
 		uploadedAt: "2024-01-05"
 	}
 ];
