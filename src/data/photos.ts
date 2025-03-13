@@ -122,7 +122,7 @@ export const photos: PhotoMeta[] = [
 		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0773%201_low.webp",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0773%201.webp",
 		title: "里の曙",
-		comment: "帰省した時に飲んだ、黒糖焼酎。",
+		comment: "帰省した時に飲んだ、黒糖焼酎。全然別の銘柄のグラスに注がれていますね。",
 		uploadedAt: "2023-09-08"
 	},
 	{
