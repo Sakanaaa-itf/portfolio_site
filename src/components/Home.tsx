@@ -5,26 +5,11 @@ import styled from "styled-components";
 import theme from "../styles/theme";
 import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
+import BackgroundSlideshow from "./BackgroundSlideshow";
 
-const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	background-image: url("/DSCF0546.webp");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	z-index: -1;
-	filter: blur(${(props) => props.$blurAmount}px);
-	transition: filter 0.3s ease-in-out;
-
-	body.menu-open & {
-		filter: blur(10px);
-	}
-`;
-
+/* ----------------------------------
+ * もともとの styled-components
+ * ---------------------------------- */
 const ContentWrapper = styled.div`
 	position: relative;
 	width: 100%;
@@ -59,6 +44,9 @@ const Title = styled.h1`
 	font-weight: 700;
 	padding: 1rem;
 	white-space: nowrap;
+	text-shadow: 
+		2px 2px 4px rgba(0, 0, 0, 0.8), /* 黒い影 */
+		-2px -2px 4px rgba(255, 255, 255, 0.8); /* 白い影 */
 
 	@media (max-width: ${theme.breakpoints.tablet}) {
 		font-size: 48px;
@@ -183,20 +171,25 @@ const Name = styled.h3`
 	font-weight: 700;
 `;
 
-const Home = () => {
+/* ----------------------------------
+ * Home コンポーネント本体
+ * ---------------------------------- */
+export default function Home() {
 	const [scrollAmount, setScrollAmount] = useState(0);
-
 	const [isFlipped, setIsFlipped] = useState(false);
 
+	// ローディング表示関連
 	const [isLoading, setIsLoading] = useState(true);
 	const [isFadingOut, setIsFadingOut] = useState(false);
 
 	useEffect(() => {
+		// スクロール量を監視
 		const handleScroll = () => {
 			setScrollAmount(window.scrollY);
 		};
 		window.addEventListener("scroll", handleScroll);
 
+		// ローディング解除タイマー
 		const timer = setTimeout(() => {
 			setIsFadingOut(true);
 			setTimeout(() => {
@@ -210,19 +203,28 @@ const Home = () => {
 		};
 	}, []);
 
+	// スクロール量に応じた背景ぼかし量
 	const blurAmount = Math.min(scrollAmount / 50, 10);
+	// スクロール量に応じてタイトルを薄く
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
 	return (
 		<>
 			{isLoading && <AppLoader isFadingOut={isFadingOut} />}
+
+			{/* ハンバーガーメニュー */}
 			<HamburgerMenu />
-			<BackgroundWrapper $blurAmount={blurAmount} />
+
+			{/* 背景スライドショー（別ファイルに切り出した） */}
+			<BackgroundSlideshow blurAmount={blurAmount} />
+
+			{/* メインコンテンツ */}
 			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>
 					<Title>Site_</Title>
 				</TitleWrapper>
+
 				<AboutMeWrapper id="about">
 					<ProfileWrapper>
 						<AboutMeTitle>About Me</AboutMeTitle>
@@ -246,6 +248,7 @@ const Home = () => {
 						<Name>岡 海摩</Name>
 						<Name>Kaima Oka</Name>
 					</ProfileWrapper>
+
 					<AboutMeText>
 						ふわふわ.みんなへようこそ！
 						<br />
@@ -257,6 +260,4 @@ const Home = () => {
 			</ContentWrapper>
 		</>
 	);
-};
-
-export default Home;
+}
