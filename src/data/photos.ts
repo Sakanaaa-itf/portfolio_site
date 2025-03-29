@@ -164,5 +164,13 @@ export const photos: PhotoMeta[] = [
 		title: "now on stage",
 		comment: "成人式のため帰省した時のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
 		uploadedAt: "2024-01-05"
+	},
+	{
+		id: "photo19",
+		lowResUrl: "https://pbs.twimg.com/media/Gmzg-ceb0AAYCza?format=jpg&name=large",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF5447NR_low.webp",
+		title: "もし明日が来ないとしたら",
+		comment: "UNIDOL 2024-25 Winter 決勝戦にて。\n Xにて演者様に掲載していただけました。 \n https://t.co/wZdm482G13",
+		uploadedAt: "2025-02-26"
 	}
 ];

@@ -176,23 +176,20 @@ const Content = styled.div`
 
 const transformText = (text: string): React.ReactNode => {
 	const lines = text.split("\n");
-	return lines.map(
-		(line: string, lineIndex: number): React.ReactNode => (
-			<React.Fragment key={lineIndex}>
-				{line.split(/(https?:\/\/[^\s]+)/g).map(
-					(part: string, partIndex: number): React.ReactNode =>
-						/(https?:\/\/[^\s]+)/.test(part) ? (
-							<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
-								{part}
-							</a>
-						) : (
-							<span key={partIndex}>{part}</span>
-						)
-				)}
-				{lineIndex !== lines.length - 1 && <br />}
-			</React.Fragment>
-		)
-	);
+	return lines.map((line: string, lineIndex: number): React.ReactNode => (
+		<React.Fragment key={lineIndex}>
+			{line.split(/(https?:\/\/[^\s]+)/g).map((part: string, partIndex: number): React.ReactNode =>
+				/(https?:\/\/[^\s]+)/.test(part) ? (
+					<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
+						{part}
+					</a>
+				) : (
+					<span key={partIndex}>{part}</span>
+				)
+			)}
+			{lineIndex !== lines.length - 1 && <br />}
+		</React.Fragment>
+	));
 };
 
 function PhotoThumbnail({
@@ -205,6 +202,7 @@ function PhotoThumbnail({
 	onClick: () => void;
 }) {
 	const [isLowResLoaded, setIsLowResLoaded] = useState(false);
+	const [lowResError, setLowResError] = useState(false);
 	const [currentSrc, setCurrentSrc] = useState(photo.lowResUrl);
 
 	const handleLowResLoad = () => {
@@ -216,10 +214,23 @@ function PhotoThumbnail({
 		};
 	};
 
+	const handleLowResError = () => {
+		setLowResError(true);
+	};
+
+	if (lowResError) {
+		return null;
+	}
+
 	return (
 		<PhotoItemContainer $isSquare={isSquare} onClick={onClick}>
 			<ImageWrapper $isSquare={isSquare}>
-				<StyledImage src={currentSrc} alt={photo.title} onLoad={handleLowResLoad} />
+				<StyledImage
+					src={currentSrc}
+					alt={photo.title}
+					onLoad={handleLowResLoad}
+					onError={handleLowResError}
+				/>
 				{!isLowResLoaded && (
 					<LoaderOverlay>
 						<AppLoader />
@@ -252,7 +263,6 @@ export default function PhotoworksPage() {
 			setExifData(null);
 
 			setModalSrc(selectedPhoto.lowResUrl);
-
 			const highResImg = new Image();
 			highResImg.src = selectedPhoto.highResUrl;
 			highResImg.onload = () => setModalSrc(selectedPhoto.highResUrl);
