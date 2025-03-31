@@ -3,6 +3,13 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { photos } from "@/data/photos";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import styled from "styled-components";
+
+const Container = styled.div`
+	body.menu-open & {
+	filter: blur(5px);
+	}
+`;
 
 // 1. 静的パス生成（SSG）
 export async function generateStaticParams() {
@@ -65,16 +72,18 @@ export default async function PhotoDetailPage({
 	}
 
 	return (
-		<main style={{ padding: "1rem" }}>
+		<main style={{ padding: "1rem", display: "grid", justifyContent: "center" }}>
 			<HamburgerMenu />
-			<h1>{photo.title}</h1>
-			<Image
-				src={photo.lowResUrl}
-				alt={photo.title}
-				width={800}
-				height={600}
-				style={{ maxWidth: "100%", height: "auto", justifyContent: "center" }}
-			/>
+			<Container>
+				<h1 style={{ padding: "1rem", fontSize: "24px" }}>{photo.title}</h1>
+				<Image
+					src={photo.lowResUrl}
+					alt={photo.title}
+					width={800}
+					height={600}
+					style={{ maxWidth: "100%", height: "auto" }}
+				/>
+			</Container>
 		</main>
 	);
 }
