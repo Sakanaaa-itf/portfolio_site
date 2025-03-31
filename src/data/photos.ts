@@ -143,7 +143,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo16",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF8063_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF8063_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF8063.webp",
 		title: "海と友人と",
 		comment: "カメラを買って初めて人物を主題に撮影した写真。誘ってくれた友人とモデルになってくれた友人に感謝。",
