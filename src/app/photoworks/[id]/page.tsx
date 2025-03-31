@@ -4,19 +4,13 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { photos } from "@/data/photos";
 
-type PhotoDetailPageProps = {
-	params: { id: string }; // [id] から取得されるパラメータ
-};
-
-// 静的パラメータ生成 (ビルド時に全写真のページを作る)
+// 1) 静的パラメータを生成
 export async function generateStaticParams() {
-	return photos.map((photo) => ({
-		id: photo.id,
-	}));
+	return photos.map((photo) => ({ id: photo.id }));
 }
 
-// 動的メタデータ生成 (OGP/Twitter Card 用)
-export async function generateMetadata({ params }: PhotoDetailPageProps) {
+// 2) 動的メタデータ (OGP/Twitter Card)
+export async function generateMetadata({ params }: { params: { id: string } }) {
 	const photo = photos.find((p) => p.id === params.id);
 	if (!photo) {
 		return {};
@@ -33,7 +27,6 @@ export async function generateMetadata({ params }: PhotoDetailPageProps) {
 			description,
 			images: [photo.highResUrl],
 			type: "article",
-			// url: `https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`, // 必要なら指定
 		},
 		twitter: {
 			card: "summary_large_image",
@@ -44,8 +37,12 @@ export async function generateMetadata({ params }: PhotoDetailPageProps) {
 	};
 }
 
-// 実際のページコンポーネント
-export default function PhotoDetailPage({ params }: PhotoDetailPageProps) {
+// 3) ページコンポーネント
+export default function PhotoDetailPage({
+	params,
+}: {
+	params: { id: string };
+}) {
 	const photo = photos.find((p) => p.id === params.id);
 	if (!photo) {
 		notFound();
