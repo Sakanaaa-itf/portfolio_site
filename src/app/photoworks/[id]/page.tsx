@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { photos } from "@/data/photos";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 // 1. 静的パス生成（SSG）
 export async function generateStaticParams() {
@@ -34,13 +35,13 @@ export async function generateMetadata({
 			url: "/photoworks/",
 			title: photo.title,
 			description: photo.comment,
-			images: [photo.highResUrl],
+			images: [photo.lowResUrl],
 		},
 		twitter: {
 			card: "summary_large_image",
 			title: photo.title,
 			description: photo.comment,
-			images: [photo.highResUrl],
+			images: [photo.lowResUrl],
 		},
 	};
 }
@@ -65,14 +66,14 @@ export default async function PhotoDetailPage({
 
 	return (
 		<main style={{ padding: "1rem" }}>
+			<HamburgerMenu />
 			<h1>{photo.title}</h1>
-			<p>{photo.comment}</p>
 			<Image
-				src={photo.highResUrl}
+				src={photo.lowResUrl}
 				alt={photo.title}
 				width={800}
 				height={600}
-				style={{ maxWidth: "100%", height: "auto" }}
+				style={{ maxWidth: "100%", height: "auto", justifyContent: "center" }}
 			/>
 		</main>
 	);
