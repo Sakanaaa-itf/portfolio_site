@@ -65,7 +65,7 @@ export default async function PhotoDetailPage({
 			<h1>{photo.title}</h1>
 			<p>{photo.comment}</p>
 			<Image
-				src={photo.highResUrl}
+				src={photo.lowResUrl}
 				alt={photo.title}
 				width={800}
 				height={600}
