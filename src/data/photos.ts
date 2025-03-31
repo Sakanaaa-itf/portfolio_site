@@ -191,8 +191,8 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo22",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.jpg",
-		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_6408.jpg",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/IMG_6408.webp",
 		title: "お見送り",
 		comment: "高校卒業後、島を出ていく友人のお見送り。",
 		uploadedAt: "2022-03-06"
