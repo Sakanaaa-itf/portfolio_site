@@ -8,9 +8,6 @@ const nextConfig: NextConfig = {
 	compiler: {
 		styledComponents: true,
 	},
-	experimental: {
-		typedRoutes: false,
-	},
 	trailingSlash: true,
 	distDir: "out",
 };
