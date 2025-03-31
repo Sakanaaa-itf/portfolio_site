@@ -11,7 +11,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo1",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0546_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0546_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0546.webp",
 		title: "着陸前",
 		comment:
@@ -21,7 +21,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo2",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0276_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0276_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0276.webp",
 		title: "夏のはじまる前、散歩中に。",
 		comment: "緑のトンネル。真ん中に被写体をおきたかった…",
@@ -30,7 +30,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo3",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF7826_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF7826_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF7826.webp",
 		title: "Dodge Charenger R/T 440 six pack",
 		comment: "友人の車。アメ車の中では一番好き。",
@@ -39,7 +39,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo4",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF7152_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF7152_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF7152.webp",
 		title: "やどかり祭にて",
 		comment: "逆光ってえっちですよね。",
@@ -48,7 +48,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo5",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0845_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0845_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0845.webp",
 		title: "夏の終わりに。",
 		comment: "地元の海沿いに生えている、アダンという木。",
@@ -57,7 +57,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo6",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/E9F54951-2A8F-4D1C-801D-090C3957E512-5334-00000216DF3D70C3_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/E9F54951-2A8F-4D1C-801D-090C3957E512-5334-00000216DF3D70C3_low.jpg",
 		highResUrl:
 			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/E9F54951-2A8F-4D1C-801D-090C3957E512-5334-00000216DF3D70C3.webp",
 		title: "名瀬港",
@@ -86,7 +86,7 @@ export const photos: PhotoMeta[] = [
 	{
 		id: "photo9",
 		lowResUrl:
-			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/D081D1C8-C1BD-4F72-8504-0D498A495537-19829-000004ACF9D55EE1_low.webp",
+			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/D081D1C8-C1BD-4F72-8504-0D498A495537-19829-000004ACF9D55EE1_low.jpg",
 		highResUrl:
 			"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/D081D1C8-C1BD-4F72-8504-0D498A495537-19829-000004ACF9D55EE1.webp",
 		title: "実験中",
@@ -95,7 +95,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo10",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C.webp",
 		title: "涸沼",
 		comment: "大洗に行く途中にある涸沼駅にて。気動車が走っていて感動。フォントがいいなーなんて思っていたんですけど、名前はわかりません。",
@@ -103,7 +103,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo11",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0016_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0016_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0016.webp",
 		title: "花火1",
 		comment: "よくわからない河川敷にて。写っている手の人には長らく会っていません。元気なんすかね。",
@@ -111,7 +111,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo12",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0275_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0275_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0275.webp",
 		title: "平面",
 		comment: "自分はあまり撮影しない平面の写真。緑のトンネルをとった直後にこれを見つけて、撮影しました。",
@@ -119,7 +119,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo13",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0773%201_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0773%201_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0773%201.webp",
 		title: "里の曙",
 		comment: "帰省した時に飲んだ、黒糖焼酎。全然別の銘柄のグラスに注がれていますね。",
@@ -127,7 +127,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo14",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0813_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF0813_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF0813.webp",
 		title: "花火2",
 		comment: "地元では有名な場所である、通称三角浜にて。",
@@ -135,7 +135,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo15",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF2790_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF2790_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF2790.webp",
 		title: "鉄塔と星",
 		comment: "星空の下、鉄塔を撮影。長秒露光して星だけを動かした。車のハザードを焚きながら待っていたら、故障車だと思われて警察に声をかけられてしまった。",
@@ -151,7 +151,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo17",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF8674_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF8674_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF8674.webp",
 		title: "流しマカロニ",
 		comment: "筑波大学内にある石の広場にて、友人が企画してくれた流しそうめん。流すものがなくなって、自分が到着したころには流しマカロニになっていました。",
@@ -159,7 +159,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo18",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF9639_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/DSCF9639_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/DSCF9639.webp",
 		title: "now on stage",
 		comment: "成人式のため帰省した時のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
@@ -175,7 +175,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo20",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR.webp",
 		title: "呪って呪って",
 		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
@@ -183,7 +183,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo21",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR_low.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR.webp",
 		title: "WE ARE THE GRATEST NINE9'",
 		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n卒業代の先輩方を撮影させていただきました。",
@@ -191,7 +191,7 @@ export const photos: PhotoMeta[] = [
 	},
 	{
 		id: "photo22",
-		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.webp",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.webp",
 		title: "お見送り",
 		comment: "高校卒業後、島を出ていく友人のお見送り。",
