@@ -9,6 +9,8 @@ import AppLoader from "./AppLoader";
 import { useDevice } from "@/hooks/useDevice";
 import { getExifDataForPhoto, ExifData } from "@/utils/photoUtils";
 
+// ▼ レイアウト系Styled Components --------------------------------
+
 const Container = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
@@ -159,6 +161,7 @@ const MobileInfoWrapper = styled.div`
 	padding: 0 1rem;
 	font-size: 12px;
 	color: #333;
+
 	&::-webkit-scrollbar {
 		width: 6px;
 	}
@@ -174,24 +177,73 @@ const Content = styled.div`
 	}
 `;
 
-const transformText = (text: string): React.ReactNode => {
-	const lines = text.split("\n");
-	return lines.map((line: string, lineIndex: number): React.ReactNode => (
-		<React.Fragment key={lineIndex}>
-			{line.split(/(https?:\/\/[^\s]+)/g).map((part: string, partIndex: number): React.ReactNode =>
-				/(https?:\/\/[^\s]+)/.test(part) ? (
-					<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
-						{part}
-					</a>
-				) : (
-					<span key={partIndex}>{part}</span>
-				)
-			)}
-			{lineIndex !== lines.length - 1 && <br />}
-		</React.Fragment>
-	));
-};
+// ▼ シェアボタン用スタイル -------------------------------------
 
+const SocialShareContainer = styled.div`
+	margin-top: 1rem;
+	display: flex;
+	gap: 0.5rem;
+`;
+
+const SocialShareButton = styled.button`
+	background-color: #1da1f2;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	padding: 0.5rem 1rem;
+	font-size: 12px;
+	cursor: pointer;
+
+	&:hover {
+		opacity: 0.8;
+	}
+`;
+
+// ▼ Twitter共有処理 -------------------------------------------
+
+/**
+ * Twitterにシェアする際、「個別ページURL」を使う。
+ * (モーダル上ではURLが変わらないため、Twitterが正しくOGPを取得できない)
+ *
+ * つまり、 /photoworks/[id] へ直接飛ばすため、
+ * そこに用意したOGP(og:image等)をTwitterが読み込み、サムネ付きカードを生成する。
+ */
+function handleShareToTwitter(photo: PhotoMeta) {
+	// 個別写真のページ (og:image をセットしてある)
+	// 例: https://xn--19ja1fb.xn--q9jyb4c/photoworks/photo1
+	const detailUrl = `https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`;
+
+	const text = encodeURIComponent(`Check out this photo: ${photo.title}`);
+	const url = encodeURIComponent(detailUrl);
+	const hashtags = encodeURIComponent("Photography,MyPhotoWorks");
+	const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
+
+	window.open(twitterShareUrl, "_blank");
+}
+
+// ▼ テキスト内URL自動リンク関数 (任意) -----------------------
+function transformText(text: string): React.ReactNode {
+	const lines = text.split("\n");
+	return lines.map(
+		(line: string, lineIndex: number): React.ReactNode => (
+			<React.Fragment key={lineIndex}>
+				{line.split(/(https?:\/\/[^\s]+)/g).map(
+					(part: string, partIndex: number): React.ReactNode =>
+						/(https?:\/\/[^\s]+)/.test(part) ? (
+							<a key={partIndex} href={part} target="_blank" rel="noopener noreferrer">
+								{part}
+							</a>
+						) : (
+							<span key={partIndex}>{part}</span>
+						)
+				)}
+				{lineIndex !== lines.length - 1 && <br />}
+			</React.Fragment>
+		)
+	);
+}
+
+// ▼ サムネイルコンポーネント ----------------------------------
 function PhotoThumbnail({
 	photo,
 	isSquare,
@@ -242,6 +294,8 @@ function PhotoThumbnail({
 	);
 }
 
+// ▼ メインコンポーネント (一覧＆モーダル) ----------------------
+
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
 	const [exifData, setExifData] = useState<ExifData | null>(null);
@@ -250,12 +304,15 @@ export default function PhotoworksPage() {
 	const { isMobile } = useDevice();
 	const [modalSrc, setModalSrc] = useState<string | null>(null);
 
+	// 1秒ローディング
 	useEffect(() => {
-		setTimeout(() => {
+		const timer = setTimeout(() => {
 			setIsLoading(false);
 		}, 1000);
+		return () => clearTimeout(timer);
 	}, []);
 
+	// モーダルを開くタイミングでEXIFを読み込み、画像をhighResに差し替え
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
@@ -276,6 +333,7 @@ export default function PhotoworksPage() {
 		};
 	}, [selectedPhoto]);
 
+	// ソート (新しい日時 → 古い日時)
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
 	);
@@ -301,6 +359,7 @@ export default function PhotoworksPage() {
 								/>
 							))}
 						</PhotoGrid>
+
 						<SectionTitle>Others_</SectionTitle>
 						<PhotoGrid $isSmall={true}>
 							{otherPhotos.map((photo) => (
@@ -315,18 +374,18 @@ export default function PhotoworksPage() {
 					</Content>
 				</Container>
 			)}
+
 			<ModalOverlay
 				$isOpen={!!selectedPhoto}
 				onClick={() => setSelectedPhoto(null)}
 			>
-				<ModalContent
-					$isOpen={!!selectedPhoto}
-				>
+				<ModalContent $isOpen={!!selectedPhoto}>
 					{!modalLoaded && (
 						<LoaderOverlay>
 							<AppLoader />
 						</LoaderOverlay>
 					)}
+
 					{selectedPhoto && modalSrc && (
 						<>
 							<ModalImageWrapper>
@@ -336,6 +395,7 @@ export default function PhotoworksPage() {
 									onLoad={() => setModalLoaded(true)}
 								/>
 							</ModalImageWrapper>
+
 							{isMobile ? (
 								<MobileInfoWrapper>
 									<Title>{selectedPhoto.title}</Title>
@@ -347,6 +407,15 @@ export default function PhotoworksPage() {
 									<p>SS: {exifData?.shutterSpeed || "-"}</p>
 									<p>ISO: {exifData?.iso || "-"}</p>
 									<p>Focal Length: {exifData?.focalLength || "-"}</p>
+
+									{/* Twitter共有ボタン */}
+									<SocialShareContainer>
+										<SocialShareButton
+											onClick={() => handleShareToTwitter(selectedPhoto)}
+										>
+											Share to Twitter
+										</SocialShareButton>
+									</SocialShareContainer>
 								</MobileInfoWrapper>
 							) : (
 								<InfoContainer>
@@ -362,6 +431,15 @@ export default function PhotoworksPage() {
 										<p>SS: {exifData?.shutterSpeed || "-"}</p>
 										<p>ISO: {exifData?.iso || "-"}</p>
 										<p>Focal Length: {exifData?.focalLength || "-"}</p>
+
+										{/* Twitter共有ボタン */}
+										<SocialShareContainer>
+											<SocialShareButton
+												onClick={() => handleShareToTwitter(selectedPhoto)}
+											>
+												Share to Twitter
+											</SocialShareButton>
+										</SocialShareContainer>
 									</ExifDataContainer>
 								</InfoContainer>
 							)}

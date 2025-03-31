@@ -2,7 +2,7 @@ export interface PhotoMeta {
 	id: string;
 	lowResUrl: string;
 	highResUrl: string;
-	title?: string;
+	title: string;
 	comment: string;
 	uploadedAt: string;
 }
