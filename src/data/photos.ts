@@ -178,7 +178,23 @@ export const photos: PhotoMeta[] = [
 		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR_low.webp",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR.webp",
 		title: "呪って呪って",
-		comment: "Bombs!4th単独公演　4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
+		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
 		uploadedAt: "2025-03-14"
 	},
+	{
+		id: "photo21",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR_low.webp",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR.webp",
+		title: "WE ARE THE GRATEST NINE9'",
+		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n卒業代の先輩方を撮影させていただきました。",
+		uploadedAt: "2025-03-14"
+	},
+	{
+		id: "photo22",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.webp",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/IMG_6048.webp",
+		title: "お見送り",
+		comment: "高校卒業後、島を出ていく友人のお見送り。",
+		uploadedAt: "2022-03-06"
+	}
 ];
