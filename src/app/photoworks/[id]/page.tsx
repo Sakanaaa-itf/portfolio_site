@@ -8,8 +8,7 @@ export async function generateStaticParams() {
 	return photos.map((photo) => ({ id: photo.id }));
 }
 
-// 2. generateMetadata の引数用の型定義をページコンポーネントと同じ形にする
-// すなわち、params は Promise として定義する
+// 2. generateMetadata の引数用の型定義（params は Promise として扱う）
 interface MetadataProps {
 	params: Promise<{
 		id: string;
@@ -26,9 +25,13 @@ export async function generateMetadata({
 	if (!photo) return {};
 
 	return {
+		// metadataBase を設定することで、openGraph.url の相対パスが絶対 URL に解決されます
+		metadataBase: new URL("https://xn--19ja1fb.xn--q9jyb4c"),
 		title: photo.title,
 		description: photo.comment,
+		// ここで openGraph.url を設定することで、シェア時のリンク先を変更できます
 		openGraph: {
+			url: "/photoworks/",
 			title: photo.title,
 			description: photo.comment,
 			images: [photo.highResUrl],
@@ -65,7 +68,7 @@ export default async function PhotoDetailPage({
 			<h1>{photo.title}</h1>
 			<p>{photo.comment}</p>
 			<Image
-				src={photo.lowResUrl}
+				src={photo.highResUrl}
 				alt={photo.title}
 				width={800}
 				height={600}
