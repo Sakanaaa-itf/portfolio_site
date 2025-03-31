@@ -172,5 +172,13 @@ export const photos: PhotoMeta[] = [
 		title: "もし明日が来ないとしたら",
 		comment: "UNIDOL 2024-25 Winter 決勝戦にて。\n Xにて演者様に掲載していただけました。 \n https://t.co/wZdm482G13",
 		uploadedAt: "2025-02-26"
-	}
+	},
+	{
+		id: "photo20",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR_low.webp",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0382-強化-NR.webp",
+		title: "呪って呪って",
+		comment: "Bombs!4th単独公演　4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
+		uploadedAt: "2025-03-14"
+	},
 ];
