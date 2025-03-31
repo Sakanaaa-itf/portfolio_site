@@ -213,10 +213,9 @@ function handleShareToTwitter(photo: PhotoMeta) {
 	// 例: https://xn--19ja1fb.xn--q9jyb4c/photoworks/photo1
 	const detailUrl = `https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`;
 
-	const text = encodeURIComponent(`Check out this photo: ${photo.title}`);
+	const text = encodeURIComponent(`New photo has been uploaded! @sakanaaa_photo`);
 	const url = encodeURIComponent(detailUrl);
-	const hashtags = encodeURIComponent("Photography,MyPhotoWorks");
-	const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=${hashtags}`;
+	const twitterShareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
 
 	window.open(twitterShareUrl, "_blank");
 }
