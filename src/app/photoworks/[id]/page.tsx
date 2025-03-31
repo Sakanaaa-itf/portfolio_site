@@ -2,22 +2,34 @@
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { Metadata } from "next";
 import { photos } from "@/data/photos";
 
-// 1) 静的パラメータを生成
+/**
+ * 1) 静的パラメータを生成 (SSG のため)
+ *    getStaticPaths 相当の機能
+ */
 export async function generateStaticParams() {
-	return photos.map((photo) => ({ id: photo.id }));
+	return photos.map((photo) => ({
+		id: photo.id,
+	}));
 }
 
-// 2) 動的メタデータ (OGP/Twitter Card)
-export async function generateMetadata({ params }: { params: { id: string } }) {
+/**
+ * 2) メタデータ (OGP/Twitter Card) を動的生成
+ *    Next.js App Routerでは、引数に { params, searchParams }, 第二引数に "ResolvingMetadata" が入る
+ */
+export async function generateMetadata(
+	{ params }: { params: { id: string } }
+): Promise<Metadata> {
 	const photo = photos.find((p) => p.id === params.id);
 	if (!photo) {
+		// 存在しないIDならメタデータは空
 		return {};
 	}
 
-	const title = photo.title ?? "Photo";
-	const description = photo.comment ?? "A nice photo.";
+	const title = photo.title || "Photo";
+	const description = photo.comment || "A nice photo.";
 
 	return {
 		title,
@@ -27,6 +39,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 			description,
 			images: [photo.highResUrl],
 			type: "article",
+			// url: `https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`
 		},
 		twitter: {
 			card: "summary_large_image",
@@ -37,7 +50,10 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 	};
 }
 
-// 3) ページコンポーネント
+/**
+ * 3) ページコンポーネント
+ *    - Next.js App Routerでは、(props: { params: { ... }, searchParams?: ... }) という形が推奨
+ */
 export default function PhotoDetailPage({
 	params,
 }: {
@@ -45,6 +61,7 @@ export default function PhotoDetailPage({
 }) {
 	const photo = photos.find((p) => p.id === params.id);
 	if (!photo) {
+		// 404ページへ
 		notFound();
 	}
 
