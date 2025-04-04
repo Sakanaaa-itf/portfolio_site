@@ -185,7 +185,7 @@ export const photos: PhotoMeta[] = [
 		id: "photo21",
 		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR_low.jpg",
 		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/_DSF0766-強化-NR.webp",
-		title: "WE ARE THE GRATEST NINE9'",
+		title: "ぼくらのうた",
 		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n卒業代の先輩方を撮影させていただきました。",
 		uploadedAt: "2025-03-14"
 	},
