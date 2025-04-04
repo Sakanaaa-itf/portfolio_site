@@ -196,5 +196,13 @@ export const photos: PhotoMeta[] = [
 		title: "お見送り",
 		comment: "高校卒業後、島を出ていく友人のお見送り。",
 		uploadedAt: "2022-03-06"
+	},
+	{
+		id: "photo23",
+		lowResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%8D%E3%83%BC%E3%82%8C%E3%81%9D%E3%82%99/IMG_2991_low.webp",
+		highResUrl: "https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%81%AF%E3%81%84%E3%82%8C%E3%81%9D%E3%82%99/IMG_2991.jpeg",
+		title: "筑波山",
+		comment: "筑波山の朝日峠から、日の出を撮影。",
+		uploadedAt: "2022-12-14"
 	}
 ];
