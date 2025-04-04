@@ -35,7 +35,7 @@ export async function generateMetadata({
 			url: "/photoworks/",
 			title: photo.title,
 			description: photo.comment,
-			images: [photo.lowResUrl],
+			images: [photo.highResUrl],
 		},
 		twitter: {
 			card: "summary_large_image",
