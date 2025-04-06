@@ -256,7 +256,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF1599.JPG",
 		title: "秋",
 		comment: "地元ではこんな綺麗に紅葉しない。たまたまいた通行人がすごくよく写ってくれた一枚。",
-		uploadedAt: "2023-11-17",
+		uploadedAt: "2024-11-17",
 	},
 	{
 		id: "photo28",
@@ -264,7 +264,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF1639.JPG",
 		title: "銀杏",
 		comment: "光盛れしすぎている銀杏の葉。",
-		uploadedAt: "2023-11-18",
+		uploadedAt: "2024-11-18",
 	},
 	{
 		id: "photo29",
@@ -288,6 +288,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF7342.JPG",
 		title: "桜",
 		comment: "緋寒桜以外の桜って珍しい。地元にないし。",
-		uploadedAt: "2024-04-05",
+		uploadedAt: "2025-04-05",
 	}
 ]);
