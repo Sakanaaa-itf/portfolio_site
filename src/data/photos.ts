@@ -236,7 +236,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 	},
 	{
 		id: "photo25",
-		lowResUrl: "https://scontent-nrt1-2.cdninstagram.com/v/t51.29350-15/458993120_503273835753840_7782457895575794327_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQuaW1hZ2VfdXJsZ2VuLjE0NDB4OTYwLnNkci5mMjkzNTAuZGVmYXVsdF9pbWFnZSJ9&_nc_ht=scontent-nrt1-2.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QGoQ4hcne0OZBycNmRonpm3mhOwGfQmSKV4knveq2sBmY92_hgrDccV0CelLpstpVE&_nc_ohc=yrpqmcHz3gUQ7kNvwG4la4b&_nc_gid=w0aMPEfe3zs_UkmG7MwNGw&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzQ1MzQxMzg4MTQ4NDU4MjQ2Nw%3D%3D.3-ccb7-5&oh=00_AfHTN4gBMubI_Yy5C16ODGPP9Emp-bXjtmBQipgk4sAa4g&oe=67F7EFE0&_nc_sid=10d13b",
+		lowResUrl: "_DSF0958_low.webp",
 		highResUrl: "_DSF0958.JPG",
 		title: "Sing Out!",
 		comment: "UNIDOL 2024 Summer 決勝戦にて。準優勝 明治大学・chocolat lumière\n オフィシャルカメラマンとして参加。",
@@ -244,7 +244,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 	},
 	{
 		id: "photo26",
-		lowResUrl: "https://scontent-nrt1-2.cdninstagram.com/v/t51.29350-15/441182194_1676325062899720_8038006099936543704_n.jpg?se=7&stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQuaW1hZ2VfdXJsZ2VuLjE0NDB4OTYwLnNkci5mMjkzNTAuZGVmYXVsdF9pbWFnZSJ9&_nc_ht=scontent-nrt1-2.cdninstagram.com&_nc_cat=104&_nc_oc=Q6cZ2QG41cBnRHHcBt_7d--6DnGZjjP6vj0gf3W4hLT2YI4vZHSoJJOd1scP_8x2n5i0v5g&_nc_ohc=jUIEcEWMj_QQ7kNvwGh_NW7&_nc_gid=uPd6_5ISW_dq0Rr9pzktvQ&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzM1ODQ1MTAwMTY2NDEwNTE2MA%3D%3D.3-ccb7-5&oh=00_AfFpHiM2dGVaG2fvs8oIoOcZ_nFWh_jDSB3GBmERkQXuNQ&oe=67F7DD27&_nc_sid=22de04",
+		lowResUrl: "_DSF0869-Enhanced-NR_low.webp",
 		highResUrl: "_DSF0869-Enhanced-NR.JPG",
 		title: "Panorama",
 		comment: "Bombs!3rd単独「Blooming 〜Bombs! 5th Anniversary〜」にて。オフィシャルカメラマンとして参加。",
