@@ -55,7 +55,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "DSCF7826.webp",
 		title: "Dodge Charenger R/T 440 six pack",
 		comment: "友人の車。アメ車の中では一番好き。",
-		uploadedAt: "2023-09-06",
+		uploadedAt: "2023-12-14",
 	},
 	{
 		id: "photo4",
@@ -64,7 +64,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF7152.webp",
 		title: "やどかり祭にて",
 		comment: "逆光ってえっちですよね。",
-		uploadedAt: "2023-09-07",
+		uploadedAt: "2024-05-31",
 	},
 	{
 		id: "photo5",
