@@ -189,7 +189,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 	{
 		id: "photo19",
 		lowResUrl: "https://pbs.twimg.com/media/Gmzg-ceb0AAYCza?format=jpg&name=large",
-		highResUrl: "_DSF5447NR_low.webp",
+		highResUrl: "_DSF5447NR.webp",
 		title: "もし明日が来ないとしたら",
 		comment: "UNIDOL 2024-25 Winter 決勝戦にて。\n Xにて演者様に掲載していただけました。 \n https://t.co/wZdm482G13",
 		uploadedAt: "2025-02-26"
