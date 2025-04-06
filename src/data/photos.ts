@@ -226,4 +226,12 @@ export const photos: PhotoMeta[] = addPrefixes([
 		comment: "筑波山の朝日峠から、日の出を撮影。",
 		uploadedAt: "2022-12-14",
 	},
+	{
+		id: "photo24",
+		lowResUrl: "IMG_2173_low.webp",
+		highResUrl: "IMG_2173.jpeg",
+		title: "高校、放課後",
+		comment: "下でラグビー部だったかが騒いでいたのをのぞいている図。\n めちゃ恋人風に見えますよね、そんなことないです。",
+		uploadedAt: "2020-09-03",
+	}
 ]);
