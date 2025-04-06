@@ -35,12 +35,15 @@ export async function generateMetadata({
 			url: "/photoworks/",
 			title: photo.title,
 			description: photo.comment,
+			type: "website",
+			siteName: "ふわふわ.みんな",
 			images: [photo.lowResUrl],
 		},
 		twitter: {
 			card: "summary_large_image",
 			title: photo.title,
 			description: photo.comment,
+			site: "@sakanaaa_photo",
 		},
 	};
 }
