@@ -289,5 +289,21 @@ export const photos: PhotoMeta[] = addPrefixes([
 		title: "桜",
 		comment: "緋寒桜以外の桜って珍しい。地元にないし。",
 		uploadedAt: "2025-04-05",
+	},
+	{
+		id: "photo32",
+		lowResUrl: "_DSF2370_low.webp",
+		highResUrl: "_DSF2370.jpg",
+		title: "Spring day",
+		comment: "コグマ 2025 卒ライ「約束」にて。\n オフィシャルカメラマンとして参加。\n",
+		uploadedAt: "2025-03-19",
+	},
+	{
+		id: "photo33",
+		lowResUrl: "Z91_0301_low.webp",
+		highResUrl: "Z91_0301.jpg",
+		title: "Bad girl Good girl",
+		comment: "コグマ 2025 卒ライ「約束」にて。\n オフィシャルカメラマンとして参加。\n",
+		uploadedAt: "2025-03-19",
 	}
 ]);
