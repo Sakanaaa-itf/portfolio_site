@@ -277,7 +277,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 	{
 		id: "photo30",
 		lowResUrl: "_DSF2889_low.webp",
-		highResUrl: "_DSF2889.JPG",
+		highResUrl: "_DSF2889.jpg",
 		title: "ひなたうた",
 		comment: "Doo-Wop夏ライブ2024にて。\n オフィシャルカメラマンとして参加。\n ナナニッパのデビュー戦でした。",
 		uploadedAt: "2024-09-15",
