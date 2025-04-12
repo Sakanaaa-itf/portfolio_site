@@ -12,7 +12,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Helmet } from "react-helmet-async";
 import { ramen, RamenMeta } from "@/data/ramen";
 import HamburgerMenu from "./HamburgerMenu";
 
@@ -170,22 +169,10 @@ function RamenDetail() {
 
 	if (!ramenData) return null;
 
-	const { name, shop, location, date, highResUrl } = ramenData;
+	const { name, shop, location, date } = ramenData;
 
 	return (
 		<>
-			{/* OGP meta tags */}
-			<Helmet>
-				<title>{`${name} | ${shop}`}</title>
-				<meta name="description" content={`${location} – ${name}`} />
-				<meta property="og:type" content="article" />
-				<meta property="og:title" content={`${name} | ${shop}`} />
-				<meta property="og:description" content={`${location} – ${name}`} />
-				<meta property="og:image" content={highResUrl} />
-				<meta property="og:url" content={`https://example.com/ramen/${id}`} />
-				<meta name="twitter:card" content="summary_large_image" />
-			</Helmet>
-
 			<DetailWrapper>
 				<BackBtn onClick={() => navigate(-1)}>← Back</BackBtn>
 				{imgSrc && <FullImg src={imgSrc} alt={name} />}
