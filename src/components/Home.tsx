@@ -7,9 +7,6 @@ import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
 import BackgroundSlideshow from "./BackgroundSlideshow";
 
-/* ----------------------------------
- * もともとの styled-components
- * ---------------------------------- */
 const ContentWrapper = styled.div`
 	position: relative;
 	width: 100%;
@@ -44,7 +41,7 @@ const Title = styled.h1`
 	font-weight: 700;
 	padding: 1rem;
 	white-space: nowrap;
-	text-shadow: 
+	text-shadow:
 		2px 2px 4px rgba(0, 0, 0, 0.8), /* 黒い影 */
 		-2px -2px 4px rgba(255, 255, 255, 0.8); /* 白い影 */
 
@@ -171,25 +168,19 @@ const Name = styled.h3`
 	font-weight: 700;
 `;
 
-/* ----------------------------------
- * Home コンポーネント本体
- * ---------------------------------- */
 export default function Home() {
 	const [scrollAmount, setScrollAmount] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
 
-	// ローディング表示関連
 	const [isLoading, setIsLoading] = useState(true);
 	const [isFadingOut, setIsFadingOut] = useState(false);
 
 	useEffect(() => {
-		// スクロール量を監視
 		const handleScroll = () => {
 			setScrollAmount(window.scrollY);
 		};
 		window.addEventListener("scroll", handleScroll);
 
-		// ローディング解除タイマー
 		const timer = setTimeout(() => {
 			setIsFadingOut(true);
 			setTimeout(() => {
@@ -203,22 +194,15 @@ export default function Home() {
 		};
 	}, []);
 
-	// スクロール量に応じた背景ぼかし量
 	const blurAmount = Math.min(scrollAmount / 50, 10);
-	// スクロール量に応じてタイトルを薄く
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
 	return (
 		<>
 			{isLoading && <AppLoader isFadingOut={isFadingOut} />}
 
-			{/* ハンバーガーメニュー */}
 			<HamburgerMenu />
-
-			{/* 背景スライドショー（別ファイルに切り出した） */}
 			<BackgroundSlideshow blurAmount={blurAmount} />
-
-			{/* メインコンテンツ */}
 			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>

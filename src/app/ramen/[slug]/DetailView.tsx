@@ -1,4 +1,3 @@
-// app/ramen/[slug]/DetailView.tsx
 "use client";
 
 import Image from "next/image";

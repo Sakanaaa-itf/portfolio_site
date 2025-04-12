@@ -97,7 +97,6 @@ function RamenThumbnail({ item }: { item: RamenMeta }) {
 }
 
 function RamenGrid() {
-	// newest first
 	const sorted = [...ramen].sort(
 		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
 	);
