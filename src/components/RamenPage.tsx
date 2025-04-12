@@ -10,7 +10,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ramen, RamenMeta } from "@/data/ramen";
 import HamburgerMenu from "./HamburgerMenu";
@@ -100,15 +100,6 @@ const Meta = styled.div`
 	line-height: 1.5;
 `;
 
-const BackBtn = styled.button`
-	background: none;
-	border: none;
-	color: #1da1f2;
-	font-size: 14px;
-	cursor: pointer;
-	margin-bottom: 1rem;
-`;
-
 // ────────────────────────────────────────────────────────────────
 // Thumbnail component
 // ────────────────────────────────────────────────────────────────
@@ -151,7 +142,6 @@ function RamenGrid() {
 
 function RamenDetail() {
 	const { id } = useParams();
-	const navigate = useNavigate();
 	const [ramenData, setRamenData] = useState<RamenMeta | null>(null);
 	const [imgSrc, setImgSrc] = useState<string | null>(null);
 
@@ -174,7 +164,6 @@ function RamenDetail() {
 	return (
 		<>
 			<DetailWrapper>
-				<BackBtn onClick={() => navigate(-1)}>← Back</BackBtn>
 				{imgSrc && <FullImg src={imgSrc} alt={name} />}
 				<Meta>
 					<p>
