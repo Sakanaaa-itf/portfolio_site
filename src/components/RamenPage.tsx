@@ -1,23 +1,9 @@
-/*
-  Ramen.tsx – updated for new RamenMeta shape (lowResUrl / highResUrl)
-  ------------------------------------------------------------------
-  Displays a full‑screen grid of square ramen photos. Each tile shows the
-  ramen name and its location. Clicking navigates to /ramen/:id where a
-  detail page progressively swaps the low‑res image for the high‑res
-  version and injects OGP meta tags (react‑helmet‑async).
-*/
-
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ramen, RamenMeta } from "@/data/ramen";
-import HamburgerMenu from "./HamburgerMenu";
-
-// ────────────────────────────────────────────────────────────────
-// Helpers
-// ────────────────────────────────────────────────────────────────
 
 const slugify = (str: string) =>
 	str
@@ -27,10 +13,6 @@ const slugify = (str: string) =>
 
 const makeId = (item: RamenMeta) =>
 	slugify(`${item.shop}-${item.name}-${item.date}`);
-
-// ────────────────────────────────────────────────────────────────
-// Styled Components
-// ────────────────────────────────────────────────────────────────
 
 const GridWrapper = styled.div`
 	width: 100%;
@@ -100,10 +82,6 @@ const Meta = styled.div`
 	line-height: 1.5;
 `;
 
-// ────────────────────────────────────────────────────────────────
-// Thumbnail component
-// ────────────────────────────────────────────────────────────────
-
 function RamenThumbnail({ item }: { item: RamenMeta }) {
 	const id = makeId(item);
 	return (
@@ -117,10 +95,6 @@ function RamenThumbnail({ item }: { item: RamenMeta }) {
 		</Tile>
 	);
 }
-
-// ────────────────────────────────────────────────────────────────
-// Grid list component
-// ────────────────────────────────────────────────────────────────
 
 function RamenGrid() {
 	// newest first
@@ -136,10 +110,6 @@ function RamenGrid() {
 	);
 }
 
-// ────────────────────────────────────────────────────────────────
-// Detail page component
-// ────────────────────────────────────────────────────────────────
-
 function RamenDetail() {
 	const { id } = useParams();
 	const [ramenData, setRamenData] = useState<RamenMeta | null>(null);
@@ -150,7 +120,6 @@ function RamenDetail() {
 		if (found) {
 			setRamenData(found);
 			setImgSrc(found.lowResUrl);
-			// progressive swap to high‑res
 			const hi = new Image();
 			hi.src = found.highResUrl;
 			hi.onload = () => setImgSrc(found.highResUrl);
@@ -178,18 +147,11 @@ function RamenDetail() {
 	);
 }
 
-// ────────────────────────────────────────────────────────────────
-// Main exported component
-// ────────────────────────────────────────────────────────────────
-
 export default function Ramen() {
 	return (
-		<>
-			<HamburgerMenu />
-			<Routes>
-				<Route index element={<RamenGrid />} />
-				<Route path=":id" element={<RamenDetail />} />
-			</Routes>
-		</>
+		<Routes>
+			<Route index element={<RamenGrid />} />
+			<Route path=":id" element={<RamenDetail />} />
+		</Routes>
 	);
 }

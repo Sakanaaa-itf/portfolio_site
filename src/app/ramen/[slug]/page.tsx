@@ -1,8 +1,8 @@
-// app/ramen/[slug]/page.tsx – server component (no styled-components)
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ramen, RamenMeta } from "@/data/ramen";
+import { ramen } from "@/data/ramen";
 import DetailView from "./DetailView";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 const slugify = (s: string) =>
 	s
@@ -10,14 +10,12 @@ const slugify = (s: string) =>
 		.replace(/[^a-z0-9]+/g, "-")
 		.replace(/^-|-$/g, "");
 
-// ---------- 1. 静的パス ----------
 export function generateStaticParams() {
 	return ramen.map((r) => ({
 		slug: slugify(`${r.shop}-${r.name}-${r.date}`),
 	}));
 }
 
-// ---------- 2. 動的メタデータ ----------
 interface MetaProps {
 	params: Promise<{ slug: string }>;
 }
@@ -48,7 +46,6 @@ export async function generateMetadata({
 	};
 }
 
-// ---------- 3. ページ本体 ----------
 interface PageProps {
 	params: Promise<{ slug: string }>;
 }
@@ -58,5 +55,10 @@ export default async function RamenDetail({ params }: PageProps) {
 	const r = ramen.find((x) => slugify(`${x.shop}-${x.name}-${x.date}`) === slug);
 	if (!r) notFound();
 
-	return <DetailView ramen={r as RamenMeta} />;
+	return (
+		<>
+			<HamburgerMenu />
+			<DetailView ramen={r} />
+		</>
+	);
 }

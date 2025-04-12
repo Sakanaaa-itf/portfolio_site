@@ -9,8 +9,6 @@ import AppLoader from "./AppLoader";
 import { useDevice } from "@/hooks/useDevice";
 import { getExifDataForPhoto, ExifData } from "@/utils/photoUtils";
 
-// ▼ レイアウト系Styled Components --------------------------------
-
 const Container = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
@@ -177,8 +175,6 @@ const Content = styled.div`
 	}
 `;
 
-// ▼ シェアボタン用スタイル -------------------------------------
-
 const SocialShareContainer = styled.div`
 	margin-top: 1rem;
 	display: flex;
@@ -199,18 +195,7 @@ const SocialShareButton = styled.button`
 	}
 `;
 
-// ▼ Twitter共有処理 -------------------------------------------
-
-/**
- * Twitterにシェアする際、「個別ページURL」を使う。
- * (モーダル上ではURLが変わらないため、Twitterが正しくOGPを取得できない)
- *
- * つまり、 /photoworks/[id] へ直接飛ばすため、
- * そこに用意したOGP(og:image等)をTwitterが読み込み、サムネ付きカードを生成する。
- */
 function handleShareToTwitter(photo: PhotoMeta) {
-	// 個別写真のページ (og:image をセットしてある)
-	// 例: https://xn--19ja1fb.xn--q9jyb4c/photoworks/photo1
 	const detailUrl = `https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`;
 
 	const text = encodeURIComponent(`New photo! "${photo.title}" \n @sakanaaa_photo \n`);
@@ -220,7 +205,6 @@ function handleShareToTwitter(photo: PhotoMeta) {
 	window.open(twitterShareUrl, "_blank");
 }
 
-// ▼ テキスト内URL自動リンク関数 (任意) -----------------------
 function transformText(text: string): React.ReactNode {
 	const lines = text.split("\n");
 	return lines.map(
@@ -242,7 +226,6 @@ function transformText(text: string): React.ReactNode {
 	);
 }
 
-// ▼ サムネイルコンポーネント ----------------------------------
 function PhotoThumbnail({
 	photo,
 	isSquare,
@@ -293,8 +276,6 @@ function PhotoThumbnail({
 	);
 }
 
-// ▼ メインコンポーネント (一覧＆モーダル) ----------------------
-
 export default function PhotoworksPage() {
 	const [selectedPhoto, setSelectedPhoto] = useState<PhotoMeta | null>(null);
 	const [exifData, setExifData] = useState<ExifData | null>(null);
@@ -303,7 +284,6 @@ export default function PhotoworksPage() {
 	const { isMobile } = useDevice();
 	const [modalSrc, setModalSrc] = useState<string | null>(null);
 
-	// 1秒ローディング
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setIsLoading(false);
@@ -311,7 +291,6 @@ export default function PhotoworksPage() {
 		return () => clearTimeout(timer);
 	}, []);
 
-	// モーダルを開くタイミングでEXIFを読み込み、画像をhighResに差し替え
 	useEffect(() => {
 		if (selectedPhoto) {
 			document.body.style.overflow = "hidden";
@@ -332,7 +311,6 @@ export default function PhotoworksPage() {
 		};
 	}, [selectedPhoto]);
 
-	// ソート (新しい日時 → 古い日時)
 	const sorted = [...photos].sort(
 		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
 	);
@@ -407,7 +385,6 @@ export default function PhotoworksPage() {
 									<p>ISO: {exifData?.iso || "-"}</p>
 									<p>Focal Length: {exifData?.focalLength || "-"}</p>
 
-									{/* Twitter共有ボタン */}
 									<SocialShareContainer>
 										<SocialShareButton
 											onClick={() => handleShareToTwitter(selectedPhoto)}
@@ -431,7 +408,6 @@ export default function PhotoworksPage() {
 										<p>ISO: {exifData?.iso || "-"}</p>
 										<p>Focal Length: {exifData?.focalLength || "-"}</p>
 
-										{/* Twitter共有ボタン */}
 										<SocialShareContainer>
 											<SocialShareButton
 												onClick={() => handleShareToTwitter(selectedPhoto)}

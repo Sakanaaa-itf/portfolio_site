@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
 import { ramen } from "@/data/ramen";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 const slugify = (s: string) =>
 	s
@@ -11,7 +12,6 @@ const slugify = (s: string) =>
 		.replace(/[^a-z0-9]+/g, "-")
 		.replace(/^-|-$/g, "");
 
-// ── styled components ─────────────────────────────
 const Grid = styled.main`
 	display: grid;
 	min-height: 100vh;
@@ -19,6 +19,9 @@ const Grid = styled.main`
 	gap: 4px;
 	background: #000;
 	padding: 4px;
+	body.menu-open & {
+		filter: blur(5px);
+	}
 `;
 
 const Tile = styled(Link)`
@@ -57,26 +60,29 @@ export default function RamenList() {
 	);
 
 	return (
-		<Grid>
-			{sorted.map((r) => {
-				const slug = slugify(`${r.shop}-${r.name}-${r.date}`);
-				return (
-					<Tile key={slug} href={`/ramen/${slug}`}>
-						<Thumb
-							src={r.lowResUrl}
-							alt={r.name}
-							fill
-							sizes="220px"
-							priority={false}
-						/>
-						<Overlay className="overlay">
-							<strong>{r.shop}</strong>
-							<br />
-							{r.name}
-						</Overlay>
-					</Tile>
-				);
-			})}
-		</Grid>
+		<>
+			<HamburgerMenu />
+			<Grid>
+				{sorted.map((r) => {
+					const slug = slugify(`${r.shop}-${r.name}-${r.date}`);
+					return (
+						<Tile key={slug} href={`/ramen/${slug}`}>
+							<Thumb
+								src={r.lowResUrl}
+								alt={r.name}
+								fill
+								sizes="220px"
+								priority={false}
+							/>
+							<Overlay className="overlay">
+								<strong>{r.shop}</strong>
+								<br />
+								{r.name}
+							</Overlay>
+						</Tile>
+					);
+				})}
+			</Grid>
+		</>
 	);
 }
