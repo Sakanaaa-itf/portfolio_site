@@ -31,7 +31,7 @@ export async function generateMetadata({
 			description: photo.comment,
 			type: "website",
 			siteName: "ふわふわ.みんな",
-			images: [photo.lowResUrl],
+			images: [photo.highResUrl],
 		},
 		twitter: {
 			card: "summary_large_image",
