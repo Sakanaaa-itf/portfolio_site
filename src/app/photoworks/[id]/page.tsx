@@ -63,7 +63,7 @@ export default async function PhotoDetailPage({
 			<HamburgerMenu />
 			<h1 style={{ padding: "1rem", fontSize: "24px" }}>{photo.title}</h1>
 			<Image
-				src={photo.lowResUrl}
+				src={photo.highResUrl}
 				alt={photo.title}
 				width={800}
 				height={600}
