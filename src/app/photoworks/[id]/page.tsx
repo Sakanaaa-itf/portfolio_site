@@ -7,12 +7,11 @@ export async function generateStaticParams() {
 	return photos.map((p) => ({ id: p.id }));
 }
 
-export async function generateMetadata({
-	params,
-}: {
-	params: { id: string };
-}): Promise<Metadata> {
-	const photo = photos.find((p) => p.id === params.id);
+export async function generateMetadata(
+	{ params }: { params: Promise<{ id: string }> }
+): Promise<Metadata> {
+	const { id } = await params;
+	const photo = photos.find((p) => p.id === id);
 	if (!photo) return {};
 
 	return {
@@ -36,23 +35,19 @@ export async function generateMetadata({
 	};
 }
 
-export default function PhotoworksDetailPage({
-	params,
-}: {
-	params: { id: string };
-}) {
-	const photoIndex = photos.findIndex((p) => p.id === params.id);
+export default async function PhotoworksDetailPage(
+	{ params }: { params: Promise<{ id: string }> }
+) {
+	const { id } = await params;
+
+	const photoIndex = photos.findIndex((p) => p.id === id);
 	if (photoIndex === -1) notFound();
 
 	const photo = photos[photoIndex];
-	const prev = photos[photoIndex - 1] ?? null;
-	const next = photos[photoIndex + 1] ?? null;
+	const prevPhoto = photos[photoIndex - 1] ?? null;
+	const nextPhoto = photos[photoIndex + 1] ?? null;
 
 	return (
-		<PhotoDetailPage
-			photo={photo}
-			prevPhoto={prev}
-			nextPhoto={next}
-		/>
+		<PhotoDetailPage photo={photo} prevPhoto={prevPhoto} nextPhoto={nextPhoto} />
 	);
 }
