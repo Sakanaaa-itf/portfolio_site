@@ -8,7 +8,6 @@ import CommentExif from "@/components/CommentExif";
 import { useDevice } from "@/hooks/useDevice";
 import type { PhotoMeta } from "@/data/photos";
 
-/* ---------- styled ---------- */
 const Main = styled.main`
 	min-height: 100vh;
 	padding: 1rem;
@@ -75,7 +74,6 @@ const CommentBox = styled.div`
 	margin-top: 1rem;
 `;
 
-/* ---------- props ---------- */
 interface Props {
 	photo: PhotoMeta;
 	prevPhoto: PhotoMeta | null;
@@ -89,7 +87,6 @@ export default function PhotoDetailPage({
 }: Props) {
 	const { isMobile } = useDevice();
 
-	/* SP 用の仮 width/height */
 	const fallbackW = 1600;
 	const fallbackH = 1067;
 
@@ -98,8 +95,6 @@ export default function PhotoDetailPage({
 			<HamburgerMenu />
 			<Content>
 				<Title>{photo.title}</Title>
-
-				{/* ---------- 画像 ---------- */}
 				<ImgWrap $isMobile={isMobile}>
 					{isMobile ? (
 						<Image
@@ -120,8 +115,6 @@ export default function PhotoDetailPage({
 							priority
 						/>
 					)}
-
-					{/* PC：左右オーバーレイ矢印 */}
 					{!isMobile && (
 						<NavRow $isMobile={false}>
 							{prevPhoto && (
@@ -145,8 +138,6 @@ export default function PhotoDetailPage({
 						</NavRow>
 					)}
 				</ImgWrap>
-
-				{/* モバイル：画像下ナビ */}
 				{isMobile && (
 					<NavRow $isMobile={true}>
 						{prevPhoto && (
@@ -169,8 +160,6 @@ export default function PhotoDetailPage({
 						)}
 					</NavRow>
 				)}
-
-				{/* ---------- コメント & Exif ---------- */}
 				<CommentBox>
 					<CommentExif photo={photo} />
 				</CommentBox>

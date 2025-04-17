@@ -6,7 +6,6 @@ import { PhotoMeta } from "@/data/photos";
 import { getExifDataForPhoto, type ExifData } from "@/utils/photoUtils";
 import { useDevice } from "@/hooks/useDevice";
 
-/* ---------- styled‑components ---------- */
 const Wrapper = styled.div<{ $isMobile: boolean }>`
 	display: flex;
 	flex-direction: ${({ $isMobile }) => ($isMobile ? "column" : "row")};
@@ -49,7 +48,6 @@ const LinkText = styled.a`
 	}
 `;
 
-/* ---------- ユーティリティ ---------- */
 function formatText(text: string) {
 	return text.split("\n").map((line, i) => (
 		<span key={i}>
@@ -67,9 +65,8 @@ function formatText(text: string) {
 	));
 }
 
-/* ---------- コンポーネント ---------- */
 export default function CommentExif({ photo }: { photo: PhotoMeta }) {
-	const { isMobile } = useDevice(); // ← デバイス判定
+	const { isMobile } = useDevice();
 	const [exif, setExif] = useState<ExifData | null>(null);
 
 	useEffect(() => {
@@ -79,7 +76,6 @@ export default function CommentExif({ photo }: { photo: PhotoMeta }) {
 				const data = await getExifDataForPhoto(photo);
 				if (!cancelled) setExif(data);
 			} catch {
-				/* ignore */
 			}
 		})();
 		return () => {
@@ -92,14 +88,11 @@ export default function CommentExif({ photo }: { photo: PhotoMeta }) {
 			<CommentBox>{formatText(photo.comment)}</CommentBox>
 
 			<ExifBox $isMobile={isMobile}>
-				{/* 左列：Date / Camera / Lens */}
 				<ExifColumn>
 					<ExifLine>Date&nbsp;:&nbsp;{exif?.dateTime || "-"}</ExifLine>
 					<ExifLine>Camera&nbsp;:&nbsp;{exif?.cameraModel || "-"}</ExifLine>
 					<ExifLine>Lens&nbsp;:&nbsp;{exif?.lensModel || "-"}</ExifLine>
 				</ExifColumn>
-
-				{/* 右列（モバイルでは下段）：Aperture / SS / ISO / FL */}
 				<ExifColumn>
 					<ExifLine>Aperture&nbsp;:&nbsp;{exif?.aperture || "-"}</ExifLine>
 					<ExifLine>SS&nbsp;:&nbsp;{exif?.shutterSpeed || "-"}</ExifLine>
