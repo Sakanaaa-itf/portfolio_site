@@ -3,12 +3,10 @@ import { notFound } from "next/navigation";
 import PhotoDetailPage from "@/components/PhotoDetailPage";
 import { photos } from "@/data/photos";
 
-/* --- SSG --- */
 export async function generateStaticParams() {
 	return photos.map((p) => ({ id: p.id }));
 }
 
-/* --- Metadata --- */
 export async function generateMetadata({
 	params,
 }: {
@@ -38,21 +36,20 @@ export async function generateMetadata({
 	};
 }
 
-/* --- ページ本体 (Server Component) --- */
 export default function PhotoworksDetailPage({
 	params,
 }: {
 	params: { id: string };
 }) {
 	const photoIndex = photos.findIndex((p) => p.id === params.id);
-	if (photoIndex === -1) notFound(); // ← ★ ここで判定
+	if (photoIndex === -1) notFound();
 
 	const photo = photos[photoIndex];
-	const prev = photos[photoIndex - 1] ?? null; // 左右ナビ用
+	const prev = photos[photoIndex - 1] ?? null;
 	const next = photos[photoIndex + 1] ?? null;
 
 	return (
-		<PhotoDetailPage /* Client 側へ渡すデータ */
+		<PhotoDetailPage
 			photo={photo}
 			prevPhoto={prev}
 			nextPhoto={next}
