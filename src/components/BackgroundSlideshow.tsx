@@ -23,17 +23,14 @@ const SlideshowContainer = styled.div<{
 	height: 100vh;
 	z-index: -1;
 
-	/* 背景画像の設定 */
 	background-image: url(${(props) => props.$currentBg});
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 
-	/* ぼかしとトランジション */
 	filter: blur(${(props) => props.$blurAmount}px);
 	transition: filter 0.3s ease-in-out;
 
-	/* メニュー開いた時のぼかし */
 	body.menu-open & {
 		filter: blur(10px);
 	}
@@ -41,9 +38,13 @@ const SlideshowContainer = styled.div<{
 
 interface BackgroundSlideshowProps {
 	blurAmount: number;
+	onReady?: () => void;
 }
 
-export default function BackgroundSlideshow({ blurAmount }: BackgroundSlideshowProps) {
+export default function BackgroundSlideshow({
+	blurAmount,
+	onReady,
+}: BackgroundSlideshowProps) {
 	const [loadedPhotos, setLoadedPhotos] = useState<string[]>([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isBlackVisible, setIsBlackVisible] = useState(false);
@@ -51,17 +52,18 @@ export default function BackgroundSlideshow({ blurAmount }: BackgroundSlideshowP
 
 	useEffect(() => {
 		const preloadImages = async () => {
-			const promises = photos.map((photo) => {
-				return new Promise<string>((resolve) => {
-					const img = new Image();
-					img.src = photo.highResUrl;
-					img.onload = () => resolve(photo.highResUrl);
-					img.onerror = () => resolve("");
-				});
-			});
-
-			const loadedUrls = await Promise.all(promises);
-			setLoadedPhotos(loadedUrls.filter((url) => url !== ""));
+			const loadedUrls = await Promise.all(
+				photos.map(
+					(photo) =>
+						new Promise<string>((resolve) => {
+							const img = new Image();
+							img.src = photo.highResUrl;
+							img.onload = () => resolve(photo.highResUrl);
+							img.onerror = () => resolve("");
+						})
+				)
+			);
+			setLoadedPhotos(loadedUrls.filter((url) => url));
 		};
 
 		preloadImages();
@@ -93,16 +95,15 @@ export default function BackgroundSlideshow({ blurAmount }: BackgroundSlideshowP
 		timersRef.current.push(t1);
 	}, [loadedPhotos.length]);
 
+	const readyNotified = useRef(false);
 	useEffect(() => {
-		if (loadedPhotos.length > 0) {
-			startCycle();
+		if (!readyNotified.current && loadedPhotos.length > 0) {
+			// currentIndex はデフォルト 0 のまま ⇒ 最初の画像表示 OK
+			readyNotified.current = true;
+			onReady?.(); // ★ Home に通知
+			startCycle(); // サイクル開始
 		}
-
-		return () => {
-			const timers = timersRef.current;
-			timers.forEach((t) => clearTimeout(t));
-			timersRef.current = [];
-		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loadedPhotos, startCycle]);
 
 	const currentBg = loadedPhotos.length > 0 ? loadedPhotos[currentIndex] : "";

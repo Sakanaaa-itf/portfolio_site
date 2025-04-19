@@ -41,9 +41,8 @@ const Title = styled.h1`
 	font-weight: 700;
 	padding: 1rem;
 	white-space: nowrap;
-	text-shadow:
-		2px 2px 4px rgba(0, 0, 0, 0.8), /* 黒い影 */
-		-2px -2px 4px rgba(255, 255, 255, 0.8); /* 白い影 */
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8),
+		/* 黒い影 */ -2px -2px 4px rgba(255, 255, 255, 0.8); /* 白い影 */
 
 	@media (max-width: ${theme.breakpoints.tablet}) {
 		font-size: 48px;
@@ -171,38 +170,37 @@ const Name = styled.h3`
 export default function Home() {
 	const [scrollAmount, setScrollAmount] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
-
-	const [isLoading, setIsLoading] = useState(true);
 	const [isFadingOut, setIsFadingOut] = useState(false);
+	const [isReady, setIsReady] = useState(false);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			setScrollAmount(window.scrollY);
-		};
+		const handleScroll = () => setScrollAmount(window.scrollY);
 		window.addEventListener("scroll", handleScroll);
-
-		const timer = setTimeout(() => {
-			setIsFadingOut(true);
-			setTimeout(() => {
-				setIsLoading(false);
-			}, 500);
-		}, 1000);
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			clearTimeout(timer);
-		};
+		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	useEffect(() => {
+		if (isReady) {
+			setIsFadingOut(true);
+			const t = setTimeout(() => {
+				setIsFadingOut(false);
+			}, 500);
+			return () => clearTimeout(t);
+		}
+	}, [isReady]);
 
 	const blurAmount = Math.min(scrollAmount / 50, 10);
 	const opacity = Math.max(1 - scrollAmount / 300, 0);
 
 	return (
 		<>
-			{isLoading && <AppLoader isFadingOut={isFadingOut} />}
+			{!isReady && <AppLoader isFadingOut={isFadingOut} />}
 
 			<HamburgerMenu />
-			<BackgroundSlideshow blurAmount={blurAmount} />
+			<BackgroundSlideshow
+				blurAmount={blurAmount}
+				onReady={() => setIsReady(true)}
+			/>
 			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>
