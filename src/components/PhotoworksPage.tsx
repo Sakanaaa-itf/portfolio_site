@@ -12,6 +12,9 @@ const Container = styled.div`
 	margin: 0 auto;
 	padding: 1rem;
 	transition: filter 0.3s ease-in-out;
+	body.menu-open & {
+		filter: blur(5px);
+	}
 `;
 
 const SectionTitle = styled.h2`
@@ -97,36 +100,37 @@ export default function PhotoworksPage() {
 	if (isLoading) return <AppLoader />;
 
 	return (
-		<Container>
+		<>
 			<HamburgerMenu />
+			<Container>
+				<SectionTitle>Recent photos</SectionTitle>
+				<PhotoGrid>
+					{recentPhotos.map((photo) => (
+						<Link
+							key={photo.id}
+							href={`/photoworks/${photo.id}`}
+							scroll={false}
+							style={{ textDecoration: "none" }}
+						>
+							<PhotoThumbnail photo={photo} isSquare={false} />
+						</Link>
+					))}
+				</PhotoGrid>
 
-			<SectionTitle>Recent photos</SectionTitle>
-			<PhotoGrid>
-				{recentPhotos.map((photo) => (
-					<Link
-						key={photo.id}
-						href={`/photoworks/${photo.id}`}
-						scroll={false}
-						style={{ textDecoration: "none" }}
-					>
-						<PhotoThumbnail photo={photo} isSquare={false} />
-					</Link>
-				))}
-			</PhotoGrid>
-
-			<SectionTitle>Others</SectionTitle>
-			<PhotoGrid $isSmall={true}>
-				{otherPhotos.map((photo) => (
-					<Link
-						key={photo.id}
-						href={`/photoworks/${photo.id}`}
-						scroll={false}
-						style={{ textDecoration: "none" }}
-					>
-						<PhotoThumbnail photo={photo} isSquare={true} />
-					</Link>
-				))}
-			</PhotoGrid>
-		</Container>
+				<SectionTitle>Others</SectionTitle>
+				<PhotoGrid $isSmall={true}>
+					{otherPhotos.map((photo) => (
+						<Link
+							key={photo.id}
+							href={`/photoworks/${photo.id}`}
+							scroll={false}
+							style={{ textDecoration: "none" }}
+						>
+							<PhotoThumbnail photo={photo} isSquare={true} />
+						</Link>
+					))}
+				</PhotoGrid>
+			</Container>
+		</>
 	);
 }
