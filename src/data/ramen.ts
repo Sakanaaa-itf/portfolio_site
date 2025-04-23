@@ -381,4 +381,12 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "辛 洋二郎",
 		date: "2025-04-20",
 	},
+	{
+		lowResUrl: "IMG_5267_400.webp",
+		highResUrl: "IMG_5267_1600.webp",
+		shop: "つくばらーめん 鬼者語",
+		location: "茨城県つくば市榎戸６８５−５",
+		name: "限定 濃厚辣油",
+		date: "2025-04-23",
+	},
 ]);
