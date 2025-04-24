@@ -47,8 +47,18 @@ export async function GET() {
 	const { items } = (await res.json()) as PlaylistItemsResponse;
 
 	const tracks = items.map((it) => {
-		const t = it.snippet.thumbnails;
-		const art = (t.maxres ?? t.high ?? t.medium ?? t.default)!.url;
+		// サムネイルオブジェクト（スニペット自体も保険）
+		const t = it.snippet?.thumbnails ?? {};
+
+		// 順に url を拾い、最後は空文字
+		const art =
+			t.maxres?.url ??
+			t.high?.url ??
+			t.medium?.url ??
+			t.standard?.url ??
+			t.default?.url ??
+			"";
+
 		return {
 			id: it.snippet.resourceId.videoId,
 			title: it.snippet.title,
