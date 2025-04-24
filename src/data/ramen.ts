@@ -1,4 +1,5 @@
 export interface RamenMeta {
+	id: string;
 	lowResUrl: string;
 	highResUrl: string;
 	shop: string;
@@ -12,8 +13,9 @@ const LOW_RES_PREFIX =
 const HIGH_RES_PREFIX =
 	"https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c/%E3%82%89%E3%83%BC%E3%82%81%E3%82%93%E3%81%AF%E3%81%84/";
 
-function addPrefixes(photos: RamenMeta[]): RamenMeta[] {
-	return photos.map((photo) => ({
+function addPrefixes(data: Omit<RamenMeta, "id">[]): RamenMeta[] {
+	return data.map((photo, i) => ({
+		id: String(i + 1),
 		...photo,
 		lowResUrl: LOW_RES_PREFIX + photo.lowResUrl,
 		highResUrl: HIGH_RES_PREFIX + photo.highResUrl,
@@ -396,5 +398,5 @@ export const ramen: RamenMeta[] = addPrefixes([
 		location: "茨城県土浦市永国７７８",
 		name: "純鶏そば 塩",
 		date: "2025-04-23",
-	}
+	},
 ]);
