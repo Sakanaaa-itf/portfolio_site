@@ -389,4 +389,12 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "限定 濃厚辣油",
 		date: "2025-04-23",
 	},
+	{
+		lowResUrl: "IMG_5268_400.webp",
+		highResUrl: "IMG_5268_1600.webp",
+		shop: "特級鶏蕎麦 龍介",
+		location: "茨城県土浦市永国７７８",
+		name: "純鶏そば 塩",
+		date: "2025-04-23",
+	}
 ]);
