@@ -16,8 +16,9 @@ function isAbsolute(url: string): boolean {
 	return /^https?:\/\//.test(url);
 }
 
-function addPrefixes(photos: PhotoMeta[]): PhotoMeta[] {
-	return photos.map((photo) => ({
+function addPrefixes(photos: Omit<PhotoMeta, "id">[]): PhotoMeta[] {
+	return photos.map((photo, i) => ({
+		id: String(i + 1),
 		...photo,
 		lowResUrl: isAbsolute(photo.lowResUrl)
 			? photo.lowResUrl
@@ -30,7 +31,6 @@ function addPrefixes(photos: PhotoMeta[]): PhotoMeta[] {
 
 export const photos: PhotoMeta[] = addPrefixes([
 	{
-		id: "photo1",
 		lowResUrl:
 			"DSCF0546_1600.webp",
 		highResUrl: "DSCF0546_3200.jpg",
@@ -40,7 +40,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-09-02",
 	},
 	{
-		id: "photo2",
 		lowResUrl:
 			"DSCF0276_1600.webp",
 		highResUrl: "DSCF0276_3200.jpg",
@@ -49,7 +48,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-08-25",
 	},
 	{
-		id: "photo3",
 		lowResUrl:
 			"DSCF7826_1600.webp",
 		highResUrl: "DSCF7826_3200.jpg",
@@ -58,7 +56,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-12-14",
 	},
 	{
-		id: "photo4",
 		lowResUrl:
 			"_DSF7152_1600.webp",
 		highResUrl: "_DSF7152_3200.jpg",
@@ -67,7 +64,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-05-31",
 	},
 	{
-		id: "photo5",
 		lowResUrl:
 			"DSCF0845_1600.webp",
 		highResUrl: "DSCF0845_3200.jpg",
@@ -76,7 +72,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-09-10",
 	},
 	{
-		id: "photo6",
 		lowResUrl:
 			"E9F54951-2A8F-4D1C-801D-090C3957E512-5334-00000216DF3D70C3_1600.webp",
 		highResUrl: "E9F54951-2A8F-4D1C-801D-090C3957E512-5334-00000216DF3D70C3_3200.jpg",
@@ -85,7 +80,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-09-14",
 	},
 	{
-		id: "photo7",
 		lowResUrl: "https://jtame.jp/wp-content/uploads/2024/09/s-8dBOYS-696x464.jpg",
 		highResUrl: "_DSF8740_3200.jpg",
 		title: "MAESTRO",
@@ -94,7 +88,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-09-17",
 	},
 	{
-		id: "photo8",
 		lowResUrl:
 			"https://jtame.jp/wp-content/uploads/2024/09/78d895dced9f0af4670629ca542b2a46-640x426.jpg",
 		highResUrl: "_DSF7439_3200.jpg",
@@ -104,7 +97,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-09-17",
 	},
 	{
-		id: "photo9",
 		lowResUrl:
 			"D081D1C8-C1BD-4F72-8504-0D498A495537-19829-000004ACF9D55EE1_1600.webp",
 		highResUrl: "D081D1C8-C1BD-4F72-8504-0D498A495537-19829-000004ACF9D55EE1_3200.jpg",
@@ -113,7 +105,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-07-19",
 	},
 	{
-		id: "photo10",
 		lowResUrl: "7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_1600.webp",
 		highResUrl: "7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_3200.jpg",
 		title: "涸沼",
@@ -121,7 +112,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-01-27"
 	},
 	{
-		id: "photo11",
 		lowResUrl: "DSCF0016_1600.webp",
 		highResUrl: "DSCF0016_3200.jpg",
 		title: "花火1",
@@ -129,7 +119,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-08-12"
 	},
 	{
-		id: "photo12",
 		lowResUrl: "DSCF0275_1600.webp",
 		highResUrl: "DSCF0275_3200.jpg",
 		title: "平面",
@@ -137,7 +126,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-08-25"
 	},
 	{
-		id: "photo13",
 		lowResUrl: "DSCF0773%201_1600.webp",
 		highResUrl: "DSCF0773%201_3200.jpg",
 		title: "里の曙",
@@ -145,7 +133,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-09-08"
 	},
 	{
-		id: "photo14",
 		lowResUrl: "DSCF0813_1600.webp",
 		highResUrl: "DSCF0813_3200.jpg",
 		title: "花火2",
@@ -153,7 +140,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-09-09"
 	},
 	{
-		id: "photo15",
 		lowResUrl: "DSCF2790_1600.webp",
 		highResUrl: "DSCF2790_3200.jpg",
 		title: "鉄塔と星",
@@ -161,7 +147,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-10-22"
 	},
 	{
-		id: "photo16",
 		lowResUrl: "DSCF8063_1600.webp",
 		highResUrl: "DSCF8063_3200.jpg",
 		title: "海と友人と",
@@ -169,7 +154,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-07-06"
 	},
 	{
-		id: "photo17",
 		lowResUrl: "DSCF8674_1600.webp",
 		highResUrl: "DSCF8674_3200.jpg",
 		title: "流しマカロニ",
@@ -177,7 +161,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2023-07-12"
 	},
 	{
-		id: "photo18",
 		lowResUrl: "DSCF9639_1600.webp",
 		highResUrl: "DSCF9639_3200.jpg",
 		title: "now on stage",
@@ -185,7 +168,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-01-05"
 	},
 	{
-		id: "photo19",
 		lowResUrl: "https://pbs.twimg.com/media/Gmzg-ceb0AAYCza?format=jpg&name=large",
 		highResUrl: "_DSF5447NR_3200.jpg",
 		title: "もし明日が来ないとしたら",
@@ -193,7 +175,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2025-02-26"
 	},
 	{
-		id: "photo20",
 		lowResUrl: "_DSF0382-強化-NR_1600.webp",
 		highResUrl: "_DSF0382-強化-NR_3200.jpg",
 		title: "呪って呪って",
@@ -201,7 +182,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2025-03-14"
 	},
 	{
-		id: "photo21",
 		lowResUrl: "_DSF0766-強化-NR_1600.webp",
 		highResUrl: "_DSF0766-強化-NR_3200.jpg",
 		title: "ぼくらのうた",
@@ -209,7 +189,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2025-03-14"
 	},
 	{
-		id: "photo22",
 		lowResUrl: "IMG_6408_1600.webp",
 		highResUrl: "IMG_6408_3200.jpg",
 		title: "お見送り",
@@ -217,7 +196,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2022-03-06"
 	},
 	{
-		id: "photo23",
 		lowResUrl: "IMG_2991_1600.webp",
 		highResUrl: "IMG_2991_3200.jpg",
 		title: "筑波山",
@@ -225,7 +203,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2022-12-14",
 	},
 	{
-		id: "photo24",
 		lowResUrl: "IMG_2173_1600.webp",
 		highResUrl: "IMG_2173_3200.jpg",
 		title: "高校、放課後",
@@ -233,7 +210,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2020-09-03",
 	},
 	{
-		id: "photo25",
 		lowResUrl: "_DSF0958_1600.webp",
 		highResUrl: "_DSF0958_3200.jpg",
 		title: "Sing Out!",
@@ -241,7 +217,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-08-27",
 	},
 	{
-		id: "photo26",
 		lowResUrl: "_DSF0869-Enhanced-NR_1600.webp",
 		highResUrl: "_DSF0869-Enhanced-NR_3200.jpg",
 		title: "Panorama",
@@ -249,7 +224,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-03-08",
 	},
 	{
-		id: "photo27",
 		lowResUrl: "_DSF1599_1600.webp",
 		highResUrl: "_DSF1599_3200.jpg",
 		title: "秋",
@@ -257,7 +231,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-11-17",
 	},
 	{
-		id: "photo28",
 		lowResUrl: "_DSF1639_1600.webp",
 		highResUrl: "_DSF1639_3200.jpg",
 		title: "銀杏",
@@ -265,7 +238,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-11-18",
 	},
 	{
-		id: "photo29",
 		lowResUrl: "_DSF2079_1600.webp",
 		highResUrl: "_DSF2079_3200.jpg",
 		title: "3A501",
@@ -273,7 +245,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-10-02",
 	},
 	{
-		id: "photo30",
 		lowResUrl: "_DSF2889_1600.webp",
 		highResUrl: "_DSF2889_3200.jpg",
 		title: "ひなたうた",
@@ -281,7 +252,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2024-09-15",
 	},
 	{
-		id: "photo31",
 		lowResUrl: "_DSF7342_1600.webp",
 		highResUrl: "_DSF7342_3200.jpg",
 		title: "桜",
@@ -289,7 +259,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2025-04-05",
 	},
 	{
-		id: "photo32",
 		lowResUrl: "_DSF2370_1600.webp",
 		highResUrl: "_DSF2370_3200.jpg",
 		title: "Spring day",
@@ -297,7 +266,6 @@ export const photos: PhotoMeta[] = addPrefixes([
 		uploadedAt: "2025-03-19",
 	},
 	{
-		id: "photo33",
 		lowResUrl: "Z91_0301_1600.webp",
 		highResUrl: "Z91_0301_3200.jpg",
 		title: "Bad girl Good girl",
