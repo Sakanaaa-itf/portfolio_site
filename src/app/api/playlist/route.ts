@@ -1,6 +1,6 @@
 // src/app/api/playlist/route.ts
 export const runtime = "nodejs"; // ← fetch で env を読むなら nodejs に
-export const revalidate = 60 * 30; // 30 分キャッシュ
+export const revalidate = 1800;
 
 interface YouTubePlaylistItem {
 	snippet: {
