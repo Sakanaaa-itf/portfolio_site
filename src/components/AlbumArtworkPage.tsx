@@ -23,19 +23,16 @@ const Container = styled.main`
 	margin: 0 auto;
 	padding: 1.5rem;
 `;
-
 const Title = styled.h1`
 	font-size: 2rem;
 	font-weight: 600;
 	margin-bottom: 1.5rem;
 `;
-
 const Grid = styled.div`
 	display: grid;
 	gap: 1rem;
 	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 `;
-
 const Figure = styled.figure`
 	position: relative;
 	width: 100%;
@@ -43,7 +40,6 @@ const Figure = styled.figure`
 	border-radius: 0.5rem;
 	overflow: hidden;
 `;
-
 const Message = styled.p`
 	text-align: center;
 	margin-top: 1rem;
@@ -58,7 +54,7 @@ export default function AlbumArtworkPage() {
 		if (error) return <Message>{error.message}</Message>;
 		if (isLoading || !data) return <Message>Loading…</Message>;
 
-		const tracks = data.tracks ?? [];
+		const tracks = data.tracks?.filter((t) => Boolean(t.art)) ?? [];
 		if (tracks.length === 0) return <Message>No tracks found.</Message>;
 
 		return (
