@@ -1,5 +1,4 @@
-// src/app/api/playlist/route.ts
-export const runtime = "nodejs"; // ← fetch で env を読むなら nodejs に
+export const runtime = "nodejs";
 export const revalidate = 1800;
 
 interface YouTubePlaylistItem {
@@ -39,7 +38,7 @@ export async function GET() {
 	const res = await fetch(url);
 	if (!res.ok) {
 		return Response.json(
-			{ tracks: [], error: await res.text() }, // ← tracks: [] を返す
+			{ tracks: [], error: await res.text() },
 			{ status: res.status }
 		);
 	}
@@ -47,10 +46,8 @@ export async function GET() {
 	const { items } = (await res.json()) as PlaylistItemsResponse;
 
 	const tracks = items.map((it) => {
-		// サムネイルオブジェクト（スニペット自体も保険）
 		const t = it.snippet?.thumbnails ?? {};
 
-		// 順に url を拾い、最後は空文字
 		const art =
 			t.maxres?.url ??
 			t.high?.url ??
