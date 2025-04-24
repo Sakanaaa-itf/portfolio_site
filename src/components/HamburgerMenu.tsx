@@ -115,6 +115,7 @@ const HamburgerMenu = () => {
 				<MenuItem href="/#about">📖 About Me</MenuItem>
 				<MenuItem href="/photoworks">📸 Photoworks</MenuItem>
 				<MenuItem href="/ramen">🍜 Ramen</MenuItem>
+				<MenuItem href="/albumartwork">🎵 Album Artwork</MenuItem>
 				<MenuItem href="/links">📩 Links</MenuItem>
 			</Menu>
 		</>
