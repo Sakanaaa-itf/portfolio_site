@@ -4,33 +4,25 @@ import { ramen } from "@/data/ramen";
 import DetailView from "./DetailView";
 import HamburgerMenu from "@/components/HamburgerMenu";
 
-const slugify = (s: string) =>
-	s
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-|-$/g, "");
-
 export function generateStaticParams() {
-	return ramen.map((r) => ({
-		slug: slugify(`${r.shop}-${r.name}-${r.date}`),
-	}));
+	return ramen.map((r) => ({ id: r.id }));
 }
 
-interface MetaProps {
-	params: Promise<{ slug: string }>;
-}
 export async function generateMetadata({
 	params,
-}: MetaProps): Promise<Metadata> {
-	const { slug } = await params;
-	const r = ramen.find((x) => slugify(`${x.shop}-${x.name}-${x.date}`) === slug);
+}: {
+	params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+	const { id } = await params;
+	const r = ramen.find((x) => x.id === id);
 	if (!r) return {};
+
 	return {
 		metadataBase: new URL("https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c"),
 		title: `${r.name} | ${r.shop}`,
 		description: `${r.location} – ${r.name}`,
 		openGraph: {
-			url: `/ramen/${slug}`,
+			url: `/ramen/${r.id}`,
 			type: "article",
 			siteName: "ふわふわ.みんな",
 			title: `${r.name} | ${r.shop}`,
@@ -46,13 +38,13 @@ export async function generateMetadata({
 	};
 }
 
-interface PageProps {
-	params: Promise<{ slug: string }>;
-}
-
-export default async function RamenDetail({ params }: PageProps) {
-	const { slug } = await params;
-	const r = ramen.find((x) => slugify(`${x.shop}-${x.name}-${x.date}`) === slug);
+export default async function RamenDetail({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = await params;
+	const r = ramen.find((x) => x.id === id);
 	if (!r) notFound();
 
 	return (
