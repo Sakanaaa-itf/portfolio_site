@@ -65,7 +65,7 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: flex-start;
-	gap: 20px;
+	gap: 10px;
 	transition: right 0.3s ease-in-out;
 	z-index: 50;
 	opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
@@ -115,6 +115,7 @@ const HamburgerMenu = () => {
 				<MenuItem href="/#about">📖 About Me</MenuItem>
 				<MenuItem href="/photoworks">📸 Photoworks</MenuItem>
 				<MenuItem href="/ramen">🍜 Ramen</MenuItem>
+				<MenuItem href="/albumartwork">🎵 Music</MenuItem>
 				<MenuItem href="/links">📩 Links</MenuItem>
 			</Menu>
 		</>
