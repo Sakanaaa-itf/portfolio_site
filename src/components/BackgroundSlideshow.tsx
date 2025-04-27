@@ -4,11 +4,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { photos } from "@/data/photos";
 
-const BlackOverlay = styled.div<{ isVisible: boolean }>`
+const BlackOverlay = styled.div<{ $isVisible: boolean }>`
 	position: absolute;
 	inset: 0;
 	background-color: black;
-	opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+	opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
 	transition: opacity 1s ease;
 `;
 
@@ -98,10 +98,9 @@ export default function BackgroundSlideshow({
 	const readyNotified = useRef(false);
 	useEffect(() => {
 		if (!readyNotified.current && loadedPhotos.length > 0) {
-			// currentIndex はデフォルト 0 のまま ⇒ 最初の画像表示 OK
 			readyNotified.current = true;
-			onReady?.(); // ★ Home に通知
-			startCycle(); // サイクル開始
+			onReady?.();
+			startCycle();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loadedPhotos, startCycle]);
@@ -110,7 +109,7 @@ export default function BackgroundSlideshow({
 
 	return (
 		<SlideshowContainer $blurAmount={blurAmount} $currentBg={currentBg}>
-			<BlackOverlay isVisible={isBlackVisible} />
+			<BlackOverlay $isVisible={isBlackVisible} />
 		</SlideshowContainer>
 	);
 }

@@ -265,6 +265,7 @@ export default function AlbumArtworkPage() {
 				</TitleRow>
 				<NoticeRow>
 					<YTNotice>
+						{/* eslint-disable-next-line @next/next/no-img-element*/}
 						<img
 							src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png"
 							alt="Developed with YouTube"
