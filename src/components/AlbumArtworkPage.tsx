@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback, memo } from "react";
+import React, { useState, useEffect, useMemo, memo } from "react";
 import { createPortal } from "react-dom";
 import useSWR from "swr";
 import Image from "next/image";
 import styled from "styled-components";
 import HamburgerMenu from "./HamburgerMenu";
 
-/* ------------- utils ------------- */
 function useWindowSize() {
 	const [s, set] = useState({ width: 0, height: 0 });
 	useEffect(() => {
@@ -27,7 +26,6 @@ interface Track {
 const fetcher = (u: string) =>
 	fetch(u).then((r) => r.json()) as Promise<{ tracks: Track[] }>;
 
-/* ------------- layout ------------- */
 const Page = styled.main`
 	position: relative;
 	width: 100vw;
@@ -64,10 +62,9 @@ const TitleRow = styled.div`
 `;
 const NoticeRow = styled.div`
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
 	gap: 0.5rem;
-	flex: 0 0 30px;
+	font-size: 11px;
 `;
 
 const YTNotice = styled.div`
@@ -75,7 +72,10 @@ const YTNotice = styled.div`
 	align-items: center;
 	gap: 0.5rem;
 	img {
-		height: 18px;
+		height: 60px;
+		@media (max-width: 767px) {
+			height: 30px;
+		}
 	}
 	a {
 		color: #fff;
@@ -85,9 +85,9 @@ const YTNotice = styled.div`
 
 const GridContainer = styled.div`
 	position: absolute;
-	top: 90px;
-	@media (min-width: 768px) {
-		top: 60px;
+	top: 60px;
+	@media (max-width: 767px) {
+		top: 90px;
 	}
 	left: 0;
 	right: 0;
@@ -114,33 +114,75 @@ const Tile = styled.div`
 	cursor: pointer;
 `;
 
+const ModalOverlay = styled.div`
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1100;
+`;
+const ModalContent = styled.div`
+	background: #000;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	position: relative;
+`;
+const CloseBtn = styled.button`
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	background: transparent;
+	border: none;
+	color: #fff;
+	font-size: 1.5rem;
+	cursor: pointer;
+`;
+const VideoBox = styled.div`
+	width: 80vw;
+	max-width: 800px;
+	aspect-ratio: 16/9;
+	background: #000;
+`;
+const VideoTitle = styled.p`
+	color: #fff;
+	margin: 0;
+	text-align: center;
+	max-width: 80vw;
+	font-size: 14px;
+`;
+
 const Footer = styled.footer`
 	position: absolute;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	padding: 0.25rem 0;
+	height: 0;
+	line-height: 10px;
 	background: rgba(0, 0, 0, 0.3);
 	backdrop-filter: blur(4px);
 	text-align: center;
-	font-size: 11px;
+	font-size: 6px;
 	color: #fff;
 `;
 
-/* ------------- memo grid ------------- */
 const MemoGrid = memo(
 	({
 		displayed,
 		cols,
 		rows,
 		tile,
-		onClick,
+		onSelect,
 	}: {
 		displayed: Track[];
 		cols: number;
 		rows: number;
 		tile: number;
-		onClick(id: string): void;
+		onSelect(id: string): void;
 	}) => (
 		<Grid
 			style={
@@ -152,7 +194,7 @@ const MemoGrid = memo(
 			}
 		>
 			{displayed.map((t) => (
-				<Tile key={t.id} onClick={() => onClick(t.id)}>
+				<Tile key={t.id} onClick={() => onSelect(t.id)}>
 					<Image src={t.art} alt={t.title} fill style={{ objectFit: "cover" }} />
 				</Tile>
 			))}
@@ -161,9 +203,10 @@ const MemoGrid = memo(
 );
 MemoGrid.displayName = "MemoGrid";
 
-/* ------------- page component ------------- */
 export default function AlbumArtworkPage() {
-	const { data, error, isLoading } = useSWR("/api/playlist", fetcher);
+	const { data } = useSWR("/api/playlist", fetcher, {
+		revalidateOnFocus: false,
+	});
 	const { width } = useWindowSize();
 
 	const tracks = useMemo(() => {
@@ -176,11 +219,11 @@ export default function AlbumArtworkPage() {
 	}, [data]);
 
 	const { cols, rows, tile } = useMemo(() => {
-		const N = tracks.length || 1;
-		if (width === 0) return { cols: 1, rows: 1, tile: 0 };
-		const max = 150,
-			min = 100,
-			minCols = 5;
+		if (!width) return { cols: 1, rows: 1, tile: 0 };
+		const N = tracks.length || 1,
+			minCols = 5,
+			max = 150,
+			min = 100;
 		let c = Math.max(minCols, Math.round(Math.sqrt(N * (width / 1080))));
 		let t = width / c;
 		while (t > max) {
@@ -194,55 +237,18 @@ export default function AlbumArtworkPage() {
 		return { cols: c, rows: Math.ceil(N / c), tile: t };
 	}, [tracks, width]);
 
-	const [state, setState] = useState<{ displayed: Track[]; remaining: Track[] }>(
-		{ displayed: [], remaining: [] }
-	);
+	const [displayed, setDisplayed] = useState<Track[]>([]);
 	useEffect(() => {
-		const cnt = cols * rows;
-		setState({ displayed: tracks.slice(0, cnt), remaining: tracks.slice(cnt) });
+		setDisplayed(tracks.slice(0, cols * rows));
 	}, [tracks, cols, rows]);
 
-	const [selectedId, setSelectedId] = useState<string | null>(null);
+	const [selId, setSelId] = useState<string | null>(null);
 	const selected = useMemo(
-		() => tracks.find((t) => t.id === selectedId) || null,
-		[tracks, selectedId]
+		() => tracks.find((t) => t.id === selId) || null,
+		[tracks, selId]
 	);
 
-	const gridEl = useMemo(
-		() => (
-			<MemoGrid
-				displayed={state.displayed}
-				cols={cols}
-				rows={rows}
-				tile={tile}
-				onClick={setSelectedId}
-			/>
-		),
-		[state.displayed, cols, rows, tile]
-	);
-
-	const modal =
-		selected &&
-		createPortal(
-			<ModalOverlay onClick={() => setSelectedId(null)}>
-				<ModalContent onClick={(e) => e.stopPropagation()}>
-					<CloseButton onClick={() => setSelectedId(null)}>&times;</CloseButton>
-					<VideoContainer>
-						<iframe
-							src={`https://www.youtube.com/embed/${selected.id}`}
-							title={selected.title}
-							frameBorder={0}
-							allowFullScreen
-							style={{ width: "100%", height: "100%" }}
-						/>
-					</VideoContainer>
-					<Title>{selected.title}</Title>
-				</ModalContent>
-			</ModalOverlay>,
-			document.body
-		);
-
-	if (isLoading || !tracks.length || error) return null;
+	if (!tracks.length) return null;
 
 	return (
 		<Page>
@@ -283,13 +289,38 @@ export default function AlbumArtworkPage() {
 			</Header>
 
 			<GridContainer>
-				{gridEl}
-				{modal}
+				<MemoGrid
+					displayed={displayed}
+					cols={cols}
+					rows={rows}
+					tile={tile}
+					onSelect={setSelId}
+				/>
+				{selected &&
+					createPortal(
+						<ModalOverlay onClick={() => setSelId(null)}>
+							<ModalContent onClick={(e) => e.stopPropagation()}>
+								<CloseBtn onClick={() => setSelId(null)}>&times;</CloseBtn>
+								<VideoBox>
+									<iframe
+										src={`https://www.youtube.com/embed/${selected.id}`}
+										title={selected.title}
+										frameBorder={0}
+										allowFullScreen
+										style={{ width: "100%", height: "100%" }}
+									/>
+								</VideoBox>
+								<VideoTitle>{selected.title}</VideoTitle>
+							</ModalContent>
+						</ModalOverlay>,
+						document.body
+					)}
 			</GridContainer>
 
 			<Footer>
-				This site uses YouTube API Services but is not endorsed by YouTube or
-				Google.
+				This site uses YouTube API Services but is not endorsed or certified by
+				YouTube or Google. Thumbnails are streamed directly from YouTube and are not
+				stored or modified.
 			</Footer>
 		</Page>
 	);
