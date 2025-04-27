@@ -34,39 +34,67 @@ const fetcher = async (url: string) => {
 
 const Page = styled.main`
 	position: relative;
-	width: 100vw; /* ビューポート幅いっぱい */
-	height: 100vh; /* ビューポート高さいっぱい */
-	overflow: hidden; /* 横スクロールを隠す */
+	width: 100vw;
+	height: 200vh;
+	overflow-x: hidden;
 `;
 
+/* ── Header全体を縦並びにし、上段: タイトル行、下段: YTNotice 行 ── */
 const Header = styled.header`
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 60px;
-	display: flex;
-	align-items: center;
+	height: 90px; /* 60px → 90px (2段分) */
 	padding: 0 1rem;
 	background: rgba(0, 0, 0, 0.4);
 	backdrop-filter: blur(5px);
 	z-index: 1001;
+
+	display: flex;
+	flex-direction: column; /* ← 縦並びに変更 */
+	justify-content: center;
 `;
 
-const PageTitle = styled.h1`
-	margin: 0 0 0 1rem;
-	font-size: 24px;
-	font-weight: bold;
+/* タイトル行用ラッパー（上段） */
+const TitleRow = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex: 0 0 60px; /* 高さ 60px 固定 */
 `;
 
+/* YTNotice はそのまま使うが、下段に配置するため余白を調整 */
+const NoticeRow = styled.div`
+	display: flex;
+	justify-content: flex-end; /* 右寄せ */
+	align-items: center;
+	gap: 0.5rem;
+	flex: 0 0 30px; /* 高さ 30px */
+`;
+
+/* 既存 YTNotice スタイルを適用 */
+const YTNotice = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	img {
+		height: 18px;
+	}
+	a {
+		color: #fff;
+		font-size: 11px;
+	}
+`;
+
+/* GridContainer の top をヘッダー高に合わせて 90px へ */
 const GridContainer = styled.div`
 	position: absolute;
-	top: 60px;
+	top: 90px; /* ← 変更 */
 	left: 0;
 	right: 0;
 	bottom: 0;
 	overflow: hidden;
-
 	body.menu-open & {
 		filter: blur(5px);
 	}
@@ -162,6 +190,19 @@ const Title = styled.p`
 	margin: 0;
 	text-align: center;
 	max-width: 80vw;
+`;
+
+const Footer = styled.footer`
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 0.25rem 0;
+	background: rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(4px);
+	text-align: center;
+	font-size: 11px;
+	color: #fff;
 `;
 
 const FlipTile = memo(
@@ -356,26 +397,50 @@ export default function AlbumArtworkPage() {
 	return (
 		<Page>
 			<Header>
-				<HamburgerMenu />
-				<PageTitle>Music</PageTitle>
-				<a
-					href="https://youtube.com"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png?hl=ja"
-						alt="YouTubeロゴ"
-						width={200}
-						height={65}
-					/>
-				</a>
-			</Header>
+				<TitleRow>
+					<HamburgerMenu />
+					<Title>Music</Title>
+				</TitleRow>
 
+				<NoticeRow>
+					<YTNotice>
+						<img
+							src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png"
+							alt="Developed with YouTube"
+						/>
+						<a
+							href="https://developers.google.com/youtube/terms/api-services-terms-of-service"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							API TOS
+						</a>
+						<a
+							href="https://www.youtube.com/t/terms"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							YouTube TOS
+						</a>
+						<a
+							href="https://policies.google.com/privacy"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Privacy Policy
+						</a>
+					</YTNotice>
+				</NoticeRow>
+			</Header>
 			<GridContainer>
 				{grid}
 				{modal}
 			</GridContainer>
+			<Footer>
+				This site uses YouTube API Services but is not endorsed or certified by
+				YouTube or Google. Thumbnails are streamed directly from YouTube and are not
+				stored or modified.
+			</Footer>
 		</Page>
 	);
 }
