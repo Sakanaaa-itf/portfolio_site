@@ -195,7 +195,13 @@ const MemoGrid = memo(
 		>
 			{displayed.map((t) => (
 				<Tile key={t.id} onClick={() => onSelect(t.id)}>
-					<Image src={t.art} alt={t.title} fill style={{ objectFit: "cover" }} />
+					<Image
+						src={t.art}
+						alt={t.title}
+						fill
+						unoptimized
+						style={{ objectFit: "cover" }}
+					/>
 				</Tile>
 			))}
 		</Grid>
