@@ -1,3 +1,6 @@
+// src/app/api/playlist/route.ts
+import { NextResponse } from "next/server";
+
 export const runtime = "nodejs";
 export const revalidate = 1800;
 
@@ -15,39 +18,48 @@ interface YouTubePlaylistItem {
 	};
 }
 
-interface PlaylistItemsResponse {
+interface PlaylistPage {
 	items: YouTubePlaylistItem[];
+	nextPageToken?: string;
 }
 
 export async function GET() {
 	const API_KEY = process.env.YOUTUBE_API_KEY!;
 	const PLAYLIST_ID = process.env.PLAYLIST_ID!;
-
 	if (!API_KEY || !PLAYLIST_ID) {
-		return Response.json(
-			{ error: ".env.local が設定されていません" },
+		return NextResponse.json(
+			{ error: ".env.localが設定されていません" },
 			{ status: 500 }
 		);
 	}
 
-	const url =
-		`https://www.googleapis.com/youtube/v3/playlistItems` +
-		`?part=snippet&maxResults=50&playlistId=${PLAYLIST_ID}` +
-		`&key=${API_KEY}`;
+	const baseUrl = "https://www.googleapis.com/youtube/v3/playlistItems";
+	let allItems: YouTubePlaylistItem[] = [];
+	let nextPageToken: string | undefined = undefined;
 
-	const res = await fetch(url);
-	if (!res.ok) {
-		return Response.json(
-			{ tracks: [], error: await res.text() },
-			{ status: res.status }
-		);
-	}
+	// 50件ずつループ取得
+	do {
+		const url = new URL(baseUrl);
+		url.searchParams.set("part", "snippet");
+		url.searchParams.set("playlistId", PLAYLIST_ID);
+		url.searchParams.set("maxResults", "50");
+		if (nextPageToken) url.searchParams.set("pageToken", nextPageToken);
+		url.searchParams.set("key", API_KEY);
 
-	const { items } = (await res.json()) as PlaylistItemsResponse;
+		const res = await fetch(url.toString());
+		if (!res.ok) {
+			const err = await res.text();
+			return NextResponse.json({ tracks: [], error: err }, { status: res.status });
+		}
 
-	const tracks = items.map((it) => {
-		const t = it.snippet?.thumbnails ?? {};
+		const page = (await res.json()) as PlaylistPage;
+		allItems = allItems.concat(page.items || []);
+		nextPageToken = page.nextPageToken;
+	} while (nextPageToken);
 
+	// 一気にマッピング
+	const tracks = allItems.map((it) => {
+		const t = it.snippet.thumbnails ?? {};
 		const art =
 			t.maxres?.url ??
 			t.high?.url ??
@@ -63,5 +75,5 @@ export async function GET() {
 		};
 	});
 
-	return Response.json({ tracks });
+	return NextResponse.json({ tracks });
 }
