@@ -55,7 +55,7 @@ const Header = styled.header`
 
 const PageTitle = styled.h1`
 	margin: 0 0 0 1rem;
-	font-size: 1.25rem;
+	font-size: 24px;
 	font-weight: bold;
 `;
 
@@ -357,7 +357,19 @@ export default function AlbumArtworkPage() {
 		<Page>
 			<Header>
 				<HamburgerMenu />
-				<PageTitle>Favorite Musics</PageTitle>
+				<PageTitle>Music</PageTitle>
+				<a
+					href="https://youtube.com"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<Image
+						src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png?hl=ja"
+						alt="YouTubeロゴ"
+						width={200}
+						height={65}
+					/>
+				</a>
 			</Header>
 
 			<GridContainer>
