@@ -325,9 +325,7 @@ export default function AlbumArtworkPage() {
 			</GridContainer>
 
 			<Footer>
-				This site uses YouTube API Services but is not endorsed or certified by
-				YouTube or Google. Thumbnails are streamed directly from YouTube and are not
-				stored or modified.
+				This site uses YouTube API Services but is not endorsed or certified by YouTube or Google. Thumbnails are streamed directly from YouTube and are not stored or modified.
 			</Footer>
 		</Page>
 	);
