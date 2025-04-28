@@ -399,4 +399,12 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "純鶏そば 塩",
 		date: "2025-04-23",
 	},
+	{
+		lowResUrl: "IMG_5294_400.webp",
+		highResUrl: "IMG_5294_1600.webp",
+		shop: "横濱家系 たくみ家 桜土浦インター店",
+		location: "茨城県土浦市中村西根２５８",
+		name: "豚そば",
+		date: "2025-04-28",
+	},
 ]);
