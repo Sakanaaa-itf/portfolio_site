@@ -6,6 +6,7 @@ import Link from "next/link";
 import { photos, PhotoMeta } from "@/data/photos";
 import HamburgerMenu from "./HamburgerMenu";
 import AppLoader from "./AppLoader";
+import theme from "@/styles/theme";
 
 const Container = styled.div`
 	max-width: 1200px;
@@ -28,7 +29,7 @@ const PhotoGrid = styled.div<{ $isSmall?: boolean }>`
 	margin-bottom: 2rem;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
-	@media (max-width: 768px) {
+	@media (max-width: ${theme.breakpoints.tablet}) {
 		${({ $isSmall }) => $isSmall && "grid-template-columns: repeat(2, 1fr);"}
 	}
 `;

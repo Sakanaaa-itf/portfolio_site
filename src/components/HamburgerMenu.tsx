@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import theme from "@/styles/theme";
 
 const MenuButton = styled.button<{ $isOpen: boolean }>`
 	position: fixed;
@@ -42,7 +43,7 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)")};
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: ${theme.breakpoints.mobile}) {
 		width: 30px;
 		height: 30px;
 
@@ -71,7 +72,7 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
 	transition: right 0.3s ease-in-out, opacity 0.3s ease-in-out;
 
-	@media (max-width: 480px) {
+	@media (max-width: ${theme.breakpoints.mobile}) {
 		width: 160px;
 	}
 `;
@@ -87,7 +88,7 @@ const MenuItem = styled(Link)`
 		color: #0070f3;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: ${theme.breakpoints.mobile}) {
 		font-size: 14px;
 	}
 `;
