@@ -152,7 +152,7 @@ const ProfileWrapper = styled.div`
 	align-items: center;
 	margin-bottom: 2rem;
 
-	@media (max-width: 480px) {
+	@media (max-width: ${theme.breakpoints.tablet}) {
 		transform: translateX(0);
 		transition: transform 0.3s ease-in-out;
 

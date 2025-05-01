@@ -6,6 +6,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import styled from "styled-components";
 import HamburgerMenu from "./HamburgerMenu";
+import theme from "@/styles/theme";
 
 function useWindowSize() {
 	const [s, set] = useState({ width: 0, height: 0 });
@@ -46,7 +47,7 @@ const Header = styled.header`
 	align-items: center;
 	height: 60px;
 
-	@media (max-width: 767px) {
+	@media (max-width: ${theme.breakpoints.mobile}) {
 		flex-direction: column;
 		height: 90px;
 		align-items: flex-start;
@@ -73,7 +74,7 @@ const YTNotice = styled.div`
 	gap: 0.5rem;
 	img {
 		height: 60px;
-		@media (max-width: 767px) {
+		@media (max-width: ${theme.breakpoints.mobile}) {
 			height: 30px;
 		}
 	}
@@ -86,7 +87,7 @@ const YTNotice = styled.div`
 const GridContainer = styled.div`
 	position: absolute;
 	top: 60px;
-	@media (max-width: 767px) {
+	@media (max-width: ${theme.breakpoints.mobile}) {
 		top: 90px;
 	}
 	left: 0;
