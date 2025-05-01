@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import theme from "../styles/theme";
+import theme from "@/styles/theme";
 
 const MenuButton = styled.button<{ $isOpen: boolean }>`
 	position: fixed;
