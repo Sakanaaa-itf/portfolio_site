@@ -25,7 +25,7 @@ const Text = styled.p`
 	font-size: 14px;
 `;
 
-export default function DetailView({ ramen }: { ramen: RamenMeta }) {
+export default function RamenDetailPage({ ramen }: { ramen: RamenMeta }) {
 	return (
 		<Wrapper>
 			<FullImg
