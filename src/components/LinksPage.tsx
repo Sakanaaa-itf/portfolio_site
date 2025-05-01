@@ -11,7 +11,7 @@ const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	max-width: 100vw; /* はみ出し防止 */
+	max-width: 100vw;
 	overflow: hidden;
 	background-image: url("/DSCF0546.webp");
 	background-size: cover;
