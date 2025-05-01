@@ -407,4 +407,28 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "豚そば",
 		date: "2025-04-28",
 	},
+	{
+		lowResUrl: "IMG_5305_400.webp",
+		highResUrl: "IMG_5305_1600.webp",
+		shop: "喜元門 サイエンス大通り店",
+		location: "茨城県つくば市上横場２７３−６",
+		name: "まぜそば",
+		date: "2025-04-29",
+	},
+	{
+		lowResUrl: "IMG_5312_400.webp",
+		highResUrl: "IMG_5312_1600.webp",
+		shop: "特級鶏蕎麦龍介 テクノパーク桜店",
+		location: "茨城県つくば市桜1丁目23-7",
+		name: "濃厚鶏そば",
+		date: "2025-04-30",
+	},
+	{
+		lowResUrl: "IMG_5315_400.webp",
+		highResUrl: "IMG_5315_1600.webp",
+		shop: "特級鶏蕎麦龍介 テクノパーク桜店",
+		location: "茨城県つくば市桜1丁目23-7",
+		name: "豚そば",
+		date: "2025-04-30",
+	}
 ]);
