@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ramen } from "@/data/ramen";
-import DetailView from "./DetailView";
+import DetailView from "../../../components/RamenDetailPage";
 import HamburgerMenu from "@/components/HamburgerMenu";
 
 export function generateStaticParams() {

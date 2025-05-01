@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GlobalStyle } from "../styles/globalStyles";
-import ThemeProvider from "@/components/ThemeProvider";
+import ThemeProvider from "@/styles/ThemeProvider";
 import { jetbrainsMono, udevGothic } from "@/styles/fonts";
 
 export const metadata: Metadata = {

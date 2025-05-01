@@ -36,7 +36,6 @@ export const getExifDataForPhoto = async (
 	photo: PhotoMeta
 ): Promise<ExifData | null> => {
 	try {
-		// キャッシュ無効化のために { cache: "no-store" } を指定
 		const response = await fetch(photo.lowResUrl, { cache: "no-store" });
 		const blob = await response.blob();
 		const exif = await exifr.parse(blob);
@@ -54,12 +53,11 @@ export const getExifDataForPhoto = async (
 				? formatShutterSpeed(exif.ExposureTime)
 				: "-",
 			iso: exif?.ISO || "-",
-			focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-", // 焦点距離を追加
+			focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-",
 		};
 	} catch (errorLow) {
 		console.error(`EXIF 取得失敗 (lowRes): ${photo.id}`, errorLow);
 		try {
-			// highResUrl でもキャッシュを使わないように指定
 			const response = await fetch(photo.highResUrl, { cache: "no-store" });
 			const blob = await response.blob();
 			const exif = await exifr.parse(blob);
@@ -73,7 +71,7 @@ export const getExifDataForPhoto = async (
 					? formatShutterSpeed(exif.ExposureTime)
 					: "-",
 				iso: exif?.ISO || "-",
-				focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-", // 焦点距離を追加
+				focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-",
 			};
 		} catch (errorHigh) {
 			console.error(`EXIF 取得失敗 (highRes): ${photo.id}`, errorHigh);
