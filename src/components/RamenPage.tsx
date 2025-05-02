@@ -52,7 +52,7 @@ const Overlay = styled.div`
 
 export default function RamenList() {
 	const sorted = [...ramen].sort(
-		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 	);
 
 	return (

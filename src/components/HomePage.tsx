@@ -41,7 +41,8 @@ const Title = styled.h1`
 	font-weight: 700;
 	padding: 1rem;
 	white-space: nowrap;
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8),
+	text-shadow:
+		2px 2px 4px rgba(0, 0, 0, 0.8),
 		/* 黒い影 */ -2px -2px 4px rgba(255, 255, 255, 0.8); /* 白い影 */
 
 	@media (max-width: ${theme.breakpoints.tablet}) {
@@ -69,7 +70,9 @@ const AboutMeWrapper = styled.section`
 	);
 	color: white;
 	font-size: 24px;
-	transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+	transition:
+		transform 0.8s ease-in-out,
+		opacity 0.8s ease-in-out;
 	transform: translateY(0);
 	opacity: 1;
 	padding: 2rem;
@@ -103,11 +106,13 @@ const ProfileCard = styled.div<{ $isFlipped: boolean }>`
 	}
 
 	.front {
-		transform: ${(props) => props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
+		transform: ${(props) =>
+			props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
 	}
 
 	.back {
-		transform: ${(props) => props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"};
+		transform: ${(props) =>
+			props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"};
 		background: white;
 		color: black;
 		font-size: 14px;

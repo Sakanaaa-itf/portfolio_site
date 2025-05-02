@@ -17,9 +17,9 @@ const Main = styled.main`
 `;
 
 const Content = styled.div`
-    body.menu-open & {
-    filter: blur(5px);
-    }
+	body.menu-open & {
+		filter: blur(5px);
+	}
 `;
 
 const Title = styled.h1`

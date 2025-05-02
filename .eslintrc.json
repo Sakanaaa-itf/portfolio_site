@@ -1,0 +1,42 @@
+{
+	"extends": [
+		"next/core-web-vitals",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:sort-keys-fix/recommended",
+		"plugin:unused-imports/recommended",
+		"prettier"
+	],
+	"plugins": [
+		"import",
+		"sort-keys-fix",
+		"typescript-sort-keys",
+		"unused-imports"
+	],
+	"rules": {
+		"import/order": [
+			"error",
+			{
+				"groups": [
+					"builtin",
+					"external",
+					"internal",
+					"parent",
+					"sibling",
+					"index",
+					"object",
+					"type"
+				],
+				"newlines-between": "always",
+				"alphabetize": {
+					"order": "asc"
+				}
+			}
+		],
+		"import/no-duplicates": "error",
+		"@next/next/no-img-element": "off",
+		"react/jsx-sort-props": "error",
+		"sort-keys-fix/sort-keys-fix": "error",
+		"typescript-sort-keys/interface": "error",
+		"unused-imports/no-unused-imports": "error"
+	}
+}

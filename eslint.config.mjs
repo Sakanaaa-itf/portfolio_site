@@ -16,6 +16,7 @@ const eslintConfig = [
 			indent: ["error", "tab"],
 			"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 		},
+		ignores: ["**/node_modules/**", "**/.next/**", "**/dist/**", "**/env.d.ts"],
 	},
 ];
 

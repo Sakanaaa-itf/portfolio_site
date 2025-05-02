@@ -26,12 +26,15 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 		width: 40px;
 		height: 4px;
 		background: white;
-		transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+		transition:
+			transform 0.3s ease-in-out,
+			opacity 0.3s ease-in-out;
 		position: absolute;
 	}
 
 	span:nth-child(1) {
-		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(45deg)" : "translateY(-12px)")};
+		transform: ${({ $isOpen }) =>
+			$isOpen ? "translateY(0) rotate(45deg)" : "translateY(-12px)"};
 	}
 
 	span:nth-child(2) {
@@ -40,7 +43,8 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 	}
 
 	span:nth-child(3) {
-		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)")};
+		transform: ${({ $isOpen }) =>
+			$isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)"};
 	}
 
 	@media (max-width: ${theme.breakpoints.mobile}) {
@@ -70,7 +74,9 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	transition: right 0.3s ease-in-out;
 	z-index: 50;
 	opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
-	transition: right 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	transition:
+		right 0.3s ease-in-out,
+		opacity 0.3s ease-in-out;
 
 	@media (max-width: ${theme.breakpoints.mobile}) {
 		width: 160px;
@@ -82,7 +88,9 @@ const MenuItem = styled(Link)`
 	font-size: 20px;
 	text-decoration: none;
 	transition: color 0.3s ease-in-out;
-	text-shadow: 0 0 15px rgba(0, 0, 0, 1), 4px 4px 30px rgba(0, 0, 0, 1);
+	text-shadow:
+		0 0 15px rgba(0, 0, 0, 1),
+		4px 4px 30px rgba(0, 0, 0, 1);
 
 	&:hover {
 		color: #0070f3;

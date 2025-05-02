@@ -206,7 +206,7 @@ const MemoGrid = memo(
 				</Tile>
 			))}
 		</Grid>
-	)
+	),
 );
 MemoGrid.displayName = "MemoGrid";
 
@@ -252,7 +252,7 @@ export default function AlbumArtworkPage() {
 	const [selId, setSelId] = useState<string | null>(null);
 	const selected = useMemo(
 		() => tracks.find((t) => t.id === selId) || null,
-		[tracks, selId]
+		[tracks, selId],
 	);
 
 	if (!tracks.length) return null;
@@ -321,12 +321,14 @@ export default function AlbumArtworkPage() {
 								<VideoTitle>{selected.title}</VideoTitle>
 							</ModalContent>
 						</ModalOverlay>,
-						document.body
+						document.body,
 					)}
 			</GridContainer>
 
 			<Footer>
-				This site uses YouTube API Services but is not endorsed or certified by YouTube or Google. Thumbnails are streamed directly from YouTube and are not stored or modified.
+				This site uses YouTube API Services but is not endorsed or certified by
+				YouTube or Google. Thumbnails are streamed directly from YouTube and are not
+				stored or modified.
 			</Footer>
 		</Page>
 	);

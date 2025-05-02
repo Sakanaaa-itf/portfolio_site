@@ -22,7 +22,7 @@ export const formatDate = (date: Date | string | undefined): string => {
 };
 
 export const formatShutterSpeed = (
-	exposureTime: number | undefined
+	exposureTime: number | undefined,
 ): string => {
 	if (!exposureTime) return "-";
 	if (exposureTime < 1) {
@@ -33,7 +33,7 @@ export const formatShutterSpeed = (
 };
 
 export const getExifDataForPhoto = async (
-	photo: PhotoMeta
+	photo: PhotoMeta,
 ): Promise<ExifData | null> => {
 	try {
 		const response = await fetch(photo.lowResUrl, { cache: "no-store" });

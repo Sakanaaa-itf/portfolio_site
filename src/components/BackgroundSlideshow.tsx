@@ -60,8 +60,8 @@ export default function BackgroundSlideshow({
 							img.src = photo.highResUrl;
 							img.onload = () => resolve(photo.highResUrl);
 							img.onerror = () => resolve("");
-						})
-				)
+						}),
+				),
 			);
 			setLoadedPhotos(loadedUrls.filter((url) => url));
 		};

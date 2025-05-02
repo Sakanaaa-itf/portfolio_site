@@ -7,9 +7,11 @@ export async function generateStaticParams() {
 	return photos.map((p) => ({ id: p.id }));
 }
 
-export async function generateMetadata(
-	{ params }: { params: Promise<{ id: string }> }
-): Promise<Metadata> {
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}): Promise<Metadata> {
 	const { id } = await params;
 	const photo = photos.find((p) => p.id === id);
 	if (!photo) return {};
@@ -35,9 +37,11 @@ export async function generateMetadata(
 	};
 }
 
-export default async function PhotoworksDetailPage(
-	{ params }: { params: Promise<{ id: string }> }
-) {
+export default async function PhotoworksDetailPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
 	const { id } = await params;
 
 	const photoIndex = photos.findIndex((p) => p.id === id);

@@ -29,7 +29,7 @@ export async function GET() {
 	if (!API_KEY || !PLAYLIST_ID) {
 		return NextResponse.json(
 			{ error: ".env.localが設定されていません" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 

@@ -18,7 +18,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="ja" className={`${jetbrainsMono.variable} ${udevGothic.variable}`}>
+		<html
+			lang="ja"
+			className={`${jetbrainsMono.variable} ${udevGothic.variable}`}
+		>
 			<body>
 				<ThemeProvider>
 					<GlobalStyle />

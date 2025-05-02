@@ -302,7 +302,8 @@ export const photos: PhotoMeta[] = addPrefixes([
 		lowResUrl: "_DSF7065_1600.webp",
 		highResUrl: "_DSF7065_3200.jpg",
 		title: "ゾクゾク",
-		comment: "UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n ハイネ 様",
+		comment:
+			"UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n ハイネ 様",
 		uploadedAt: "2025-03-23",
 	},
 ]);

@@ -102,7 +102,7 @@ const IconWrapper = styled.div`
 	height: 64px;
 	border-radius: 50%;
 	background-color: white;
-    border: 1px solid #333333;
+	border: 1px solid #333333;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -146,7 +146,8 @@ const LINKS = [
 	{
 		name: "it4pstudio.com",
 		url: "https://it4pstudio.com/",
-		customIcon: "https://pbs.twimg.com/profile_images/1797530605137416192/zy_0ipa1_400x400.jpg",
+		customIcon:
+			"https://pbs.twimg.com/profile_images/1797530605137416192/zy_0ipa1_400x400.jpg",
 		fallbackFavicon: "",
 	},
 	{
@@ -154,7 +155,7 @@ const LINKS = [
 		url: "https://uekann.com/",
 		customIcon: "",
 		fallbackFavicon: "",
-	}
+	},
 ];
 
 export default function LinksPage() {

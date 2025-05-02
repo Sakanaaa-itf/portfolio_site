@@ -430,5 +430,5 @@ export const ramen: RamenMeta[] = addPrefixes([
 		location: "茨城県つくば市桜1丁目23-7",
 		name: "豚そば",
 		date: "2025-04-30",
-	}
+	},
 ]);

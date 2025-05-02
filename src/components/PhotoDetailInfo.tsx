@@ -72,7 +72,7 @@ function formatText(text: string) {
 					</LinkText>
 				) : (
 					part
-				)
+				),
 			)}
 			{i !== text.length - 1 && <br />}
 		</span>
@@ -99,9 +99,9 @@ export default function CommentExif({ photo }: { photo: PhotoMeta }) {
 	}, [photo]);
 
 	const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-		`Check out this photo: "${photo.title}" \n`
+		`Check out this photo: "${photo.title}" \n`,
 	)}&url=${encodeURIComponent(
-		`https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`
+		`https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`,
 	)}`;
 
 	return (
