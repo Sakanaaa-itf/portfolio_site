@@ -431,4 +431,12 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "豚そば",
 		date: "2025-04-30",
 	},
+	{
+		lowResUrl: "IMG_5354_400.webp",
+		highResUrl: "IMG_5354_1600.webp",
+		shop: "松屋製麺所",
+		location: "茨城県つくば市沼田300番地",
+		name: "ちゃーしゅー麺",
+		date: "2025-05-02",
+	},
 ]);
