@@ -50,7 +50,7 @@ const Overlay = styled.div`
 	transition: all 0.3s ease;
 `;
 
-export default function RamenList() {
+export default function RamenPage() {
 	const sorted = [...ramen].sort(
 		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
 	);

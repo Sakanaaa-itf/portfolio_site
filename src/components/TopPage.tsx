@@ -167,7 +167,7 @@ const Name = styled.h3`
 	font-weight: 700;
 `;
 
-export default function Home() {
+export default function TopPage() {
 	const [scrollAmount, setScrollAmount] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isFadingOut, setIsFadingOut] = useState(false);

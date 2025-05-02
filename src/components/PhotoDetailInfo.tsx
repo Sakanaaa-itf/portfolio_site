@@ -79,7 +79,7 @@ function formatText(text: string) {
 	));
 }
 
-export default function CommentExif({ photo }: { photo: PhotoMeta }) {
+export default function PhotoDetailInfo({ photo }: { photo: PhotoMeta }) {
 	const { isMobile } = useDevice();
 	const [exif, setExif] = useState<ExifData | null>(null);
 
