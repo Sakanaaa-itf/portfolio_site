@@ -1,4 +1,3 @@
-// src/app/api/playlist/route.ts
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -34,7 +33,6 @@ export async function GET() {
 	let allItems: YouTubePlaylistItem[] = [];
 	let nextPageToken: string | undefined = undefined;
 
-	// 50件ずつループ取得
 	do {
 		const url = new URL(baseUrl);
 		url.searchParams.set("part", "snippet");
@@ -54,7 +52,6 @@ export async function GET() {
 		nextPageToken = page.nextPageToken;
 	} while (nextPageToken);
 
-	// 一気にマッピング
 	const tracks = allItems.map((it) => {
 		const t = it.snippet.thumbnails ?? {};
 		const art =
