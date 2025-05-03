@@ -6,10 +6,10 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
-		"lint:style": "stylelint --ignore-path .gitignore './**/*.{css,scss}'",
-		"lint:style:fix": "stylelint --ignore-path .gitignore --fix './**/*.{css,scss}'",
+		"lint": "eslint . --ignore-path .gitignore",
+		"lint:fix": "eslint . --fix --ignore-path .gitignore",
+		"lint:style": "stylelint --ignore-path .gitignore 'src/**/*.{css,js,jsx,ts,tsx}'",
+		"lint:style:fix": "stylelint --fix --ignore-path .gitignore 'src/**/*.{css,js,jsx,ts,tsx}'",
 		"format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css,scss}'"
 	},
 	"dependencies": {
@@ -25,6 +25,7 @@
 	"devDependencies": {
 		"@cloudflare/next-on-pages": "^1.13.8",
 		"@eslint/eslintrc": "^3",
+		"@eslint/js": "^9.26.0",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
@@ -32,13 +33,19 @@
 		"eslint": "^8.57.1",
 		"eslint-config-next": "15.2.0",
 		"eslint-config-prettier": "^10.1.2",
+		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-sort-keys-fix": "^1.1.2",
 		"eslint-plugin-typescript-sort-keys": "^3.3.0",
 		"eslint-plugin-unused-imports": "^4.1.4",
+		"globals": "^16.0.0",
+		"postcss-styled-syntax": "^0.7.1",
 		"prettier": "^3.5.3",
-		"stylelint": "^16.19.1",
 		"stylelint-config-recess-order": "^6.0.0",
+		"stylelint-config-recommended": "^16.0.0",
 		"stylelint-config-standard": "^38.0.0",
-		"typescript": "^5"
+		"stylelint-order": "^7.0.0",
+		"stylelint-processor-styled-components": "^1.10.0",
+		"typescript": "^5",
+		"typescript-eslint": "^8.31.1"
 	}
 }

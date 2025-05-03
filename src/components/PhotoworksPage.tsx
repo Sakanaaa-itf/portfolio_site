@@ -1,17 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
+
 import { photos, PhotoMeta } from "@/data/photos";
-import HamburgerMenu from "./HamburgerMenu";
-import AppLoader from "./AppLoader";
 import theme from "@/styles/theme";
+
+import AppLoader from "./AppLoader";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Container = styled.div`
 	max-width: 1200px;
-	margin: 0 auto;
 	padding: 1rem;
+	margin: 0 auto;
 	transition: filter 0.3s ease-in-out;
 	body.menu-open & {
 		filter: blur(5px);
@@ -19,15 +21,15 @@ const Container = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-	font-size: 24px;
 	margin-bottom: 1rem;
+	font-size: 24px;
 `;
 
 const PhotoGrid = styled.div<{ $isSmall?: boolean }>`
 	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 1rem;
 	margin-bottom: 2rem;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
 	@media (max-width: ${theme.breakpoints.tablet}) {
 		${({ $isSmall }) => $isSmall && "grid-template-columns: repeat(2, 1fr);"}
@@ -35,15 +37,15 @@ const PhotoGrid = styled.div<{ $isSmall?: boolean }>`
 `;
 
 const PhotoItemContainer = styled.figure<{ $isSquare: boolean }>`
-	width: 100%;
-	cursor: pointer;
 	position: relative;
+	width: 100%;
 	margin: 0;
+	cursor: pointer;
 `;
 
 const ImageWrapper = styled.div<{ $isSquare: boolean }>`
-	width: 100%;
 	position: relative;
+	width: 100%;
 	padding-top: ${({ $isSquare }) => ($isSquare ? "100%" : "70%")};
 	overflow: hidden;
 `;
@@ -58,24 +60,18 @@ const StyledImage = styled.img`
 `;
 
 const FigCaption = styled.figcaption`
+	width: 90%;
 	margin-top: 0.5rem;
 	font-size: 12px;
 	color: #ccc;
 	text-align: center;
-	width: 90%;
 `;
 
-function PhotoThumbnail({
-	photo,
-	isSquare,
-}: {
-	photo: PhotoMeta;
-	isSquare: boolean;
-}) {
+function PhotoThumbnail({ photo, isSquare }: { isSquare: boolean; photo: PhotoMeta }) {
 	return (
 		<PhotoItemContainer $isSquare={isSquare}>
 			<ImageWrapper $isSquare={isSquare}>
-				<StyledImage src={photo.lowResUrl} alt={photo.title} />
+				<StyledImage alt={photo.title} src={photo.lowResUrl} />
 			</ImageWrapper>
 			{!isSquare && <FigCaption>{photo.title}</FigCaption>}
 		</PhotoItemContainer>
@@ -108,12 +104,12 @@ export default function PhotoworksPage() {
 				<PhotoGrid>
 					{recentPhotos.map((photo) => (
 						<Link
-							key={photo.id}
 							href={`/photoworks/${photo.id}`}
+							key={photo.id}
 							scroll={false}
 							style={{ textDecoration: "none" }}
 						>
-							<PhotoThumbnail photo={photo} isSquare={false} />
+							<PhotoThumbnail isSquare={false} photo={photo} />
 						</Link>
 					))}
 				</PhotoGrid>
@@ -122,12 +118,12 @@ export default function PhotoworksPage() {
 				<PhotoGrid $isSmall={true}>
 					{otherPhotos.map((photo) => (
 						<Link
-							key={photo.id}
 							href={`/photoworks/${photo.id}`}
+							key={photo.id}
 							scroll={false}
 							style={{ textDecoration: "none" }}
 						>
-							<PhotoThumbnail photo={photo} isSquare={true} />
+							<PhotoThumbnail isSquare={true} photo={photo} />
 						</Link>
 					))}
 				</PhotoGrid>

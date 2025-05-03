@@ -2,44 +2,46 @@
 
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+
 import theme from "../styles/theme";
-import HamburgerMenu from "./HamburgerMenu";
+
 import AppLoader from "./AppLoader";
 import BackgroundSlideshow from "./BackgroundSlideshow";
+import HamburgerMenu from "./HamburgerMenu";
 
 const ContentWrapper = styled.div`
 	position: relative;
-	width: 100%;
-	min-height: 200vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 200vh;
 `;
 
 const TitleWrapper = styled.div<{ $opacity: number }>`
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
 	align-items: center;
-	text-align: center;
+	justify-content: center;
 	height: 100vh;
+	text-align: center;
 	opacity: ${(props) => props.$opacity};
 	transition: opacity 0.5s ease-in-out;
 
 	@media (max-width: ${theme.breakpoints.tablet}) {
 		flex-direction: column;
 		align-items: flex-end;
-		width: max-content;
 		justify-self: center;
+		width: max-content;
 	}
 `;
 
 const Title = styled.h1`
-	color: white;
+	padding: 1rem;
 	font-size: 80px;
 	font-weight: 700;
-	padding: 1rem;
+	color: white;
 	white-space: nowrap;
 	text-shadow:
 		2px 2px 4px rgba(0, 0, 0, 0.8),
@@ -57,85 +59,79 @@ const Title = styled.h1`
 `;
 
 const AboutMeWrapper = styled.section`
-	width: 100%;
-	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	background: linear-gradient(
-		to bottom,
-		rgba(0, 0, 0, 0) 0%,
-		rgba(34, 34, 34, 0.8) 100%
-	);
-	color: white;
+	justify-content: center;
+	width: 100%;
+	height: 100vh;
+	padding: 2rem;
 	font-size: 24px;
+	color: white;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(34, 34, 34, 0.8) 100%);
+	opacity: 1;
+	transform: translateY(0);
 	transition:
 		transform 0.8s ease-in-out,
 		opacity 0.8s ease-in-out;
-	transform: translateY(0);
-	opacity: 1;
-	padding: 2rem;
 `;
 
 const AboutMeTitle = styled.h2`
+	margin-bottom: 1rem;
 	font-size: 36px;
 	font-weight: 700;
-	margin-bottom: 1rem;
 	text-align: center;
 `;
 
 const ProfileCard = styled.div<{ $isFlipped: boolean }>`
+	position: relative;
 	width: 150px;
 	height: 150px;
-	position: relative;
-	perspective: 1000px;
-	cursor: pointer;
 	margin-bottom: 1rem;
+	cursor: pointer;
+	perspective: 1000px;
 
 	& > div {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
 		height: 100%;
-		position: absolute;
-		backface-visibility: hidden;
-		transition: transform 0.6s ease-in-out;
 		border-radius: 50%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		transition: transform 0.6s ease-in-out;
+		backface-visibility: hidden;
 	}
 
 	.front {
-		transform: ${(props) =>
-			props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"};
+		transform: ${(props) => (props.$isFlipped ? "rotateY(180deg)" : "rotateY(0deg)")};
 	}
 
 	.back {
-		transform: ${(props) =>
-			props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"};
-		background: white;
-		color: black;
 		font-size: 14px;
 		font-weight: bold;
+		color: black;
+		background: white;
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+		transform: ${(props) => (props.$isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)")};
 	}
 `;
 
 const ProfileIcon = styled.img`
 	width: 100%;
 	height: 100%;
-	border-radius: 50%;
 	object-fit: cover;
 	border: 3px solid white;
+	border-radius: 50%;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 `;
 
 const ProfileLink = styled.a`
-	color: black;
-	text-decoration: underline;
 	font-size: 14px;
-	text-align: center;
 	font-weight: bold;
+	color: black;
+	text-align: center;
+	text-decoration: underline;
 	transition: color 0.3s ease-in-out;
 
 	&:hover {
@@ -144,10 +140,10 @@ const ProfileLink = styled.a`
 `;
 
 const AboutMeText = styled.p`
-	font-size: 18px;
 	max-width: 800px;
-	text-align: center;
+	font-size: 18px;
 	line-height: 1.6;
+	text-align: center;
 	opacity: 0.9;
 `;
 
@@ -202,10 +198,7 @@ export default function Home() {
 			{!isReady && <AppLoader isFadingOut={isFadingOut} />}
 
 			<HamburgerMenu />
-			<BackgroundSlideshow
-				blurAmount={blurAmount}
-				onReady={() => setIsReady(true)}
-			/>
+			<BackgroundSlideshow blurAmount={blurAmount} onReady={() => setIsReady(true)} />
 			<ContentWrapper id="home">
 				<TitleWrapper $opacity={opacity}>
 					<Title>Portfolio_</Title>
@@ -215,19 +208,12 @@ export default function Home() {
 				<AboutMeWrapper id="about">
 					<ProfileWrapper>
 						<AboutMeTitle>About Me</AboutMeTitle>
-						<ProfileCard
-							$isFlipped={isFlipped}
-							onClick={() => setIsFlipped(!isFlipped)}
-						>
+						<ProfileCard $isFlipped={isFlipped} onClick={() => setIsFlipped(!isFlipped)}>
 							<div className="front">
-								<ProfileIcon src="/profile.webp" alt="プロフィール画像" />
+								<ProfileIcon alt="プロフィール画像" src="/profile.webp" />
 							</div>
 							<div className="back">
-								<ProfileLink
-									href="https://iorin.io"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
+								<ProfileLink href="https://iorin.io" rel="noopener noreferrer" target="_blank">
 									photo by iorin.io
 								</ProfileLink>
 							</div>

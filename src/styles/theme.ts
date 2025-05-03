@@ -1,12 +1,12 @@
 const theme = {
-	colors: {
-		primary: "#ffffff",
-		background: "#000000",
-	},
 	breakpoints: {
+		laptop: "1024px",
 		mobile: "480px",
 		tablet: "768px",
-		laptop: "1024px",
+	},
+	colors: {
+		background: "#000000",
+		primary: "#ffffff",
 	},
 };
 

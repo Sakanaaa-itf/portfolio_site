@@ -1,14 +1,15 @@
 import * as exifr from "exifr";
+
 import type { PhotoMeta } from "@/data/photos";
 
 export type ExifData = {
-	dateTime?: string;
-	cameraModel?: string;
-	lensModel?: string;
 	aperture?: string;
-	shutterSpeed?: string;
-	iso?: string;
+	cameraModel?: string;
+	dateTime?: string;
 	focalLength?: string;
+	iso?: string;
+	lensModel?: string;
+	shutterSpeed?: string;
 };
 
 export const formatDate = (date: Date | string | undefined): string => {
@@ -21,9 +22,7 @@ export const formatDate = (date: Date | string | undefined): string => {
 	return "-";
 };
 
-export const formatShutterSpeed = (
-	exposureTime: number | undefined,
-): string => {
+export const formatShutterSpeed = (exposureTime: number | undefined): string => {
 	if (!exposureTime) return "-";
 	if (exposureTime < 1) {
 		const denominator = Math.round(1 / exposureTime);
@@ -32,9 +31,7 @@ export const formatShutterSpeed = (
 	return `${exposureTime}s`;
 };
 
-export const getExifDataForPhoto = async (
-	photo: PhotoMeta,
-): Promise<ExifData | null> => {
+export const getExifDataForPhoto = async (photo: PhotoMeta): Promise<ExifData | null> => {
 	try {
 		const response = await fetch(photo.lowResUrl, { cache: "no-store" });
 		const blob = await response.blob();
@@ -45,15 +42,13 @@ export const getExifDataForPhoto = async (
 		}
 
 		return {
-			dateTime: formatDate(exif?.DateTimeOriginal),
-			cameraModel: exif?.Model || "-",
-			lensModel: exif?.LensModel || "-",
 			aperture: exif?.FNumber ? `F${exif.FNumber}` : "-",
-			shutterSpeed: exif?.ExposureTime
-				? formatShutterSpeed(exif.ExposureTime)
-				: "-",
-			iso: exif?.ISO || "-",
+			cameraModel: exif?.Model || "-",
+			dateTime: formatDate(exif?.DateTimeOriginal),
 			focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-",
+			iso: exif?.ISO || "-",
+			lensModel: exif?.LensModel || "-",
+			shutterSpeed: exif?.ExposureTime ? formatShutterSpeed(exif.ExposureTime) : "-",
 		};
 	} catch (errorLow) {
 		console.error(`EXIF 取得失敗 (lowRes): ${photo.id}`, errorLow);
@@ -63,15 +58,13 @@ export const getExifDataForPhoto = async (
 			const exif = await exifr.parse(blob);
 
 			return {
-				dateTime: formatDate(exif?.DateTimeOriginal),
-				cameraModel: exif?.Model || "-",
-				lensModel: exif?.LensModel || "-",
 				aperture: exif?.FNumber ? `F${exif.FNumber}` : "-",
-				shutterSpeed: exif?.ExposureTime
-					? formatShutterSpeed(exif.ExposureTime)
-					: "-",
-				iso: exif?.ISO || "-",
+				cameraModel: exif?.Model || "-",
+				dateTime: formatDate(exif?.DateTimeOriginal),
 				focalLength: exif?.FocalLength ? `${exif.FocalLength}mm` : "-",
+				iso: exif?.ISO || "-",
+				lensModel: exif?.LensModel || "-",
+				shutterSpeed: exif?.ExposureTime ? formatShutterSpeed(exif.ExposureTime) : "-",
 			};
 		} catch (errorHigh) {
 			console.error(`EXIF 取得失敗 (highRes): ${photo.id}`, errorHigh);

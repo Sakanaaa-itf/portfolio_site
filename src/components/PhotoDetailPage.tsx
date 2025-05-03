@@ -3,17 +3,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+
 import HamburgerMenu from "@/components/HamburgerMenu";
 import CommentExif from "@/components/PhotoDetailInfo";
 import { useDevice } from "@/hooks/useDevice";
+
 import type { PhotoMeta } from "@/data/photos";
 
 const Main = styled.main`
-	min-height: 100vh;
-	padding: 1rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-height: 100vh;
+	padding: 1rem;
 `;
 
 const Content = styled.div`
@@ -23,8 +25,8 @@ const Content = styled.div`
 `;
 
 const Title = styled.h1`
-	font-size: 24px;
 	margin: 0.5rem 0;
+	font-size: 24px;
 `;
 
 const ImgWrap = styled.div<{ $isMobile: boolean }>`
@@ -75,16 +77,12 @@ const CommentBox = styled.div`
 `;
 
 interface Props {
+	nextPhoto: PhotoMeta | null;
 	photo: PhotoMeta;
 	prevPhoto: PhotoMeta | null;
-	nextPhoto: PhotoMeta | null;
 }
 
-export default function PhotoDetailPage({
-	photo,
-	prevPhoto,
-	nextPhoto,
-}: Props) {
+export default function PhotoDetailPage({ photo, prevPhoto, nextPhoto }: Props) {
 	const { isMobile } = useDevice();
 
 	const fallbackW = 1600;
@@ -98,40 +96,32 @@ export default function PhotoDetailPage({
 				<ImgWrap $isMobile={isMobile}>
 					{isMobile ? (
 						<Image
-							src={photo.highResUrl}
 							alt={photo.title}
-							width={fallbackW}
 							height={fallbackH}
-							style={{ maxWidth: "100%", height: "auto" }}
 							priority
+							src={photo.highResUrl}
+							style={{ height: "auto", maxWidth: "100%" }}
+							width={fallbackW}
 						/>
 					) : (
 						<Image
-							src={photo.highResUrl}
 							alt={photo.title}
 							fill
-							sizes="100vw"
-							style={{ objectFit: "contain" }}
 							priority
+							sizes="100vw"
+							src={photo.highResUrl}
+							style={{ objectFit: "contain" }}
 						/>
 					)}
 					{!isMobile && (
 						<NavRow $isMobile={false}>
 							{prevPhoto && (
-								<NavBtn
-									href={`/photoworks/${prevPhoto.id}`}
-									scroll={false}
-									$isMobile={false}
-								>
+								<NavBtn $isMobile={false} href={`/photoworks/${prevPhoto.id}`} scroll={false}>
 									‹
 								</NavBtn>
 							)}
 							{nextPhoto && (
-								<NavBtn
-									href={`/photoworks/${nextPhoto.id}`}
-									scroll={false}
-									$isMobile={false}
-								>
+								<NavBtn $isMobile={false} href={`/photoworks/${nextPhoto.id}`} scroll={false}>
 									›
 								</NavBtn>
 							)}
@@ -141,20 +131,12 @@ export default function PhotoDetailPage({
 				{isMobile && (
 					<NavRow $isMobile={true}>
 						{prevPhoto && (
-							<NavBtn
-								href={`/photoworks/${prevPhoto.id}`}
-								scroll={false}
-								$isMobile={true}
-							>
+							<NavBtn $isMobile={true} href={`/photoworks/${prevPhoto.id}`} scroll={false}>
 								‹
 							</NavBtn>
 						)}
 						{nextPhoto && (
-							<NavBtn
-								href={`/photoworks/${nextPhoto.id}`}
-								scroll={false}
-								$isMobile={true}
-							>
+							<NavBtn $isMobile={true} href={`/photoworks/${nextPhoto.id}`} scroll={false}>
 								›
 							</NavBtn>
 						)}

@@ -1,11 +1,14 @@
 {
+	"customSyntax": "postcss-styled-syntax",
+	"plugins": [
+		"stylelint-order"
+	],
 	"extends": [
-		"stylelint-config-recess-order",
-		"stylelint-config-recommended-scss",
-		"stylelint-config-standard",
-		"stylelint-config-prettier"
+		"stylelint-config-recommended",
+		"stylelint-config-recess-order"
 	],
 	"rules": {
-		"selector-class-pattern": "^[a-z][a-zA-Z0-9-]+$"
+		"selector-class-pattern": "^[a-z][a-zA-Z0-9-]+$",
+		"media-query-no-invalid": null
 	}
 }

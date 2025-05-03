@@ -1,27 +1,29 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Link from "next/link";
+
 import theme from "@/styles/theme";
 
 const MenuButton = styled.button<{ $isOpen: boolean }>`
 	position: fixed;
 	top: 15px;
 	right: 15px;
-	width: 40px;
-	height: 40px;
-	background: none;
-	border: none;
-	cursor: pointer;
+	z-index: 100;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 	gap: 8px;
-	z-index: 100;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	background: none;
+	border: none;
 
 	span {
+		position: absolute;
 		display: block;
 		width: 40px;
 		height: 4px;
@@ -29,12 +31,10 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 		transition:
 			transform 0.3s ease-in-out,
 			opacity 0.3s ease-in-out;
-		position: absolute;
 	}
 
 	span:nth-child(1) {
-		transform: ${({ $isOpen }) =>
-			$isOpen ? "translateY(0) rotate(45deg)" : "translateY(-12px)"};
+		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(45deg)" : "translateY(-12px)")};
 	}
 
 	span:nth-child(2) {
@@ -43,8 +43,7 @@ const MenuButton = styled.button<{ $isOpen: boolean }>`
 	}
 
 	span:nth-child(3) {
-		transform: ${({ $isOpen }) =>
-			$isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)"};
+		transform: ${({ $isOpen }) => ($isOpen ? "translateY(0) rotate(-45deg)" : "translateY(12px)")};
 	}
 
 	@media (max-width: ${theme.breakpoints.mobile}) {
@@ -62,17 +61,16 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 	position: fixed;
 	top: 0;
 	right: ${({ $isOpen }) => ($isOpen ? "0" : "-100%")};
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: flex-start;
+	justify-content: flex-start;
 	width: 250px;
 	height: 100vh;
 	padding-top: 90px;
 	padding-left: 40px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	gap: 10px;
-	transition: right 0.3s ease-in-out;
-	z-index: 50;
 	opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
 	transition:
 		right 0.3s ease-in-out,
@@ -84,13 +82,13 @@ const Menu = styled.nav<{ $isOpen: boolean }>`
 `;
 
 const MenuItem = styled(Link)`
-	color: white;
 	font-size: 20px;
+	color: white;
 	text-decoration: none;
-	transition: color 0.3s ease-in-out;
 	text-shadow:
 		0 0 15px rgba(0, 0, 0, 1),
 		4px 4px 30px rgba(0, 0, 0, 1);
+	transition: color 0.3s ease-in-out;
 
 	&:hover {
 		color: #0070f3;

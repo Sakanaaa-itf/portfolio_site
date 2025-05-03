@@ -1,18 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
-import { ramen } from "@/data/ramen";
+
 import HamburgerMenu from "@/components/HamburgerMenu";
+import { ramen } from "@/data/ramen";
 
 const Grid = styled.main`
 	display: grid;
-	min-height: 100vh;
 	grid-template-columns: repeat(auto-fill, minmax(min(220px, 25%), 1fr));
 	gap: 4px;
-	background: #000;
+	min-height: 100vh;
 	padding: 4px;
+	background: #000;
 
 	body.menu-open & {
 		filter: blur(5px);
@@ -28,8 +29,8 @@ const Tile = styled(Link)`
 		transform: scale(1.05);
 	}
 	&:hover .overlay {
-		transform: translateY(0);
 		opacity: 1;
+		transform: translateY(0);
 	}
 `;
 
@@ -43,31 +44,23 @@ const Overlay = styled.div`
 	inset: auto 0 0 0;
 	padding: 6px;
 	font-size: 10px;
-	background: rgba(0, 0, 0, 0.55);
 	color: #fff;
-	transform: translateY(100%);
+	background: rgba(0, 0, 0, 0.55);
 	opacity: 0;
+	transform: translateY(100%);
 	transition: all 0.3s ease;
 `;
 
 export default function RamenList() {
-	const sorted = [...ramen].sort(
-		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-	);
+	const sorted = [...ramen].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 	return (
 		<>
 			<HamburgerMenu />
 			<Grid>
 				{sorted.map((r) => (
-					<Tile key={r.id} href={`/ramen/${r.id}`}>
-						<Thumb
-							src={r.lowResUrl}
-							alt={r.name}
-							fill
-							sizes="220px"
-							priority={false}
-						/>
+					<Tile href={`/ramen/${r.id}`} key={r.id}>
+						<Thumb alt={r.name} fill priority={false} sizes="220px" src={r.lowResUrl} />
 						<Overlay className="overlay">
 							<strong>{r.shop}</strong>
 							<br />

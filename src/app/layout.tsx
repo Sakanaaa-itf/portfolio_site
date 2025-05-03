@@ -1,27 +1,22 @@
-import type { Metadata } from "next";
-import { GlobalStyle } from "../styles/globalStyles";
 import ThemeProvider from "@/styles/ThemeProvider";
 import { jetbrainsMono, udevGothic } from "@/styles/fonts";
 
+import { GlobalStyle } from "../styles/globalStyles";
+
+import type { Metadata } from "next";
+
 export const metadata: Metadata = {
-	title: "ふわふわ.みんな",
 	description: "Portfolio site",
 	icons: [
 		{ rel: "icon", url: "/favicon.ico" },
 		{ rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
 	],
+	title: "ふわふわ.みんな",
 };
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html
-			lang="ja"
-			className={`${jetbrainsMono.variable} ${udevGothic.variable}`}
-		>
+		<html className={`${jetbrainsMono.variable} ${udevGothic.variable}`} lang="ja">
 			<body>
 				<ThemeProvider>
 					<GlobalStyle />

@@ -6,15 +6,15 @@ export const revalidate = 1800;
 
 interface YouTubePlaylistItem {
 	snippet: {
-		title: string;
+		resourceId: { videoId: string };
 		thumbnails: {
 			default?: { url: string };
-			medium?: { url: string };
 			high?: { url: string };
-			standard?: { url: string };
 			maxres?: { url: string };
+			medium?: { url: string };
+			standard?: { url: string };
 		};
-		resourceId: { videoId: string };
+		title: string;
 	};
 }
 
@@ -27,10 +27,7 @@ export async function GET() {
 	const API_KEY = process.env.YOUTUBE_API_KEY!;
 	const PLAYLIST_ID = process.env.PLAYLIST_ID!;
 	if (!API_KEY || !PLAYLIST_ID) {
-		return NextResponse.json(
-			{ error: ".env.localが設定されていません" },
-			{ status: 500 },
-		);
+		return NextResponse.json({ error: ".env.localが設定されていません" }, { status: 500 });
 	}
 
 	const baseUrl = "https://www.googleapis.com/youtube/v3/playlistItems";
@@ -49,7 +46,7 @@ export async function GET() {
 		const res = await fetch(url.toString());
 		if (!res.ok) {
 			const err = await res.text();
-			return NextResponse.json({ tracks: [], error: err }, { status: res.status });
+			return NextResponse.json({ error: err, tracks: [] }, { status: res.status });
 		}
 
 		const page = (await res.json()) as PlaylistPage;
@@ -61,17 +58,12 @@ export async function GET() {
 	const tracks = allItems.map((it) => {
 		const t = it.snippet.thumbnails ?? {};
 		const art =
-			t.maxres?.url ??
-			t.high?.url ??
-			t.medium?.url ??
-			t.standard?.url ??
-			t.default?.url ??
-			"";
+			t.maxres?.url ?? t.high?.url ?? t.medium?.url ?? t.standard?.url ?? t.default?.url ?? "";
 
 		return {
+			art,
 			id: it.snippet.resourceId.videoId,
 			title: it.snippet.title,
-			art,
 		};
 	});
 

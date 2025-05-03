@@ -11,16 +11,16 @@ const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	background-color: #000000;
-	z-index: 9999;
+	opacity: ${({ $isFadingOut }) => ($isFadingOut ? 0 : 1)};
 
 	transition: opacity 0.5s ease-in;
-	opacity: ${({ $isFadingOut }) => ($isFadingOut ? 0 : 1)};
 `;
 
 const CircleContainer = styled.svg`
@@ -38,19 +38,10 @@ const AppLoader: React.FC<AppLoaderProps> = ({ isFadingOut = false }) => {
 		<LoaderWrapper $isFadingOut={isFadingOut}>
 			<CircleContainer viewBox="0 0 120 120">
 				<defs>
-					<path
-						id="circlePath"
-						d="M 60,60 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0"
-					/>
+					<path d="M 60,60 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" id="circlePath" />
 				</defs>
-				<text
-					fill="#ffffff"
-					fontSize="10"
-					fontWeight="bold"
-					letterSpacing="2"
-					textAnchor="middle"
-				>
-					<textPath xlinkHref="#circlePath" startOffset="60%">
+				<text fill="#ffffff" fontSize="10" fontWeight="bold" letterSpacing="2" textAnchor="middle">
+					<textPath startOffset="60%" xlinkHref="#circlePath">
 						Loading... Loading... Loading...
 					</textPath>
 				</text>

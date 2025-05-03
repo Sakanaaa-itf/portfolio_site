@@ -2,14 +2,14 @@ import "styled-components";
 
 declare module "styled-components" {
 	export interface DefaultTheme {
-		colors: {
-			primary: string;
-			background: string;
-		};
 		breakpoints: {
+			laptop: string;
 			mobile: string;
 			tablet: string;
-			laptop: string;
+		};
+		colors: {
+			background: string;
+			primary: string;
 		};
 	}
 }

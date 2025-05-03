@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
+
 import { photos } from "@/data/photos";
 
 const BlackOverlay = styled.div<{ $isVisible: boolean }>`
@@ -19,14 +20,14 @@ const SlideshowContainer = styled.div<{
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: -1;
 	width: 100vw;
 	height: 100vh;
-	z-index: -1;
 
 	background-image: url(${(props) => props.$currentBg});
-	background-size: cover;
-	background-position: center;
 	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 
 	filter: blur(${(props) => props.$blurAmount}px);
 	transition: filter 0.3s ease-in-out;
@@ -41,10 +42,7 @@ interface BackgroundSlideshowProps {
 	onReady?: () => void;
 }
 
-export default function BackgroundSlideshow({
-	blurAmount,
-	onReady,
-}: BackgroundSlideshowProps) {
+export default function BackgroundSlideshow({ blurAmount, onReady }: BackgroundSlideshowProps) {
 	const [loadedPhotos, setLoadedPhotos] = useState<string[]>([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isBlackVisible, setIsBlackVisible] = useState(false);

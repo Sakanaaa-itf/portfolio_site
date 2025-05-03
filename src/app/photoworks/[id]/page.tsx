@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import PhotoDetailPage from "@/components/PhotoDetailPage";
 import { photos } from "@/data/photos";
+
+import type { Metadata } from "next";
 
 export async function generateStaticParams() {
 	return photos.map((p) => ({ id: p.id }));
@@ -17,22 +19,22 @@ export async function generateMetadata({
 	if (!photo) return {};
 
 	return {
-		metadataBase: new URL("https://xn--19ja1fb.xn--q9jyb4c"),
-		title: photo.title,
 		description: photo.comment,
+		metadataBase: new URL("https://xn--19ja1fb.xn--q9jyb4c"),
 		openGraph: {
-			url: `/photoworks/${photo.id}`,
-			title: photo.title,
 			description: photo.comment,
-			type: "website",
-			siteName: "ふわふわ.みんな",
 			images: [photo.lowResUrl],
+			siteName: "ふわふわ.みんな",
+			title: photo.title,
+			type: "website",
+			url: `/photoworks/${photo.id}`,
 		},
+		title: photo.title,
 		twitter: {
 			card: "summary_large_image",
-			title: photo.title,
 			description: photo.comment,
 			site: "@sakanaaa_photo",
+			title: photo.title,
 		},
 	};
 }
@@ -51,7 +53,5 @@ export default async function PhotoworksDetailPage({
 	const prevPhoto = photos[photoIndex - 1] ?? null;
 	const nextPhoto = photos[photoIndex + 1] ?? null;
 
-	return (
-		<PhotoDetailPage photo={photo} prevPhoto={prevPhoto} nextPhoto={nextPhoto} />
-	);
+	return <PhotoDetailPage nextPhoto={nextPhoto} photo={photo} prevPhoto={prevPhoto} />;
 }

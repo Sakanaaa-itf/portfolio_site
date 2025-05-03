@@ -11,15 +11,11 @@ export function useDevice() {
 
 	useEffect(() => {
 		if (typeof window !== "undefined" && theme.breakpoints) {
-			const mobileQuery = window.matchMedia(
-				`(max-width: ${theme.breakpoints.mobile})`,
-			);
+			const mobileQuery = window.matchMedia(`(max-width: ${theme.breakpoints.mobile})`);
 			const tabletQuery = window.matchMedia(
 				`(min-width: ${theme.breakpoints.mobile}) and (max-width: ${theme.breakpoints.tablet})`,
 			);
-			const laptopQuery = window.matchMedia(
-				`(min-width: ${theme.breakpoints.tablet})`,
-			);
+			const laptopQuery = window.matchMedia(`(min-width: ${theme.breakpoints.tablet})`);
 
 			setIsMobile(mobileQuery.matches);
 			setIsTablet(tabletQuery.matches);
@@ -43,5 +39,5 @@ export function useDevice() {
 		}
 	}, [theme]);
 
-	return { isMobile, isTablet, isLaptop };
+	return { isLaptop, isMobile, isTablet };
 }

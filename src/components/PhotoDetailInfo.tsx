@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { PhotoMeta } from "@/data/photos";
-import { getExifDataForPhoto, type ExifData } from "@/utils/photoUtils";
 import { useDevice } from "@/hooks/useDevice";
+import { getExifDataForPhoto, type ExifData } from "@/utils/photoUtils";
 
 const Wrapper = styled.div<{ $isMobile: boolean }>`
 	display: flex;
@@ -23,11 +24,11 @@ const ExifBox = styled.div<{ $isMobile: boolean }>`
 	display: flex;
 	flex-direction: ${({ $isMobile }) => ($isMobile ? "column" : "row")};
 	gap: 1.5rem;
+	max-width: 80vw;
+	padding-left: 1rem;
 	font-size: 12px;
 	line-height: 1.4;
 	border-left: 1px solid #ddd;
-	padding-left: 1rem;
-	max-width: 80vw;
 `;
 
 const ExifColumn = styled.div`
@@ -50,13 +51,13 @@ const LinkText = styled.a`
 
 const ShareBtn = styled.a`
 	display: inline-block;
-	margin-top: 1.5rem;
 	padding: 0.5rem 1rem;
+	margin-top: 1.5rem;
 	font-size: 12px;
-	background-color: #1da1f2;
 	color: #fff;
-	border-radius: 4px;
 	text-decoration: none;
+	background-color: #1da1f2;
+	border-radius: 4px;
 	&:hover {
 		opacity: 0.8;
 	}
@@ -67,7 +68,7 @@ function formatText(text: string) {
 		<span key={i}>
 			{line.split(/(https?:\/\/[^\s]+)/g).map((part, j) =>
 				/(https?:\/\/[^\s]+)/.test(part) ? (
-					<LinkText key={j} href={part} target="_blank" rel="noopener noreferrer">
+					<LinkText href={part} key={j} rel="noopener noreferrer" target="_blank">
 						{part}
 					</LinkText>
 				) : (
@@ -100,9 +101,7 @@ export default function CommentExif({ photo }: { photo: PhotoMeta }) {
 
 	const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
 		`Check out this photo: "${photo.title}" \n`,
-	)}&url=${encodeURIComponent(
-		`https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`,
-	)}`;
+	)}&url=${encodeURIComponent(`https://xn--19ja1fb.xn--q9jyb4c/photoworks/${photo.id}`)}`;
 
 	return (
 		<Wrapper $isMobile={isMobile}>
@@ -118,13 +117,11 @@ export default function CommentExif({ photo }: { photo: PhotoMeta }) {
 					<ExifLine>Aperture&nbsp;:&nbsp;{exif?.aperture || "-"}</ExifLine>
 					<ExifLine>SS&nbsp;:&nbsp;{exif?.shutterSpeed || "-"}</ExifLine>
 					<ExifLine>ISO&nbsp;:&nbsp;{exif?.iso || "-"}</ExifLine>
-					<ExifLine>
-						Focal&nbsp;Length&nbsp;:&nbsp;{exif?.focalLength || "-"}
-					</ExifLine>
+					<ExifLine>Focal&nbsp;Length&nbsp;:&nbsp;{exif?.focalLength || "-"}</ExifLine>
 				</ExifColumn>
 			</ExifBox>
 
-			<ShareBtn href={shareUrl} target="_blank" rel="noopener noreferrer">
+			<ShareBtn href={shareUrl} rel="noopener noreferrer" target="_blank">
 				share to Twitter
 			</ShareBtn>
 		</Wrapper>

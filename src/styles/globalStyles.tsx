@@ -1,6 +1,7 @@
 "use client";
 
 import { createGlobalStyle } from "styled-components";
+
 import { jetbrainsMono, udevGothic } from "../styles/fonts";
 
 export const GlobalStyle = createGlobalStyle`
@@ -9,9 +10,9 @@ export const GlobalStyle = createGlobalStyle`
 		${udevGothic.variable};
 	}
 	* {
-		margin: 0;
-		padding: 0;
 		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
 	}
 
 	html {
@@ -19,8 +20,8 @@ export const GlobalStyle = createGlobalStyle`
 	}
 
 	body {
-		background-color: #000;
-		color: white;
 		font-family: var(--font-udev-gothic), var(--font-jetbrains-mono), sans-serif;
+		color: white;
+		background-color: #000;
 	}
 `;

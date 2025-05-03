@@ -1,17 +1,6 @@
 {
-	"extends": [
-		"next/core-web-vitals",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:sort-keys-fix/recommended",
-		"plugin:unused-imports/recommended",
-		"prettier"
-	],
-	"plugins": [
-		"import",
-		"sort-keys-fix",
-		"typescript-sort-keys",
-		"unused-imports"
-	],
+	"extends": ["next/core-web-vitals", "prettier"],
+	"plugins": ["import", "sort-keys-fix", "typescript-sort-keys", "unused-imports"],
 	"rules": {
 		"import/order": [
 			"error",

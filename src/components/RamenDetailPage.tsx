@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import styled from "styled-components";
+
 import type { RamenMeta } from "@/data/ramen";
 
 const Wrapper = styled.main`
 	max-width: 720px;
-	margin: 0 auto;
 	padding: 32px 16px;
+	margin: 0 auto;
 `;
 const FullImg = styled(Image)`
 	width: 100%;
@@ -28,13 +29,7 @@ const Text = styled.p`
 export default function DetailView({ ramen }: { ramen: RamenMeta }) {
 	return (
 		<Wrapper>
-			<FullImg
-				src={ramen.highResUrl}
-				alt={ramen.name}
-				width={1600}
-				height={1200}
-				priority
-			/>
+			<FullImg alt={ramen.name} height={1200} priority src={ramen.highResUrl} width={1600} />
 			<Title>{ramen.shop}</Title>
 			<Text>{ramen.name}</Text>
 			<Text>{ramen.location}</Text>
