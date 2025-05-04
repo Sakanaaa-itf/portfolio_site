@@ -89,7 +89,7 @@ export default function PhotoworksPage() {
 	}, []);
 
 	const sorted = [...photos].sort(
-		(a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime(),
+		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 	);
 	const recentPhotos = sorted.slice(0, 5);
 	const otherPhotos = sorted.slice(5);
