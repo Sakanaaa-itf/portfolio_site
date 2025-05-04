@@ -34,8 +34,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "DSCF0546_3200.jpg",
 		lowResUrl: "DSCF0546_1600.webp",
 		title: "着陸前",
-		comment:
-			"地元への帰省のために飛行機に乗り、着陸直前に撮影。珊瑚礁が見えると地元って感じがします。",
+		comment: "地元への帰省のために飛行機に乗り、着陸直前に撮影。珊瑚礁が見えると地元って感じがします。",
 	},
 	{
 		date: "2023-08-25",
@@ -77,17 +76,14 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF8740_3200.jpg",
 		lowResUrl: "https://jtame.jp/wp-content/uploads/2024/09/s-8dBOYS-696x464.jpg",
 		title: "MAESTRO",
-		comment:
-			"大学対抗K-POPカバーダンス日本一決定戦” UNIKP “ 2024 vol.10にて。BOYS部門優勝 京都産業大学 K21 BOYS\n オフィシャルカメラマンとして参加。\n https://jtame.jp/entertainment/139057/ に写真を掲載していただきました。",
+		comment: "大学対抗K-POPカバーダンス日本一決定戦” UNIKP “ 2024 vol.10にて。BOYS部門優勝 京都産業大学 K21 BOYS\n オフィシャルカメラマンとして参加。\n https://jtame.jp/entertainment/139057/ に写真を掲載していただきました。",
 	},
 	{
 		date: "2024-09-17",
 		highResUrl: "_DSF7439_3200.jpg",
-		lowResUrl:
-			"https://jtame.jp/wp-content/uploads/2024/09/78d895dced9f0af4670629ca542b2a46-640x426.jpg",
+		lowResUrl: "https://jtame.jp/wp-content/uploads/2024/09/78d895dced9f0af4670629ca542b2a46-640x426.jpg",
 		title: "HELICOPTER",
-		comment:
-			"大学対抗K-POPカバーダンス日本一決定戦” UNIKP “ 2024 vol.10にて。GIRLS部門優勝 中央大学 ZOK Girls\n オフィシャルカメラマンとして参加。\n https://jtame.jp/entertainment/139057/ に写真を掲載していただきました。",
+		comment: "大学対抗K-POPカバーダンス日本一決定戦” UNIKP “ 2024 vol.10にて。GIRLS部門優勝 中央大学 ZOK Girls\n オフィシャルカメラマンとして参加。\n https://jtame.jp/entertainment/139057/ に写真を掲載していただきました。",
 	},
 	{
 		date: "2023-07-19",
@@ -101,8 +97,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_3200.jpg",
 		lowResUrl: "7C4DF802-4D05-4B74-9F3A-BF617E09F0AE-52388-00001D904780C86C_1600.webp",
 		title: "涸沼",
-		comment:
-			"大洗に行く途中にある涸沼駅にて。気動車が走っていて感動。フォントがいいなーなんて思っていたんですけど、名前はわかりません。",
+		comment: "大洗に行く途中にある涸沼駅にて。気動車が走っていて感動。フォントがいいなーなんて思っていたんですけど、名前はわかりません。",
 	},
 	{
 		date: "2023-08-12",
@@ -116,8 +111,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "DSCF0275_3200.jpg",
 		lowResUrl: "DSCF0275_1600.webp",
 		title: "平面",
-		comment:
-			"自分はあまり撮影しない平面の写真。緑のトンネルをとった直後にこれを見つけて、撮影しました。",
+		comment: "自分はあまり撮影しない平面の写真。緑のトンネルをとった直後にこれを見つけて、撮影しました。",
 	},
 	{
 		date: "2023-09-08",
@@ -138,56 +132,49 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "DSCF2790_3200.jpg",
 		lowResUrl: "DSCF2790_1600.webp",
 		title: "鉄塔と星",
-		comment:
-			"星空の下、鉄塔を撮影。長秒露光して星だけを動かした。車のハザードを焚きながら待っていたら、故障車だと思われて警察に声をかけられてしまった。",
+		comment: "星空の下、鉄塔を撮影。長秒露光して星だけを動かした。車のハザードを焚きながら待っていたら、故障車だと思われて警察に声をかけられてしまった。",
 	},
 	{
 		date: "2023-07-06",
 		highResUrl: "DSCF8063_3200.jpg",
 		lowResUrl: "DSCF8063_1600.webp",
 		title: "海と友人と",
-		comment:
-			"カメラを買って初めて人物を主題に撮影した写真。誘ってくれた友人とモデルになってくれた友人に感謝。",
+		comment: "カメラを買って初めて人物を主題に撮影した写真。誘ってくれた友人とモデルになってくれた友人に感謝。",
 	},
 	{
 		date: "2023-07-12",
 		highResUrl: "DSCF8674_3200.jpg",
 		lowResUrl: "DSCF8674_1600.webp",
 		title: "流しマカロニ",
-		comment:
-			"筑波大学内にある石の広場にて、友人が企画してくれた流しそうめん。流すものがなくなって、自分が到着したころには流しマカロニになっていました。",
+		comment: "筑波大学内にある石の広場にて、友人が企画してくれた流しそうめん。流すものがなくなって、自分が到着したころには流しマカロニになっていました。",
 	},
 	{
 		date: "2024-01-05",
 		highResUrl: "DSCF9639_3200.jpg",
 		lowResUrl: "DSCF9639_1600.webp",
 		title: "now on stage",
-		comment:
-			"成人式のため帰省した時のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
+		comment: "成人式のため帰省した時のライブハウスにて。友人達のバンドが出演していたので、それを撮影。カッコ良すぎる。",
 	},
 	{
 		date: "2025-02-26",
 		highResUrl: "_DSF5447NR_3200.jpg",
 		lowResUrl: "https://pbs.twimg.com/media/Gmzg-ceb0AAYCza?format=jpg&name=large",
 		title: "もし明日が来ないとしたら",
-		comment:
-			"UNIDOL 2024-25 Winter 決勝戦にて。\n Xにて演者様に掲載していただけました。 \n https://t.co/wZdm482G13",
+		comment: "UNIDOL 2024-25 Winter 決勝戦にて。\n Xにて演者様に掲載していただけました。 \n https://t.co/wZdm482G13",
 	},
 	{
 		date: "2025-03-14",
 		highResUrl: "_DSF0382-強化-NR_3200.jpg",
 		lowResUrl: "_DSF0382-強化-NR_1600.webp",
 		title: "呪って呪って",
-		comment:
-			"Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
+		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n目のハイライトの入り方、好きです。",
 	},
 	{
 		date: "2025-03-14",
 		highResUrl: "_DSF0766-強化-NR_3200.jpg",
 		lowResUrl: "_DSF0766-強化-NR_1600.webp",
 		title: "ぼくらのうた",
-		comment:
-			"Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n卒業代の先輩方を撮影させていただきました。",
+		comment: "Bombs!4th単独公演 4ever〜ぼむずと紡ぐ∞の物語〜にて。オフィシャルカメラマンとして参加。 \n卒業代の先輩方を撮影させていただきました。",
 	},
 	{
 		date: "2022-03-06",
@@ -208,24 +195,21 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "IMG_2173_3200.jpg",
 		lowResUrl: "IMG_2173_1600.webp",
 		title: "高校、放課後",
-		comment:
-			"下でラグビー部だったかが騒いでいたのをのぞいている図。\n めちゃ恋人風に見えますよね、そんなことないです。",
+		comment: "下でラグビー部だったかが騒いでいたのをのぞいている図。\n めちゃ恋人風に見えますよね、そんなことないです。",
 	},
 	{
 		date: "2024-08-27",
 		highResUrl: "_DSF0958_3200.jpg",
 		lowResUrl: "_DSF0958_1600.webp",
 		title: "Sing Out!",
-		comment:
-			"UNIDOL 2024 Summer 決勝戦にて。準優勝 明治大学・chocolat lumière\n オフィシャルカメラマンとして参加。",
+		comment: "UNIDOL 2024 Summer 決勝戦にて。準優勝 明治大学・chocolat lumière\n オフィシャルカメラマンとして参加。",
 	},
 	{
 		date: "2024-03-08",
 		highResUrl: "_DSF0869-Enhanced-NR_3200.jpg",
 		lowResUrl: "_DSF0869-Enhanced-NR_1600.webp",
 		title: "Panorama",
-		comment:
-			"Bombs!3rd単独「Blooming 〜Bombs! 5th Anniversary〜」にて。オフィシャルカメラマンとして参加。",
+		comment: "Bombs!3rd単独「Blooming 〜Bombs! 5th Anniversary〜」にて。オフィシャルカメラマンとして参加。",
 	},
 	{
 		date: "2024-11-17",
@@ -253,8 +237,7 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF2889_3200.jpg",
 		lowResUrl: "_DSF2889_1600.webp",
 		title: "ひなたうた",
-		comment:
-			"Doo-Wop夏ライブ2024にて。\n オフィシャルカメラマンとして参加。\n ナナニッパのデビュー戦でした。",
+		comment: "Doo-Wop夏ライブ2024にて。\n オフィシャルカメラマンとして参加。\n ナナニッパのデビュー戦でした。",
 	},
 	{
 		date: "2025-04-05",
@@ -282,15 +265,13 @@ export const photos: PhotoMeta[] = addPrefixes([
 		highResUrl: "_DSF6184_3200.jpg",
 		lowResUrl: "_DSF6184_1600.webp",
 		title: "避雷針",
-		comment:
-			"UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n 知恵ノ木坂46 様",
+		comment: "UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n 知恵ノ木坂46 様",
 	},
 	{
 		date: "2025-03-23",
 		highResUrl: "_DSF7065_3200.jpg",
 		lowResUrl: "_DSF7065_1600.webp",
 		title: "ゾクゾク",
-		comment:
-			"UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n ハイネ 様",
+		comment: "UNIEVENTS 2025 卒業コンサート@EBiS 303にて。\n オフィシャルカメラマンとして参加。\n ハイネ 様",
 	},
 ]);
