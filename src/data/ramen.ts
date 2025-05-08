@@ -448,4 +448,12 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "限定1 酸辣湯麺",
 		location: "茨城県つくば市竹園２丁目１０−1 第4 柴原ビル 1F",
 	},
+	{
+		date: "2025-05-07",
+		highResUrl: "IMG_5397_1600.webp",
+		lowResUrl: "IMG_5397_400.webp",
+		name: "レッドパンチ",
+		shop: "タイガーパンチ",
+		location: "茨城県龍ケ崎市愛戸町６０−２",
+	},
 ]);
