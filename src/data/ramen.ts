@@ -456,4 +456,20 @@ export const ramen: RamenMeta[] = addPrefixes([
 		shop: "タイガーパンチ",
 		location: "茨城県龍ケ崎市愛戸町６０−２",
 	},
+	{
+		date: "2025-05-09",
+		highResUrl: "IMG_5421_1600.webp",
+		lowResUrl: "IMG_5421_400.webp",
+		name: "まぜそば",
+		shop: "横濱家系 たくみ家 桜土浦インター店",
+		location: "茨城県土浦市中村西根２５８",
+	},
+	{
+		date: "2025-05-10",
+		highResUrl: "IMG_5432_1600.webp",
+		lowResUrl: "IMG_5432_400.webp",
+		name: "塩ラーメン",
+		shop: "横濱家系 たくみ家 桜土浦インター店",
+		location: "茨城県土浦市中村西根２５８",
+	}
 ]);
