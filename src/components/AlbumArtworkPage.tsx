@@ -31,8 +31,7 @@ const fetcher = (u: string) => fetch(u).then((r) => r.json()) as Promise<{ track
 const Page = styled.main`
 	position: relative;
 	width: 100vw;
-	height: 100vh;
-	overflow-x: hidden;
+	min-height: 100vh;
 `;
 
 const Header = styled.header`
@@ -205,6 +204,10 @@ const MemoGrid = memo(
 );
 MemoGrid.displayName = "MemoGrid";
 
+const HEADER_PC = 60;
+const HEADER_SP = 90;
+const FOOTER = 10;
+
 export default function AlbumArtworkPage() {
 	const { data } = useSWR("/api/playlist", fetcher, {
 		revalidateOnFocus: false,
@@ -249,8 +252,12 @@ export default function AlbumArtworkPage() {
 
 	if (!tracks.length) return null;
 
+	const MOBILE_BP = parseInt(theme.breakpoints.mobile, 10);
+	const headerH = width <= MOBILE_BP ? HEADER_SP : HEADER_PC;
+	const pageHeight = headerH + rows * tile + FOOTER;
+
 	return (
-		<Page>
+		<Page style={{ height: `${pageHeight}px` }}>
 			<Header>
 				<TitleRow>
 					<HamburgerMenu />
