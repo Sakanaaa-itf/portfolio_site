@@ -471,5 +471,13 @@ export const ramen: RamenMeta[] = addPrefixes([
 		name: "塩ラーメン",
 		shop: "横濱家系 たくみ家 桜土浦インター店",
 		location: "茨城県土浦市中村西根２５８",
-	}
+	},
+	{
+		date: "2025-05-16",
+		highResUrl: "IMG_5465_1600.webp",
+		lowResUrl: "IMG_5465_400.webp",
+		name: "仔羊の清湯",
+		shop: "sois",
+		location: "茨城県稲敷郡阿見町本郷1丁目2−3",
+	},
 ]);
