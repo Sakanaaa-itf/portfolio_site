@@ -480,4 +480,20 @@ export const ramen: RamenMeta[] = addPrefixes([
 		shop: "sois",
 		location: "茨城県稲敷郡阿見町本郷1丁目2−3",
 	},
+	{
+		date: "2025-05-17",
+		highResUrl: "IMG_5505_1600.webp",
+		lowResUrl: "IMG_5505_400.webp",
+		name: "スーパーカップ",
+		shop: "ローソン つくば天久保三丁目店",
+		location: "茨城県つくば市天久保３丁目１６−８",
+	},
+	{
+		date: "2025-05-19",
+		highResUrl: "IMG_5516_1600.webp",
+		lowResUrl: "IMG_5516_400.webp",
+		name: "みそふじ",
+		shop: "明神 角ふじ 本店",
+		location: "茨城県つくば市台町２丁目３−１５",
+	},
 ]);
