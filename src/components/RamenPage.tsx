@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import HamburgerMenu from "@/components/HamburgerMenu";
 import { ramen } from "@/data/ramen";
+import { sortByDate } from "@/utils/sort";
 
 const Grid = styled.main`
 	display: grid;
@@ -52,7 +53,7 @@ const Overlay = styled.div`
 `;
 
 export default function RamenList() {
-	const sorted = [...ramen].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+	const sorted = ramen.sort(sortByDate);
 
 	return (
 		<>
