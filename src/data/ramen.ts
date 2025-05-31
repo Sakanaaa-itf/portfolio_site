@@ -522,8 +522,8 @@ export const ramen: RamenMeta[] = addPrefixes([
 	},
 	{
 		date: "2025-05-27",
-		highResUrl: "IMG_5580_1600.webp",
-		lowResUrl: "IMG_5580_400.webp",
+		highResUrl: "IMG_5579_1600.webp",
+		lowResUrl: "IMG_5579_400.webp",
 		name: "まぜそば",
 		shop: "特級中華蕎麦 洋介",
 		location: "茨城県つくば市上横場２４４−１",
