@@ -528,4 +528,20 @@ export const ramen: RamenMeta[] = addPrefixes([
 		shop: "特級中華蕎麦 洋介",
 		location: "茨城県つくば市上横場２４４−１",
 	},
+	{
+		date: "2025-06-01",
+		highResUrl: "IMG_5628_1600.webp",
+		lowResUrl: "IMG_5628_400.webp",
+		name: "まぜそば",
+		shop: "横濱家系 たくみ家 桜土浦インター店",
+		location: "茨城県土浦市中村西根２５８",
+	},
+	{
+		date: "2025-06-02",
+		highResUrl: "IMG_5629_1600.webp",
+		lowResUrl: "IMG_5629_400.webp",
+		name: "凄いにんいくパンチ ハード",
+		shop: "タイガーパンチ",
+		location: "茨城県龍ケ崎市愛戸町６０−２",
+	}
 ]);
