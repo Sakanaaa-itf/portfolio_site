@@ -18,18 +18,14 @@ const SlideshowContainer = styled.div<{
 	$currentBg: string;
 }>`
 	position: fixed;
-	top: 0;
-	left: 0;
+	inset: 0;
 	z-index: -1;
-	width: 100vw;
-	height: 100vh;
-
-	background-image: url(${(props) => props.$currentBg});
-	background-repeat: no-repeat;
-	background-position: center;
+	background-image: url(${(p) => p.$currentBg});
 	background-size: cover;
-
-	filter: blur(${(props) => props.$blurAmount}px);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: black;
+	filter: blur(${(p) => p.$blurAmount}px);
 	transition: filter 0.3s ease-in-out;
 
 	body.menu-open & {
@@ -42,68 +38,160 @@ interface BackgroundSlideshowProps {
 	onReady?: () => void;
 }
 
-export default function BackgroundSlideshow({ blurAmount, onReady }: BackgroundSlideshowProps) {
-	const [loadedPhotos, setLoadedPhotos] = useState<string[]>([]);
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const [isBlackVisible, setIsBlackVisible] = useState(false);
-	const timersRef = useRef<NodeJS.Timeout[]>([]);
+async function fetchDecodeToObjectUrl(src: string): Promise<string> {
+	const res = await fetch(src, { cache: "force-cache", mode: "cors" }).catch(() => null);
+	if (!res || !res.ok) return src;
+	const blob = await res.blob();
+	const objectUrl = URL.createObjectURL(blob);
 
-	useEffect(() => {
-		const preloadImages = async () => {
-			const loadedUrls = await Promise.all(
-				photos.map(
-					(photo) =>
-						new Promise<string>((resolve) => {
-							const img = new Image();
-							img.src = photo.highResUrl;
-							img.onload = () => resolve(photo.highResUrl);
-							img.onerror = () => resolve("");
-						}),
-				),
-			);
-			setLoadedPhotos(loadedUrls.filter((url) => url));
+	await new Promise<void>((resolve) => {
+		const img = new Image();
+		img.onload = () => {
+			img
+				.decode?.()
+				.catch(() => {})
+				.finally(resolve);
 		};
+		img.onerror = () => resolve();
+		img.src = objectUrl;
+	});
 
-		preloadImages();
+	return objectUrl;
+}
+
+export default function BackgroundSlideshow({ blurAmount, onReady }: BackgroundSlideshowProps) {
+	const n = photos.length;
+	const randomStart = Math.floor(Math.random() * Math.max(n, 1));
+
+	const [currentBg, setCurrentBg] = useState<string>("");
+	const [isBlackVisible, setIsBlackVisible] = useState(true);
+
+	const indexRef = useRef<number>(randomStart);
+	const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+	const mountedRef = useRef(true);
+
+	const didInitRef = useRef(false);
+	const isRunningRef = useRef(false);
+
+	const urlCacheRef = useRef<Map<string, string>>(new Map());
+	const inflightRef = useRef<Map<string, Promise<string>>>(new Map());
+
+	const revokeAll = useCallback(() => {
+		for (const [, url] of urlCacheRef.current) URL.revokeObjectURL(url);
+		urlCacheRef.current.clear();
 	}, []);
 
-	const startCycle = useCallback(() => {
-		const t1 = setTimeout(() => {
-			setIsBlackVisible(true);
-
-			const t2 = setTimeout(() => {
-				setCurrentIndex((prev) => (prev + 1) % loadedPhotos.length);
-
-				const t3 = setTimeout(() => {
-					setIsBlackVisible(false);
-
-					const t4 = setTimeout(() => {
-						startCycle();
-					}, 1000);
-
-					timersRef.current.push(t4);
-				}, 1000);
-
-				timersRef.current.push(t3);
-			}, 1000);
-
-			timersRef.current.push(t2);
-		}, 8000);
-
-		timersRef.current.push(t1);
-	}, [loadedPhotos.length]);
-
-	const readyNotified = useRef(false);
 	useEffect(() => {
-		if (!readyNotified.current && loadedPhotos.length > 0) {
-			readyNotified.current = true;
+		return () => {
+			mountedRef.current = false;
+			for (const t of timersRef.current) clearTimeout(t);
+			timersRef.current = [];
+			revokeAll();
+			/* eslint-disable react-hooks/exhaustive-deps */
+			inflightRef.current.clear();
+		};
+	}, [revokeAll]);
+
+	const keepInCache = useCallback((key: string, objectUrl: string) => {
+		const cache = urlCacheRef.current;
+		if (cache.has(key)) cache.delete(key);
+		cache.set(key, objectUrl);
+		while (cache.size > 3) {
+			const oldestKey = cache.keys().next().value as string | undefined;
+			if (!oldestKey) break;
+			const oldestUrl = cache.get(oldestKey)!;
+			cache.delete(oldestKey);
+			URL.revokeObjectURL(oldestUrl);
+		}
+	}, []);
+
+	const getObjectUrl = useCallback(
+		async (highUrl: string): Promise<string> => {
+			const cache = urlCacheRef.current;
+			const hit = cache.get(highUrl);
+			if (hit) return hit;
+
+			const inflight = inflightRef.current.get(highUrl);
+			if (inflight) return inflight;
+
+			const p = fetchDecodeToObjectUrl(highUrl)
+				.then((obj) => {
+					keepInCache(highUrl, obj);
+					return obj;
+				})
+				.finally(() => {
+					inflightRef.current.delete(highUrl);
+				});
+
+			inflightRef.current.set(highUrl, p);
+			return p;
+		},
+		[keepInCache],
+	);
+
+	const nextIndex = useCallback((i: number) => (i + 1) % n, [n]);
+
+	const startCycle = useCallback(() => {
+		if (isRunningRef.current) return;
+		isRunningRef.current = true;
+
+		const step = () => {
+			const t1 = setTimeout(() => {
+				if (!mountedRef.current || n === 0) return;
+				setIsBlackVisible(true);
+
+				const upcomingIndex = nextIndex(indexRef.current);
+				const upcoming = photos[upcomingIndex];
+
+				const t2 = setTimeout(async () => {
+					if (!mountedRef.current) return;
+
+					const nextObjectUrl = await getObjectUrl(upcoming.highResUrl);
+					if (mountedRef.current) setCurrentBg(nextObjectUrl);
+
+					indexRef.current = upcomingIndex;
+
+					const t3 = setTimeout(() => {
+						if (!mountedRef.current) return;
+						setIsBlackVisible(false);
+
+						const warmNext = photos[nextIndex(upcomingIndex)];
+						getObjectUrl(warmNext.highResUrl).catch(() => {});
+
+						const t4 = setTimeout(step, 1000);
+						timersRef.current.push(t4);
+					}, 1000);
+					timersRef.current.push(t3);
+				}, 1000);
+				timersRef.current.push(t2);
+			}, 8000);
+			timersRef.current.push(t1);
+		};
+
+		step();
+	}, [n, nextIndex, getObjectUrl]);
+
+	useEffect(() => {
+		if (n === 0 || didInitRef.current) return;
+		didInitRef.current = true;
+
+		(async () => {
+			const first = photos[indexRef.current];
+			const second = photos[nextIndex(indexRef.current)];
+
+			const [firstObjUrl] = await Promise.all([
+				getObjectUrl(first.highResUrl),
+				n > 1 ? getObjectUrl(second.highResUrl) : Promise.resolve(""),
+			]);
+
+			if (!mountedRef.current) return;
+
+			setCurrentBg(firstObjUrl);
+			setIsBlackVisible(false);
 			onReady?.();
 			startCycle();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [loadedPhotos, startCycle]);
-
-	const currentBg = loadedPhotos.length > 0 ? loadedPhotos[currentIndex] : "";
+		})();
+	}, [n, onReady, startCycle, nextIndex, getObjectUrl]);
 
 	return (
 		<SlideshowContainer $blurAmount={blurAmount} $currentBg={currentBg}>
