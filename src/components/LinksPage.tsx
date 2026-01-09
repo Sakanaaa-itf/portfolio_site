@@ -152,6 +152,12 @@ const LINKS = [
 		name: "uekann.com",
 		url: "https://uekann.com/",
 	},
+	{
+		customIcon: "https://raspi0124.dev/raspi0124.png",
+		fallbackFavicon: "",
+		name: "raspi0124.dev",
+		url: "https://raspi0124.dev",
+	},
 ];
 
 export default function LinksPage() {
