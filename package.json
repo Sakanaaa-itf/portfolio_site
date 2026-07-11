@@ -11,6 +11,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"preview": "serve out",
+		"cloudflare:login": "wrangler login",
+		"cloudflare:projects": "wrangler pages project list",
+		"deploy:cloudflare": "npm run check && npm run build && wrangler pages deploy out --project-name=portfolio-site",
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint . --max-warnings=0",
 		"lint:fix": "npm run lint -- --fix",
@@ -40,7 +43,8 @@
 		"stylelint-config-recess-order": "^7.7.0",
 		"stylelint-config-standard": "^40.0.0",
 		"stylelint-order": "^8.1.1",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"wrangler": "4.110.0"
 	},
 	"overrides": {
 		"postcss": "^8.5.16"

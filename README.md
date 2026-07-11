@@ -45,6 +45,7 @@ npm run dev          # 開発サーバー
 npm run check        # TypeScript・ESLint・Stylelint・Prettier
 npm run build        # out/ へ静的サイトを生成
 npm run preview      # out/ をローカル配信
+npm run deploy:cloudflare # Cloudflare Pagesへデプロイ
 npm run format       # コードを整形
 ```
 
@@ -60,5 +61,22 @@ npm run format       # コードを整形
 ## デプロイ
 
 `next.config.ts` の `output: "export"` により、成果物は `out/` に生成されます。Node.jsサーバーは不要で、任意の静的ホスティングへ配置できます。URLは末尾スラッシュを前提としています。
+
+Cloudflare Pagesへは、ダッシュボードのドラッグ＆ドロップではなくWranglerを使用します。ドラッグ＆ドロップには1,000ファイルの上限があり、静的書き出しのファイル数が上限を超えるためです。アップロード対象は必ず`out/`とし、`.next/`やリポジトリ全体は指定しません。
+
+初回のみCloudflareへログインします。デプロイ先は、独自ドメインに接続済みの`portfolio-site`プロジェクトへ固定しています。プロジェクト一覧を確認する場合は`npm run cloudflare:projects`を使用します。
+
+```sh
+npm run cloudflare:login
+npm run cloudflare:projects
+```
+
+次のコマンドでデプロイします。静的解析と本番ビルドも先に実行します。
+
+```sh
+npm run deploy:cloudflare
+```
+
+Wranglerは現在のGitブランチを自動判定します。Cloudflare Pagesで設定したProduction branch以外から実行するとプレビューデプロイになるため、本番更新はProduction branchへマージしてから実行してください。意図的にブランチを指定する場合は、末尾へ`--branch=<BRANCH_NAME>`を追加します。
 
 Issueは自由に作成して構いません。
