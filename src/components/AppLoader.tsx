@@ -1,53 +1,77 @@
 "use client";
 
+import { useId, type TransitionEvent } from "react";
 import styled, { keyframes } from "styled-components";
 
 const rotateCircle = keyframes`
-	0% { transform: rotate(360deg); }
-	100% { transform: rotate(0deg); }
+	from {
+		transform: rotate(360deg);
+	}
+
+	to {
+		transform: rotate(0deg);
+	}
 `;
 
 const LoaderWrapper = styled.div<{ $isFadingOut: boolean }>`
 	position: fixed;
-	top: 0;
-	left: 0;
+	inset: 0;
 	z-index: 9999;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 100%;
-	height: 100%;
-	background-color: #000000;
+	pointer-events: ${({ $isFadingOut }) => ($isFadingOut ? "none" : "auto")};
+	background-color: #000;
 	opacity: ${({ $isFadingOut }) => ($isFadingOut ? 0 : 1)};
-
 	transition: opacity 0.5s ease-in;
+
+	@media (prefers-reduced-motion: reduce) {
+		transition-duration: 0.01ms;
+	}
 `;
 
 const CircleContainer = styled.svg`
 	width: 150px;
 	height: 150px;
 	animation: ${rotateCircle} 3s linear infinite;
+
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
+	}
 `;
 
 type AppLoaderProps = {
 	isFadingOut?: boolean;
+	onFadeComplete?: () => void;
 };
 
-const AppLoader: React.FC<AppLoaderProps> = ({ isFadingOut = false }) => {
+export default function AppLoader({ isFadingOut = false, onFadeComplete }: AppLoaderProps) {
+	const pathId = useId();
+
+	const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+		if (isFadingOut && event.currentTarget === event.target && event.propertyName === "opacity") {
+			onFadeComplete?.();
+		}
+	};
+
 	return (
-		<LoaderWrapper $isFadingOut={isFadingOut}>
-			<CircleContainer viewBox="0 0 120 120">
+		<LoaderWrapper
+			$isFadingOut={isFadingOut}
+			aria-label="コンテンツを読み込んでいます"
+			aria-live="polite"
+			onTransitionEnd={handleTransitionEnd}
+			role="status"
+		>
+			<CircleContainer aria-hidden="true" focusable="false" viewBox="0 0 120 120">
 				<defs>
-					<path d="M 60,60 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" id="circlePath" />
+					<path d="M 60,60 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" id={pathId} />
 				</defs>
-				<text fill="#ffffff" fontSize="10" fontWeight="bold" letterSpacing="2" textAnchor="middle">
-					<textPath startOffset="60%" xlinkHref="#circlePath">
+				<text fill="#fff" fontSize="10" fontWeight="bold" letterSpacing="2" textAnchor="middle">
+					<textPath href={`#${pathId}`} startOffset="60%">
 						Loading... Loading... Loading...
 					</textPath>
 				</text>
 			</CircleContainer>
 		</LoaderWrapper>
 	);
-};
-
-export default AppLoader;
+}

@@ -4,6 +4,5 @@
 	"semi": true,
 	"singleQuote": false,
 	"jsxSingleQuote": false,
-	"printWidth": 100,
-	"insertFinalNewline": true
+	"printWidth": 100
 }

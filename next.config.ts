@@ -4,12 +4,13 @@ const nextConfig: NextConfig = {
 	compiler: {
 		styledComponents: true,
 	},
-	distDir: "out",
 	images: {
 		unoptimized: true,
 	},
 	output: "export",
+	reactStrictMode: true,
 	trailingSlash: true,
+	typedRoutes: true,
 };
 
 export default nextConfig;

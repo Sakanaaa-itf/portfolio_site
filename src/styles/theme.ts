@@ -6,7 +6,10 @@ const theme = {
 	},
 	colors: {
 		background: "#000000",
+		focus: "#6cb6ff",
+		muted: "#b8b8b8",
 		primary: "#ffffff",
+		surface: "#151515",
 	},
 };
 

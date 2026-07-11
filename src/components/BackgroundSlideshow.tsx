@@ -1,200 +1,231 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import styled from "styled-components";
 
-import { photos } from "@/data/photos";
+import { photos, type PhotoMeta } from "@/data/photos";
+
+const DISPLAY_DURATION_MS = 8_000;
+const FADE_DURATION_MS = 1_000;
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 const BlackOverlay = styled.div<{ $isVisible: boolean }>`
 	position: absolute;
 	inset: 0;
-	background-color: black;
+	pointer-events: none;
+	background-color: #000;
 	opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-	transition: opacity 1s ease;
+	transition: opacity ${FADE_DURATION_MS}ms ease;
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 `;
 
 const SlideshowContainer = styled.div<{
-	$blurAmount: number;
 	$currentBg: string;
 }>`
 	position: fixed;
 	inset: 0;
 	z-index: -1;
-	background-image: url(${(p) => p.$currentBg});
-	background-size: cover;
-	background-position: center;
+	background-color: #000;
+	background-image: ${({ $currentBg }) =>
+		$currentBg ? `url(${JSON.stringify($currentBg)})` : "none"};
 	background-repeat: no-repeat;
-	background-color: black;
-	filter: blur(${(p) => p.$blurAmount}px);
+	background-position: center;
+	background-size: cover;
+	filter: blur(var(--home-background-blur, 0));
 	transition: filter 0.3s ease-in-out;
 
 	body.menu-open & {
 		filter: blur(10px);
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 `;
 
 interface BackgroundSlideshowProps {
-	blurAmount: number;
 	onReady?: () => void;
 }
 
-async function fetchDecodeToObjectUrl(src: string): Promise<string> {
-	const res = await fetch(src, { cache: "force-cache", mode: "cors" }).catch(() => null);
-	if (!res || !res.ok) return src;
-	const blob = await res.blob();
-	const objectUrl = URL.createObjectURL(blob);
+function subscribeToReducedMotion(onChange: () => void) {
+	if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+		return () => undefined;
+	}
 
-	await new Promise<void>((resolve) => {
-		const img = new Image();
-		img.onload = () => {
-			img
-				.decode?.()
-				.catch(() => {})
-				.finally(resolve);
-		};
-		img.onerror = () => resolve();
-		img.src = objectUrl;
-	});
-
-	return objectUrl;
+	const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+	mediaQuery.addEventListener("change", onChange);
+	return () => mediaQuery.removeEventListener("change", onChange);
 }
 
-export default function BackgroundSlideshow({ blurAmount, onReady }: BackgroundSlideshowProps) {
-	const n = photos.length;
-	const randomStart = Math.floor(Math.random() * Math.max(n, 1));
+function getReducedMotionSnapshot() {
+	return (
+		typeof window !== "undefined" &&
+		typeof window.matchMedia === "function" &&
+		window.matchMedia(REDUCED_MOTION_QUERY).matches
+	);
+}
 
-	const [currentBg, setCurrentBg] = useState<string>("");
+function getServerReducedMotionSnapshot() {
+	return false;
+}
+
+function usePrefersReducedMotion() {
+	return useSyncExternalStore(
+		subscribeToReducedMotion,
+		getReducedMotionSnapshot,
+		getServerReducedMotionSnapshot,
+	);
+}
+
+export default function BackgroundSlideshow({ onReady }: BackgroundSlideshowProps) {
+	const photoCount = photos.length;
+	const prefersReducedMotion = usePrefersReducedMotion();
+	const [currentBg, setCurrentBg] = useState("");
 	const [isBlackVisible, setIsBlackVisible] = useState(true);
 
-	const indexRef = useRef<number>(randomStart);
-	const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-	const mountedRef = useRef(true);
-
-	const didInitRef = useRef(false);
-	const isRunningRef = useRef(false);
-
-	const urlCacheRef = useRef<Map<string, string>>(new Map());
-	const inflightRef = useRef<Map<string, Promise<string>>>(new Map());
-
-	const revokeAll = useCallback(() => {
-		for (const [, url] of urlCacheRef.current) URL.revokeObjectURL(url);
-		urlCacheRef.current.clear();
-	}, []);
+	const currentIndexRef = useRef<number | null>(null);
+	const imageCacheRef = useRef(new Map<string, Promise<string>>());
+	const hasNotifiedReadyRef = useRef(false);
+	const onReadyRef = useRef(onReady);
 
 	useEffect(() => {
-		return () => {
-			mountedRef.current = false;
-			for (const t of timersRef.current) clearTimeout(t);
-			timersRef.current = [];
-			revokeAll();
-			/* eslint-disable react-hooks/exhaustive-deps */
-			inflightRef.current.clear();
-		};
-	}, [revokeAll]);
+		onReadyRef.current = onReady;
+	}, [onReady]);
 
-	const keepInCache = useCallback((key: string, objectUrl: string) => {
-		const cache = urlCacheRef.current;
-		if (cache.has(key)) cache.delete(key);
-		cache.set(key, objectUrl);
-		while (cache.size > 3) {
-			const oldestKey = cache.keys().next().value as string | undefined;
-			if (!oldestKey) break;
-			const oldestUrl = cache.get(oldestKey)!;
-			cache.delete(oldestKey);
-			URL.revokeObjectURL(oldestUrl);
-		}
+	const preloadImage = useCallback((src: string) => {
+		const cached = imageCacheRef.current.get(src);
+		if (cached) return cached;
+
+		const pending = new Promise<string>((resolve, reject) => {
+			const image = new Image();
+			image.decoding = "async";
+			image.onload = async () => {
+				try {
+					await image.decode();
+				} catch {
+					// The image has loaded even when a browser cannot decode it explicitly.
+				}
+				resolve(src);
+			};
+			image.onerror = () => reject(new Error(`Failed to load background image: ${src}`));
+			image.src = src;
+		}).catch((error: unknown) => {
+			imageCacheRef.current.delete(src);
+			throw error;
+		});
+
+		imageCacheRef.current.set(src, pending);
+		return pending;
 	}, []);
 
-	const getObjectUrl = useCallback(
-		async (highUrl: string): Promise<string> => {
-			const cache = urlCacheRef.current;
-			const hit = cache.get(highUrl);
-			if (hit) return hit;
+	const resolvePhotoUrl = useCallback(
+		async (photo: PhotoMeta) => {
+			const candidates = [...new Set([photo.highResUrl, photo.lowResUrl].filter(Boolean))];
 
-			const inflight = inflightRef.current.get(highUrl);
-			if (inflight) return inflight;
+			for (const candidate of candidates) {
+				try {
+					return await preloadImage(candidate);
+				} catch {
+					// Try the lower-resolution source before allowing CSS to retry the primary URL.
+				}
+			}
 
-			const p = fetchDecodeToObjectUrl(highUrl)
-				.then((obj) => {
-					keepInCache(highUrl, obj);
-					return obj;
-				})
-				.finally(() => {
-					inflightRef.current.delete(highUrl);
-				});
-
-			inflightRef.current.set(highUrl, p);
-			return p;
+			return photo.highResUrl;
 		},
-		[keepInCache],
+		[preloadImage],
 	);
 
-	const nextIndex = useCallback((i: number) => (i + 1) % n, [n]);
+	useEffect(() => {
+		let isCancelled = false;
+		let timeoutId: number | undefined;
+		let finishDelay: (() => void) | undefined;
 
-	const startCycle = useCallback(() => {
-		if (isRunningRef.current) return;
-		isRunningRef.current = true;
+		const delay = (duration: number) =>
+			new Promise<void>((resolve) => {
+				finishDelay = resolve;
+				timeoutId = window.setTimeout(() => {
+					finishDelay = undefined;
+					timeoutId = undefined;
+					resolve();
+				}, duration);
+			});
 
-		const step = () => {
-			const t1 = setTimeout(() => {
-				if (!mountedRef.current || n === 0) return;
-				setIsBlackVisible(true);
-
-				const upcomingIndex = nextIndex(indexRef.current);
-				const upcoming = photos[upcomingIndex];
-
-				const t2 = setTimeout(async () => {
-					if (!mountedRef.current) return;
-
-					const nextObjectUrl = await getObjectUrl(upcoming.highResUrl);
-					if (mountedRef.current) setCurrentBg(nextObjectUrl);
-
-					indexRef.current = upcomingIndex;
-
-					const t3 = setTimeout(() => {
-						if (!mountedRef.current) return;
-						setIsBlackVisible(false);
-
-						const warmNext = photos[nextIndex(upcomingIndex)];
-						getObjectUrl(warmNext.highResUrl).catch(() => {});
-
-						const t4 = setTimeout(step, 1000);
-						timersRef.current.push(t4);
-					}, 1000);
-					timersRef.current.push(t3);
-				}, 1000);
-				timersRef.current.push(t2);
-			}, 8000);
-			timersRef.current.push(t1);
+		const notifyReady = () => {
+			if (hasNotifiedReadyRef.current) return;
+			hasNotifiedReadyRef.current = true;
+			onReadyRef.current?.();
 		};
 
-		step();
-	}, [n, nextIndex, getObjectUrl]);
+		const runSlideshow = async () => {
+			if (photoCount === 0) {
+				setIsBlackVisible(false);
+				notifyReady();
+				return;
+			}
 
-	useEffect(() => {
-		if (n === 0 || didInitRef.current) return;
-		didInitRef.current = true;
+			if (currentIndexRef.current === null || currentIndexRef.current >= photoCount) {
+				currentIndexRef.current = Math.floor(Math.random() * photoCount);
+			}
 
-		(async () => {
-			const first = photos[indexRef.current];
-			const second = photos[nextIndex(indexRef.current)];
+			const initialIndex = currentIndexRef.current;
+			const initialPhoto = photos[initialIndex];
+			if (!initialPhoto) {
+				setIsBlackVisible(false);
+				notifyReady();
+				return;
+			}
 
-			const [firstObjUrl] = await Promise.all([
-				getObjectUrl(first.highResUrl),
-				n > 1 ? getObjectUrl(second.highResUrl) : Promise.resolve(""),
-			]);
+			const initialUrl = await resolvePhotoUrl(initialPhoto);
+			if (isCancelled) return;
 
-			if (!mountedRef.current) return;
-
-			setCurrentBg(firstObjUrl);
+			setCurrentBg(initialUrl);
 			setIsBlackVisible(false);
-			onReady?.();
-			startCycle();
-		})();
-	}, [n, onReady, startCycle, nextIndex, getObjectUrl]);
+			notifyReady();
+
+			if (prefersReducedMotion || photoCount < 2) return;
+
+			while (!isCancelled) {
+				const currentIndex = currentIndexRef.current;
+				if (currentIndex === null) return;
+
+				const nextIndex: number = (currentIndex + 1) % photoCount;
+				const nextPhoto = photos[nextIndex];
+				if (!nextPhoto) return;
+
+				const nextUrlPromise = resolvePhotoUrl(nextPhoto);
+
+				await delay(DISPLAY_DURATION_MS);
+				if (isCancelled) return;
+				if (document.hidden) continue;
+
+				const nextUrl = await nextUrlPromise;
+				if (isCancelled) return;
+
+				setIsBlackVisible(true);
+				await delay(FADE_DURATION_MS);
+				if (isCancelled) return;
+
+				setCurrentBg(nextUrl);
+				currentIndexRef.current = nextIndex;
+				setIsBlackVisible(false);
+				await delay(FADE_DURATION_MS);
+			}
+		};
+
+		void runSlideshow();
+
+		return () => {
+			isCancelled = true;
+			if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+			finishDelay?.();
+		};
+	}, [photoCount, prefersReducedMotion, resolvePhotoUrl]);
 
 	return (
-		<SlideshowContainer $blurAmount={blurAmount} $currentBg={currentBg}>
+		<SlideshowContainer $currentBg={currentBg} aria-hidden="true">
 			<BlackOverlay $isVisible={isBlackVisible} />
 		</SlideshowContainer>
 	);

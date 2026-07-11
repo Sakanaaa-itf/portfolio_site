@@ -5,10 +5,11 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import HamburgerMenu from "@/components/HamburgerMenu";
-import CommentExif from "@/components/PhotoDetailInfo";
-import { useDevice } from "@/hooks/useDevice";
+import PhotoDetailInfo from "@/components/PhotoDetailInfo";
+import theme from "@/styles/theme";
 
 import type { PhotoMeta } from "@/data/photos";
+import type { Route } from "next";
 
 const Main = styled.main`
 	display: flex;
@@ -18,7 +19,13 @@ const Main = styled.main`
 	padding: 1rem;
 `;
 
-const Content = styled.div`
+const Content = styled.article`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	transition: filter 0.3s ease-in-out;
+
 	body.menu-open & {
 		filter: blur(5px);
 	}
@@ -27,50 +34,82 @@ const Content = styled.div`
 const Title = styled.h1`
 	margin: 0.5rem 0;
 	font-size: 24px;
+	text-align: center;
 `;
 
-const ImgWrap = styled.div<{ $isMobile: boolean }>`
+const Viewer = styled.div`
 	position: relative;
 	width: 100%;
 	max-width: 1200px;
-	${({ $isMobile }) => ($isMobile ? "" : "height: calc(100vh - 200px);")}
-	display: flex;
-	justify-content: center;
+`;
+
+const ImageWrapper = styled.div`
+	position: relative;
+	width: 100%;
+	height: calc(100dvh - 200px);
+	min-height: 320px;
+
+	@media (max-width: ${theme.breakpoints.mobile}) {
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 3 / 2;
+	}
+`;
+
+const Navigation = styled.nav`
+	position: absolute;
+	top: 50%;
+	right: clamp(0.5rem, 2vw, 2rem);
+	left: clamp(0.5rem, 2vw, 2rem);
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	align-items: center;
+	pointer-events: none;
+	transform: translateY(-50%);
+
+	@media (max-width: ${theme.breakpoints.mobile}) {
+		position: static;
+		width: 100%;
+		margin-top: 0.5rem;
+		transform: none;
+	}
 `;
 
-const NavRow = styled.div<{ $isMobile: boolean }>`
-	${({ $isMobile }) =>
-		$isMobile
-			? `
-            margin-top: .5rem;
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: space-between;
-        `
-			: `
-            position: absolute;
-            top: 50%;
-            left: -4rem;
-            right: -4rem;
-            transform: translateY(-50%);
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-        `}
-`;
-
-const NavBtn = styled(Link)<{ $isMobile: boolean }>`
-	font-size: ${({ $isMobile }) => ($isMobile ? "20px" : "40px")};
+const NavigationLink = styled(Link)<{ $direction: "next" | "previous" }>`
+	display: inline-flex;
+	grid-column: ${({ $direction }) => ($direction === "previous" ? "1" : "2")};
+	align-items: center;
+	justify-content: center;
+	justify-self: ${({ $direction }) => ($direction === "previous" ? "start" : "end")};
+	width: 2.75rem;
+	height: 2.75rem;
+	font-size: 40px;
 	line-height: 1;
-	color: rgba(255, 255, 255, 0.9);
-	text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+	color: rgb(255 255 255 / 95%);
+	text-decoration: none;
+	text-shadow: 0 0 10px rgb(0 0 0 / 80%);
 	pointer-events: auto;
-	${({ $isMobile }) => ($isMobile ? "" : "padding: 0 .4rem;")}
+	background: rgb(0 0 0 / 25%);
+	border-radius: 50%;
+
+	&:hover {
+		background: rgb(0 0 0 / 55%);
+	}
+
+	&:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 3px;
+	}
+
+	@media (max-width: ${theme.breakpoints.mobile}) {
+		width: 2.25rem;
+		height: 2.25rem;
+		font-size: 28px;
+		background: transparent;
+	}
 `;
 
-const CommentBox = styled.div`
+const InfoBox = styled.div`
 	width: 100%;
 	max-width: 1200px;
 	margin-top: 1rem;
@@ -83,68 +122,48 @@ interface Props {
 }
 
 export default function PhotoDetailPage({ photo, prevPhoto, nextPhoto }: Props) {
-	const { isMobile } = useDevice();
-
-	const fallbackW = 1600;
-	const fallbackH = 1067;
-
 	return (
 		<Main>
 			<HamburgerMenu />
 			<Content>
 				<Title>{photo.title}</Title>
-				<ImgWrap $isMobile={isMobile}>
-					{isMobile ? (
-						<Image
-							alt={photo.title}
-							height={fallbackH}
-							priority
-							src={photo.highResUrl}
-							style={{ height: "auto", maxWidth: "100%" }}
-							width={fallbackW}
-						/>
-					) : (
+				<Viewer>
+					<ImageWrapper>
 						<Image
 							alt={photo.title}
 							fill
-							priority
-							sizes="100vw"
+							preload
+							sizes="(max-width: 1200px) 100vw, 1200px"
 							src={photo.highResUrl}
 							style={{ objectFit: "contain" }}
 						/>
-					)}
-					{!isMobile && (
-						<NavRow $isMobile={false}>
+					</ImageWrapper>
+					{(prevPhoto || nextPhoto) && (
+						<Navigation aria-label="写真間の移動">
 							{prevPhoto && (
-								<NavBtn $isMobile={false} href={`/photoworks/${prevPhoto.id}`} scroll={false}>
-									‹
-								</NavBtn>
+								<NavigationLink
+									$direction="previous"
+									aria-label={`前の写真「${prevPhoto.title}」へ`}
+									href={`/photoworks/${prevPhoto.id}` as Route}
+								>
+									<span aria-hidden="true">‹</span>
+								</NavigationLink>
 							)}
 							{nextPhoto && (
-								<NavBtn $isMobile={false} href={`/photoworks/${nextPhoto.id}`} scroll={false}>
-									›
-								</NavBtn>
+								<NavigationLink
+									$direction="next"
+									aria-label={`次の写真「${nextPhoto.title}」へ`}
+									href={`/photoworks/${nextPhoto.id}` as Route}
+								>
+									<span aria-hidden="true">›</span>
+								</NavigationLink>
 							)}
-						</NavRow>
+						</Navigation>
 					)}
-				</ImgWrap>
-				{isMobile && (
-					<NavRow $isMobile={true}>
-						{prevPhoto && (
-							<NavBtn $isMobile={true} href={`/photoworks/${prevPhoto.id}`} scroll={false}>
-								‹
-							</NavBtn>
-						)}
-						{nextPhoto && (
-							<NavBtn $isMobile={true} href={`/photoworks/${nextPhoto.id}`} scroll={false}>
-								›
-							</NavBtn>
-						)}
-					</NavRow>
-				)}
-				<CommentBox>
-					<CommentExif photo={photo} />
-				</CommentBox>
+				</Viewer>
+				<InfoBox>
+					<PhotoDetailInfo key={photo.id} photo={photo} />
+				</InfoBox>
 			</Content>
 		</Main>
 	);
