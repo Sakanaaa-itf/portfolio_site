@@ -316,8 +316,6 @@ export default function Home() {
 						ふわふわ.みんなへようこそ！
 						<br />
 						フロントエンドエンジニアをやっていたり、雰囲気で写真をやっていたりします。
-						<br />
-						現在は、筑波大学で情報科学を学ぶ大学生もやっています。
 					</AboutMeText>
 				</AboutMeWrapper>
 			</ContentWrapper>
