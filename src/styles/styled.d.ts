@@ -1,15 +1,9 @@
 import "styled-components";
 
+import type theme from "./theme";
+
+type AppTheme = typeof theme;
+
 declare module "styled-components" {
-	export interface DefaultTheme {
-		breakpoints: {
-			laptop: string;
-			mobile: string;
-			tablet: string;
-		};
-		colors: {
-			background: string;
-			primary: string;
-		};
-	}
+	export interface DefaultTheme extends AppTheme {}
 }

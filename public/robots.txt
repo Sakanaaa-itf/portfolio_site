@@ -3,3 +3,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://xn--19ja1fb.xn--q9jyb4c/sitemap.xml

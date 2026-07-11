@@ -1,41 +1,64 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import styled from "styled-components";
-
-import { useDevice } from "@/hooks/useDevice";
 
 import HamburgerMenu from "./HamburgerMenu";
 
-const BackgroundWrapper = styled.div<{ $blurAmount: number }>`
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: -1;
-	width: 100vw;
-	max-width: 100vw;
-	height: 100vh;
+interface LinkItem {
+	icon?: string;
+	name: string;
+	url: string;
+}
+
+const LINKS = [
+	{
+		name: "iorin.io",
+		url: "https://iorin.io/",
+	},
+	{
+		icon: "https://pbs.twimg.com/profile_images/1601292387250499584/09YdhLVp_400x400.jpg",
+		name: "いなにわうどん.みんな",
+		url: "https://xn--n8je9hcf0t4a.xn--q9jyb4c/",
+	},
+	{
+		icon: "https://itsu.dev/icon.svg",
+		name: "itsu.dev",
+		url: "https://itsu.dev/",
+	},
+	{
+		icon: "https://pbs.twimg.com/profile_images/1797530605137416192/zy_0ipa1_400x400.jpg",
+		name: "it4pstudio.com",
+		url: "https://it4pstudio.com/",
+	},
+	{
+		name: "uekann.com",
+		url: "https://uekann.com/",
+	},
+	{
+		icon: "https://raspi0124.dev/raspi0124.png",
+		name: "raspi0124.dev",
+		url: "https://raspi0124.dev/",
+	},
+] satisfies readonly LinkItem[];
+
+const Page = styled.main`
+	position: relative;
+	min-height: 100svh;
 	overflow: hidden;
-	background-image: url("/DSCF0546.webp");
+	isolation: isolate;
+`;
+
+const Background = styled.div`
+	position: fixed;
+	inset: -12px;
+	z-index: -1;
+	background-image:
+		linear-gradient(to bottom, rgb(0 0 0 / 12%), rgb(20 20 20 / 82%)), url("/site-background.webp");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	filter: blur(${(props) => props.$blurAmount}px);
-	transition: filter 0.3s ease-in-out;
-`;
-
-const ContentWrapper = styled.div`
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	min-height: 100vh;
-	overflow: hidden;
-	body.menu-open & {
-		filter: blur(5px);
-	}
+	filter: blur(5px);
 `;
 
 const LinksSection = styled.section`
@@ -44,178 +67,138 @@ const LinksSection = styled.section`
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	min-height: 100vh;
-	padding: 2rem;
-	color: white;
+	min-height: 100svh;
+	padding: clamp(4rem, 10vw, 7rem) 1.25rem 2rem;
+	color: #fff;
 	text-align: center;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(34, 34, 34, 0.8) 100%);
-`;
 
-const LinksTitle = styled.h2<{ $fontSize: string }>`
-	margin-bottom: 1.5rem;
-	font-size: ${(props) => props.$fontSize};
-	font-weight: 700;
-`;
-
-const LinksContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: 1rem;
-	justify-content: center;
-	justify-items: center;
-	width: 100%;
-	max-width: 800px;
-	margin: 0 auto;
-`;
-
-const CardLink = styled.a`
-	width: 100%;
-	max-width: 180px;
-	color: inherit;
-	text-decoration: none;
-`;
-
-const LinkCard = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	padding: 0.75rem;
-	text-align: center;
-	border-radius: 8px;
-`;
-
-const CardContent = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	transition: filter 0.3s ease;
-	&:hover {
-		filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+	body.menu-open & {
+		filter: blur(5px);
 	}
 `;
 
-const IconWrapper = styled.div`
+const Title = styled.h1`
+	margin-bottom: 1.5rem;
+	font-size: clamp(1.25rem, 4vw, 1.75rem);
+	font-weight: 700;
+`;
+
+const LinksList = styled.ul`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 1rem;
+	width: min(800px, 100%);
+	margin: 0;
+	list-style: none;
+`;
+
+const LinkListItem = styled.li`
+	min-width: 0;
+`;
+
+const CardLink = styled.a`
 	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 	align-items: center;
-	justify-content: center;
+	width: 100%;
+	padding: 0.75rem;
+	color: inherit;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 8px;
+	transition:
+		background-color 0.2s ease,
+		transform 0.2s ease;
+
+	&:hover {
+		background: rgb(255 255 255 / 10%);
+		transform: translateY(-2px);
+	}
+
+	&:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+
+		&:hover {
+			transform: none;
+		}
+	}
+`;
+
+const IconWrapper = styled.span`
+	position: relative;
+	display: grid;
+	place-items: center;
 	width: 64px;
 	height: 64px;
-	margin-bottom: 0.5rem;
-	background-color: white;
-	border: 1px solid #333333;
+	overflow: hidden;
+	color: #171717;
+	background: #fff;
+	border: 1px solid #333;
 	border-radius: 50%;
 `;
 
-const LinkFavicon = styled.img`
-	width: 64px;
-	height: 64px;
-	border-radius: 50%;
+const IconFallback = styled.span`
+	font-size: 1.25rem;
+	font-weight: 700;
+	text-transform: uppercase;
 `;
 
-const LinkName = styled.h3<{ $fontSize: string }>`
-	margin-bottom: 0.3rem;
-	font-size: ${(props) => props.$fontSize};
+const Favicon = styled(Image)`
+	object-fit: cover;
+`;
+
+const LinkName = styled.h2`
+	max-width: 100%;
+	margin: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: clamp(0.75rem, 2vw, 1rem);
 	font-weight: 700;
 	white-space: nowrap;
 `;
 
-const LINKS = [
-	{
-		customIcon: "",
-		fallbackFavicon: "",
-		name: "iorin.io",
-		url: "https://iorin.io/",
-	},
-	{
-		customIcon: "https://pbs.twimg.com/profile_images/1601292387250499584/09YdhLVp_400x400.jpg",
-		fallbackFavicon:
-			"https://pbs.twimg.com/profile_images/1601292387250499584/09YdhLVp_400x400.jpg",
-		name: "いなにわうどん.みんな",
-		url: "https://xn--n8je9hcf0t4a.xn--q9jyb4c/",
-	},
-	{
-		customIcon: "https://itsu.dev/icon.svg",
-		fallbackFavicon: "",
-		name: "itsu.dev",
-		url: "https://itsu.dev/",
-	},
-	{
-		customIcon: "https://pbs.twimg.com/profile_images/1797530605137416192/zy_0ipa1_400x400.jpg",
-		fallbackFavicon: "",
-		name: "it4pstudio.com",
-		url: "https://it4pstudio.com/",
-	},
-	{
-		customIcon: "",
-		fallbackFavicon: "",
-		name: "uekann.com",
-		url: "https://uekann.com/",
-	},
-	{
-		customIcon: "https://raspi0124.dev/raspi0124.png",
-		fallbackFavicon: "",
-		name: "raspi0124.dev",
-		url: "https://raspi0124.dev",
-	},
-];
-
 export default function LinksPage() {
-	const { isMobile, isTablet } = useDevice();
-	const titleFontSize = isMobile ? "20px" : isTablet ? "24px" : "28px";
-	const nameFontSize = isMobile ? "12px" : isTablet ? "14px" : "16px";
-
-	const [scrollAmount, setScrollAmount] = useState(0);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			setScrollAmount(window.scrollY);
-		};
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
-	const blurAmount = Math.min(scrollAmount / 20, 20);
-
 	return (
 		<>
 			<HamburgerMenu />
-			<ContentWrapper>
-				<BackgroundWrapper $blurAmount={blurAmount} />
-				<LinksSection>
-					<LinksTitle $fontSize={titleFontSize}>Links_</LinksTitle>
-					<LinksContainer>
-						{LINKS.map((link, idx) => {
-							const initialSrc =
-								link.customIcon && link.customIcon.trim() !== ""
-									? link.customIcon
-									: `https://www.google.com/s2/favicons?sz=64&domain=${link.url}`;
-							return (
-								<CardLink href={link.url} key={idx} rel="noopener noreferrer" target="_blank">
-									<LinkCard>
-										<CardContent>
-											<IconWrapper>
-												<LinkFavicon
-													alt={`${link.name} favicon`}
-													onError={(e) => {
-														e.currentTarget.onerror = null;
-														e.currentTarget.src =
-															link.fallbackFavicon && link.fallbackFavicon.trim() !== ""
-																? link.fallbackFavicon
-																: "/fallback_favicon.png";
-													}}
-													src={initialSrc}
-												/>
-											</IconWrapper>
-											<LinkName $fontSize={nameFontSize}>{link.name}</LinkName>
-										</CardContent>
-									</LinkCard>
+			<Page>
+				<Background aria-hidden="true" />
+				<LinksSection aria-labelledby="links-title">
+					<Title id="links-title">Links_</Title>
+					<LinksList>
+						{LINKS.map((link) => (
+							<LinkListItem key={link.url}>
+								<CardLink href={link.url} rel="noopener noreferrer" target="_blank">
+									<IconWrapper aria-hidden="true">
+										<IconFallback aria-hidden="true">{link.name.at(0)}</IconFallback>
+										{"icon" in link && link.icon ? (
+											<Favicon
+												alt=""
+												fill
+												loading="lazy"
+												referrerPolicy="no-referrer"
+												sizes="64px"
+												src={link.icon}
+												unoptimized
+											/>
+										) : null}
+									</IconWrapper>
+									<LinkName>
+										{link.name}
+										<span className="sr-only">（新しいタブで開く）</span>
+									</LinkName>
 								</CardLink>
-							);
-						})}
-					</LinksContainer>
+							</LinkListItem>
+						))}
+					</LinksList>
 				</LinksSection>
-			</ContentWrapper>
+			</Page>
 		</>
 	);
 }

@@ -6,6 +6,10 @@ import { ramen } from "@/data/ramen";
 
 import type { Metadata } from "next";
 
+const SITE_URL = new URL("https://xn--19ja1fb.xn--q9jyb4c/");
+
+export const dynamicParams = false;
+
 export function generateStaticParams() {
 	return ramen.map((r) => ({ id: r.id }));
 }
@@ -18,24 +22,31 @@ export async function generateMetadata({
 	const { id } = await params;
 	const r = ramen.find((x) => x.id === id);
 	if (!r) return {};
+	const description = `${r.location} — ${r.name}`;
+	const title = `${r.name} | ${r.shop}`;
+	const visitedDate = r.date.trim();
+	const publishedAt = new Date(`${visitedDate}T00:00:00+09:00`);
+	const publishedTime = Number.isNaN(publishedAt.getTime()) ? undefined : publishedAt.toISOString();
 
 	return {
-		description: `${r.location} – ${r.name}`,
-		metadataBase: new URL("https://xn--l8j8cqftsc.xn--19ja1fb.xn--q9jyb4c"),
+		alternates: { canonical: `/ramen/${r.id}/` },
+		description,
+		metadataBase: SITE_URL,
 		openGraph: {
-			description: `${r.location} – ${r.name}`,
-			images: [r.highResUrl],
+			description,
+			images: [{ alt: `${r.shop}の${r.name}`, url: r.highResUrl }],
+			publishedTime,
 			siteName: "ふわふわ.みんな",
-			title: `${r.name} | ${r.shop}`,
+			title,
 			type: "article",
-			url: `/ramen/${r.id}`,
+			url: `/ramen/${r.id}/`,
 		},
-		title: `${r.name} | ${r.shop}`,
+		title,
 		twitter: {
 			card: "summary_large_image",
-			description: `${r.location} – ${r.name}`,
+			description,
 			images: [r.highResUrl],
-			title: `${r.name} | ${r.shop}`,
+			title,
 		},
 	};
 }

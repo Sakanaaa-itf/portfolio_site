@@ -1,7 +1,6 @@
-/* eslint-disable  */
 export interface RamenMeta {
 	id: string;
-	date: string;
+	date: `${number}-${number}-${number}`;
 	highResUrl: string;
 	lowResUrl: string;
 	name: string;
@@ -513,7 +512,7 @@ export const ramen: RamenMeta[] = addPrefixes([
 		location: "東京都文京区本郷４丁目３−２",
 	},
 	{
-		date: " 2025-05-25",
+		date: "2025-05-25",
 		highResUrl: "IMG_5571_1600.webp",
 		lowResUrl: "IMG_5571_400.webp",
 		name: "地鶏醤油らぁ麺 白",

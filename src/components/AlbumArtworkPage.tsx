@@ -1,319 +1,375 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect, useMemo, memo } from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 
 import theme from "@/styles/theme";
 
 import HamburgerMenu from "./HamburgerMenu";
 
-function useWindowSize() {
-	const [s, set] = useState({ height: 0, width: 0 });
-	useEffect(() => {
-		const h = () => set({ height: innerHeight, width: innerWidth });
-		h();
-		addEventListener("resize", h);
-		return () => removeEventListener("resize", h);
-	}, []);
-	return s;
-}
-
-interface Track {
-	art: string;
-	id: string;
-	title: string;
-}
-const fetcher = (u: string) => fetch(u).then((r) => r.json()) as Promise<{ tracks: Track[] }>;
+import type { MusicPlaylistResult, MusicTrack } from "@/types/music";
 
 const Page = styled.main`
-	position: relative;
-	width: 100vw;
-	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 100svh;
+	background: #000;
 `;
 
 const Header = styled.header`
-	position: absolute;
+	position: sticky;
 	top: 0;
-	right: 0;
-	left: 0;
-	z-index: 1001;
+	z-index: 30;
 	display: flex;
+	gap: 1rem 2rem;
 	align-items: center;
-	height: 60px;
-	padding: 0 1rem;
-	background: rgba(0, 0, 0, 0.4);
-	backdrop-filter: blur(5px);
+	justify-content: space-between;
+	min-height: 72px;
+	padding: 0.75rem 5rem 0.75rem 1rem;
+	background: rgb(0 0 0 / 76%);
+	backdrop-filter: blur(10px);
 
-	@media (max-width: ${theme.breakpoints.mobile}) {
+	@media (max-width: ${theme.breakpoints.tablet}) {
 		flex-direction: column;
 		align-items: flex-start;
-		height: 90px;
+		padding-right: 4rem;
 	}
 `;
 
-const TitleRow = styled.div`
-	display: flex;
-	flex: 0 0 60px;
-	gap: 0.5rem;
-	align-items: center;
-	font-size: 24px;
-`;
-const NoticeRow = styled.div`
-	display: flex;
-	gap: 0.5rem;
-	align-items: center;
-	font-size: 11px;
+const Title = styled.h1`
+	font-size: clamp(1.25rem, 4vw, 1.75rem);
+	line-height: 1.2;
 `;
 
-const YTNotice = styled.div`
+const YouTubeLinks = styled.nav`
 	display: flex;
-	gap: 0.5rem;
+	flex-wrap: wrap;
+	gap: 0.5rem 0.75rem;
 	align-items: center;
-	img {
-		height: 60px;
-		@media (max-width: ${theme.breakpoints.mobile}) {
-			height: 30px;
-		}
-	}
+	font-size: 0.6875rem;
+
 	a {
-		font-size: 11px;
 		color: #fff;
+		text-underline-offset: 0.2em;
 	}
 `;
 
-const GridContainer = styled.div`
-	position: absolute;
-	top: 60px;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	overflow: hidden;
-	@media (max-width: ${theme.breakpoints.mobile}) {
-		top: 90px;
-	}
+const YouTubeLogo = styled(Image)`
+	width: auto;
+	height: 28px;
+`;
+
+const ArtworkArea = styled.div`
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+
 	body.menu-open & {
 		filter: blur(5px);
 	}
 `;
 
-const Grid = styled.div`
+const Grid = styled.ul`
 	display: grid;
-	grid-template-rows: repeat(var(--rows), var(--tile));
-	grid-template-columns: repeat(var(--cols), var(--tile));
-	gap: 0;
-	width: 100%;
-	height: 100%;
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	gap: 2px;
+	padding: 2px;
+	margin: 0;
+	list-style: none;
+
+	@media (max-width: ${theme.breakpoints.mobile}) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 `;
 
-const Tile = styled.div`
+const GridItem = styled.li`
+	min-width: 0;
+`;
+
+const Tile = styled.button`
 	position: relative;
+	display: block;
 	width: 100%;
-	height: 100%;
+	aspect-ratio: 1;
+	padding: 0;
+	overflow: hidden;
 	cursor: pointer;
+	background: #171717;
+	border: 0;
+
+	&:focus-visible {
+		z-index: 1;
+		outline: 3px solid #fff;
+		outline-offset: -3px;
+	}
+
+	&:hover img {
+		transform: scale(1.04);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		&:hover img {
+			transform: none;
+		}
+	}
+`;
+
+const Artwork = styled(Image)`
+	object-fit: cover;
+	transition: transform 0.25s ease;
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+`;
+
+const StatePanel = styled.section`
+	display: grid;
+	flex: 1;
+	place-items: center;
+	min-height: 50vh;
+	padding: 2rem;
+	color: #d4d4d4;
+	text-align: center;
 `;
 
 const ModalOverlay = styled.div`
 	position: fixed;
 	inset: 0;
-	z-index: 1100;
+	z-index: 1000;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: rgba(0, 0, 0, 0.7);
+	padding: 1rem;
+	background: rgb(0 0 0 / 82%);
 `;
+
 const ModalContent = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 	align-items: center;
-	padding: 1rem;
-	background: #000;
+	width: min(900px, 100%);
+	max-height: calc(100svh - 2rem);
+	padding: 3.5rem 1rem 1rem;
+	overflow: auto;
+	background: #050505;
+	border: 1px solid #404040;
+	border-radius: 8px;
 `;
-const CloseBtn = styled.button`
+
+const CloseButton = styled.button`
 	position: absolute;
 	top: 0.5rem;
 	right: 0.5rem;
-	font-size: 1.5rem;
+	width: 2.75rem;
+	height: 2.75rem;
+	font-size: 2rem;
+	line-height: 1;
 	color: #fff;
 	cursor: pointer;
 	background: transparent;
-	border: none;
+	border: 0;
+	border-radius: 4px;
+
+	&:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 2px;
+	}
 `;
+
 const VideoBox = styled.div`
-	width: 80vw;
-	max-width: 800px;
-	aspect-ratio: 16/9;
+	width: 100%;
+	aspect-ratio: 16 / 9;
 	background: #000;
+
+	iframe {
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
 `;
-const VideoTitle = styled.p`
-	max-width: 80vw;
+
+const VideoTitle = styled.h2`
+	max-width: 70ch;
 	margin: 0;
-	font-size: 14px;
+	font-size: clamp(0.875rem, 2vw, 1rem);
 	color: #fff;
 	text-align: center;
 `;
 
 const Footer = styled.footer`
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	height: 0;
-	font-size: 6px;
-	line-height: 10px;
-	color: #fff;
+	padding: 0.75rem 1rem;
+	font-size: 0.625rem;
+	line-height: 1.5;
+	color: #bdbdbd;
 	text-align: center;
-	background: rgba(0, 0, 0, 0.3);
-	backdrop-filter: blur(4px);
+	background: #090909;
 `;
 
-const MemoGrid = memo(
-	({
-		displayed,
-		cols,
-		rows,
-		tile,
-		onSelect,
-	}: {
-		cols: number;
-		displayed: Track[];
-		onSelect(id: string): void;
-		rows: number;
-		tile: number;
-	}) => (
-		<Grid
-			style={
-				{
-					"--cols": cols,
-					"--rows": rows,
-					"--tile": `${tile}px`,
-				} as React.CSSProperties
-			}
-		>
-			{displayed.map((t) => (
-				<Tile key={t.id} onClick={() => onSelect(t.id)}>
-					<Image alt={t.title} fill src={t.art} style={{ objectFit: "cover" }} unoptimized />
-				</Tile>
-			))}
-		</Grid>
-	),
-);
-MemoGrid.displayName = "MemoGrid";
+const FOCUSABLE_SELECTOR = [
+	"a[href]",
+	"button:not([disabled])",
+	"iframe",
+	'[tabindex]:not([tabindex="-1"])',
+].join(",");
 
-const HEADER_PC = 60;
-const HEADER_SP = 90;
-const FOOTER = 10;
+export default function AlbumArtworkPage({ playlist }: { playlist: MusicPlaylistResult }) {
+	const [selectedTrack, setSelectedTrack] = useState<MusicTrack | null>(null);
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
+	const dialogRef = useRef<HTMLDivElement>(null);
+	const triggerRef = useRef<HTMLButtonElement | null>(null);
 
-export default function AlbumArtworkPage() {
-	const { data } = useSWR("/api/playlist", fetcher, {
-		revalidateOnFocus: false,
-	});
-	const { width } = useWindowSize();
+	const closeModal = useCallback(() => setSelectedTrack(null), []);
 
-	const tracks = useMemo(() => {
-		const l = data?.tracks.filter((t) => t.art) ?? [];
-		for (let i = l.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[l[i], l[j]] = [l[j], l[i]];
-		}
-		return l;
-	}, [data]);
-
-	const { cols, rows, tile } = useMemo(() => {
-		if (!width) return { cols: 1, rows: 1, tile: 0 };
-		const N = tracks.length || 1,
-			minCols = 5,
-			max = 150,
-			min = 100;
-		let c = Math.max(minCols, Math.round(Math.sqrt(N * (width / 1080))));
-		let t = width / c;
-		while (t > max) {
-			c++;
-			t = width / c;
-		}
-		while (t < min && c > minCols) {
-			c--;
-			t = width / c;
-		}
-		return { cols: c, rows: Math.ceil(N / c), tile: t };
-	}, [tracks, width]);
-
-	const [displayed, setDisplayed] = useState<Track[]>([]);
 	useEffect(() => {
-		setDisplayed(tracks.slice(0, cols * rows));
-	}, [tracks, cols, rows]);
+		if (!selectedTrack) return;
 
-	const [selId, setSelId] = useState<string | null>(null);
-	const selected = useMemo(() => tracks.find((t) => t.id === selId) || null, [tracks, selId]);
+		const trigger = triggerRef.current;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		closeButtonRef.current?.focus();
 
-	if (!tracks.length) return null;
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				event.preventDefault();
+				closeModal();
+				return;
+			}
 
-	const MOBILE_BP = parseInt(theme.breakpoints.mobile, 10);
-	const headerH = width <= MOBILE_BP ? HEADER_SP : HEADER_PC;
-	const pageHeight = headerH + rows * tile + FOOTER;
+			if (event.key !== "Tab" || !dialogRef.current) return;
+			const focusableElements = Array.from(
+				dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+			).filter((element) => !element.hasAttribute("disabled"));
+			const firstElement = focusableElements.at(0);
+			const lastElement = focusableElements.at(-1);
+			if (!firstElement || !lastElement) return;
+
+			if (event.shiftKey && document.activeElement === firstElement) {
+				event.preventDefault();
+				lastElement.focus();
+			} else if (!event.shiftKey && document.activeElement === lastElement) {
+				event.preventDefault();
+				firstElement.focus();
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+			document.body.style.overflow = previousOverflow;
+			trigger?.focus();
+		};
+	}, [closeModal, selectedTrack]);
+
+	const openModal = (track: MusicTrack, trigger: HTMLButtonElement) => {
+		triggerRef.current = trigger;
+		setSelectedTrack(track);
+	};
+
+	const stateMessage =
+		playlist.message ??
+		(playlist.status === "ready" ? "プレイリストに表示できる動画がありません。" : "");
 
 	return (
-		<Page style={{ height: `${pageHeight}px` }}>
+		<Page>
+			<HamburgerMenu />
 			<Header>
-				<TitleRow>
-					<HamburgerMenu />
-					<span>Favorite&nbsp;Musics</span>
-				</TitleRow>
-				<NoticeRow>
-					<YTNotice>
-						{/* eslint-disable-next-line @next/next/no-img-element*/}
-						<img
-							alt="Developed with YouTube"
-							src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png"
-						/>
-						<a
-							href="https://developers.google.com/youtube/terms/api-services-terms-of-service"
-							rel="noreferrer"
-							target="_blank"
-						>
-							API&nbsp;TOS
-						</a>
-						<a href="https://www.youtube.com/t/terms" rel="noreferrer" target="_blank">
-							YouTube&nbsp;TOS
-						</a>
-						<a href="https://policies.google.com/privacy" rel="noreferrer" target="_blank">
-							Privacy
-						</a>
-					</YTNotice>
-				</NoticeRow>
+				<Title>Favorite Music</Title>
+				<YouTubeLinks aria-label="YouTube関連リンク">
+					<YouTubeLogo
+						alt="Developed with YouTube"
+						height={28}
+						src="https://developers.google.com/static/youtube/images/developed-with-youtube-sentence-case-light.png"
+						unoptimized
+						width={128}
+					/>
+					<a
+						href="https://developers.google.com/youtube/terms/api-services-terms-of-service"
+						rel="noreferrer"
+						target="_blank"
+					>
+						API TOS
+					</a>
+					<a href="https://www.youtube.com/t/terms" rel="noreferrer" target="_blank">
+						YouTube TOS
+					</a>
+					<a href="https://policies.google.com/privacy" rel="noreferrer" target="_blank">
+						Privacy
+					</a>
+				</YouTubeLinks>
 			</Header>
 
-			<GridContainer>
-				<MemoGrid cols={cols} displayed={displayed} onSelect={setSelId} rows={rows} tile={tile} />
-				{selected &&
-					createPortal(
-						<ModalOverlay onClick={() => setSelId(null)}>
-							<ModalContent onClick={(e) => e.stopPropagation()}>
-								<CloseBtn onClick={() => setSelId(null)}>&times;</CloseBtn>
-								<VideoBox>
-									<iframe
-										allowFullScreen
-										frameBorder={0}
-										src={`https://www.youtube.com/embed/${selected.id}`}
-										style={{ height: "100%", width: "100%" }}
-										title={selected.title}
+			<ArtworkArea>
+				{playlist.tracks.length > 0 ? (
+					<Grid aria-label="お気に入りの音楽">
+						{playlist.tracks.map((track) => (
+							<GridItem key={track.id}>
+								<Tile
+									aria-label={`「${track.title}」を再生`}
+									onClick={(event) => openModal(track, event.currentTarget)}
+									type="button"
+								>
+									<Artwork
+										alt=""
+										fill
+										sizes="(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 800px) 25vw, (max-width: 960px) 20vw, (max-width: 1120px) 17vw, (max-width: 1280px) 15vw, 180px"
+										src={track.art}
+										unoptimized
 									/>
-								</VideoBox>
-								<VideoTitle>{selected.title}</VideoTitle>
-							</ModalContent>
-						</ModalOverlay>,
-						document.body,
-					)}
-			</GridContainer>
+								</Tile>
+							</GridItem>
+						))}
+					</Grid>
+				) : (
+					<StatePanel aria-live="polite" role={playlist.status === "error" ? "alert" : "status"}>
+						<p>{stateMessage}</p>
+					</StatePanel>
+				)}
+			</ArtworkArea>
 
 			<Footer>
 				This site uses YouTube API Services but is not endorsed or certified by YouTube or Google.
 				Thumbnails are streamed directly from YouTube and are not stored or modified.
 			</Footer>
+
+			{selectedTrack && (
+				<ModalOverlay
+					onMouseDown={(event) => {
+						if (event.currentTarget === event.target) closeModal();
+					}}
+					role="presentation"
+				>
+					<ModalContent
+						aria-labelledby="music-dialog-title"
+						aria-modal="true"
+						ref={dialogRef}
+						role="dialog"
+					>
+						<CloseButton
+							aria-label="動画を閉じる"
+							onClick={closeModal}
+							ref={closeButtonRef}
+							type="button"
+						>
+							&times;
+						</CloseButton>
+						<VideoBox>
+							<iframe
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								allowFullScreen
+								referrerPolicy="strict-origin-when-cross-origin"
+								src={`https://www.youtube.com/embed/${selectedTrack.id}`}
+								title={`${selectedTrack.title} — YouTube video player`}
+							/>
+						</VideoBox>
+						<VideoTitle id="music-dialog-title">{selectedTrack.title}</VideoTitle>
+					</ModalContent>
+				</ModalOverlay>
+			)}
 		</Page>
 	);
 }

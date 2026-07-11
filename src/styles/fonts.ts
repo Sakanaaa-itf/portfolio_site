@@ -1,23 +1,17 @@
-import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
-
-export const jetbrainsMono = JetBrains_Mono({
-	display: "swap",
-	subsets: ["latin"],
-	variable: "--font-jetbrains-mono",
-	weight: ["400", "700"],
-});
 
 export const udevGothic = localFont({
 	display: "swap",
+	fallback: ["ui-monospace", "monospace"],
+	preload: true,
 	src: [
 		{
-			path: "../../public/fonts/UDEVGothic35-Regular.ttf",
+			path: "../../public/fonts/UDEVGothic35-Regular.woff2",
 			style: "normal",
 			weight: "400",
 		},
 		{
-			path: "../../public/fonts/UDEVGothic35-Bold.ttf",
+			path: "../../public/fonts/UDEVGothic35-Bold.woff2",
 			style: "normal",
 			weight: "700",
 		},
